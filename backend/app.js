@@ -3,19 +3,28 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var passport = require("passport");
 var index = require('./routes/index');
 var users = require('./routes/users');
 var keys = require('./config');
 var mongoose = require('mongoose');
+require("./models/Users")
 require("./services/passport");
+
+mongoose.connect(keys.mongoDB_URL)
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(cookieSession({
+  maxAge : 30 * 24 * 60 * 60 * 1000,
+  keys : [keys.cookieKey]
+}))
 
 app.use(passport.initialize());
 app.use(passport.session());
