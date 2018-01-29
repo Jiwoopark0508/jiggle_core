@@ -7,3 +7,5 @@ md는 motional data의 약자이다. 우리의 프로젝트는 간단하고, 소
 ## 동적인 데이터
 
 데이터는 최대한 
+
+## Jiwoo Branch
