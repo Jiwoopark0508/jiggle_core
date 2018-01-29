@@ -1,2 +1,3 @@
 backend/node_modules
 backend/config
+.DS_Store
