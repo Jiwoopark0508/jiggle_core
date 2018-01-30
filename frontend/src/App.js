@@ -1,85 +1,36 @@
 import React, { Component } from "react";
 import "./App.css";
 import Workspace from "./react-d3/Workspace";
+import { appleStock } from '@vx/mock-data'
+import dummies from './bar_dummy'
 
-const csv0 = `letter,frequency
-A,.06167
-B,.01492
-C,.02782
-D,.08786
-E,.03386`;
+// Line Data Preparation
 
-const csv1 = `letter,frequency
-A,.08167
-B,.01492
-D,.03386`;
+const data1 = appleStock;
+const data2 = appleStock.map(d => {
+  return {
+    date : d.date,
+    close : d.close * 2
+  }
+})
+const data3 = appleStock.map(d => {
+  return {
+    date : d.date,
+    close : d.close * 3
+  }
+})
 
-const csv2 = `letter,frequency
-A,.08167
-B,.01492
-C,.02782
-D,.03386`;
+// const chart0 = {
+//   dataSet : [appleStock.slice(0, appleStock.length / 2)]
+// }
 
-const type = "bar";
-const width_svg = 600;
-const height_svg = 500;
-const margins = { top: 40, bottom: 40, left: 30, right: 30 };
-const focusType = "";
-const color = "steelblue";
-const colorToFocus = "gold";
-const opacity = 1;
-const opacityToHide = 0.15;
-const duration = 0;
-const delay = 0;
-
-const chart0 = {
-  type,
-  rawData: csv0,
-  width_svg,
-  height_svg,
-  margins,
-  focusType,
-  duration,
-  delay,
-  color,
-  colorToFocus,
-  opacity,
-  opacityToHide
-};
-
-const chart1 = {
-  type,
-  rawData: csv1,
-  width_svg,
-  height_svg,
-  margins,
-  focusType: "minAndMax",
-  duration: 2000,
-  delay: 500,
-  color: "steelblue",
-  colorToFocus: "gold",
-  opacity: 1,
-  opacityToHide: 0.15
-};
-
-const chart2 = {
-  type,
-  rawData: csv2,
-  width_svg,
-  height_svg,
-  margins,
-  focusType: "startAndEnd",
-  duration: 2000,
-  delay: 500,
-  color: "steelblue",
-  colorToFocus: "red",
-  opacity: 1,
-  opacityToHide: 0.15
-};
+// const chart1 = {
+//   dataSet : [appleStock.slice(0, appleStock.length)]
+// }
 
 class App extends Component {
   render() {
-    return <Workspace charts={[chart0, chart1, chart2]} />;
+    return <Workspace width="700" height="450" chart={[data1.slice(0, data1.length / 2), data2, data3]} />;
   }
 }
 

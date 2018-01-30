@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "d3": "4.12.2",
+    "@vx/axis": "^0.0.153",
+    "@vx/group": "^0.0.153",
+    "@vx/mock-data": "^0.0.153",
+    "@vx/shape": "^0.0.153",
+    "d3": "^4.13.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
