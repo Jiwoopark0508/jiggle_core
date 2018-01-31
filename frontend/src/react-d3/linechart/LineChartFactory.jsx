@@ -5,24 +5,27 @@ import JiggleLineStatic from './jiggle_line_static'
 import JiggleLineTransition from './jiggle_line_transition';
 
 export default class LineChartFactory {
+  constructor() {
+    this.transPath = null
+  }
   renderChartStatic() {
     const renderer = (svgElement, chartConfig) => {
       this._drawStaticChart(svgElement, chartConfig)
     }
     return renderer;
   }
-  // Render n - 1 Transition Component then execute animation 
-  // n - 1 times
+  
   renderChartTransition() {
-    // Here goes function that calls _applyTransition
-    const renderer = (svgElement, chartConfigs) => {
-      this._drawTransitionChart(svgElement, chartConfigs)
+    const renderer = (svgElement, chartConfigList) => {
+      this._drawTransitionChart(svgElement, chartConfigList[0], chartConfigList[1])
+      
+      for (let i = 0; i < chartConfigList.length - 1; i++ ) {
+        
+      }
     }
     return renderer;
   }
-  _refineData() {
-
-  }
+  
   _drawStaticChart(svgElement, chartConfig) {
     let line_static_instance = new JiggleLineStatic();
     let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
@@ -30,21 +33,19 @@ export default class LineChartFactory {
     ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
   }
 
-  _drawTransitionChart(svgElement, chartConfig) {
-    // Here calls transition logic from transition
+  _drawTransitionChart(svgElement, fromChart, toChart) {
+    // this function draw transition between two chart configs
     let line_transition_instance = new JiggleLineTransition();
-    chartConfig = {
-      "dataSet": [{from : chartConfig[0],
-                    to : chartConfig[1]}]
-    }
-    let jiggle_line_transition = line_transition_instance.renderChartTransition(chartConfig)
-    
+    line_transition_instance.setFromToChart(fromChart, toChart)
+    this.transPath = line_transition_instance;
+
+    let jiggle_line_transition = line_transition_instance.renderTransition(toChart)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
-    // console.log(line_transition_instance.node)
-    // setTimeout(()=>{
-    //   console.log(line_transition_instance.node)
-    //   console.log(d3.select(line_transition_instance.node))
-    // }, 15000)
+  }
+
+  _triggerTransition(fromChart, toChart) {
+    // transition from fromChart to toChart
+    this.transPath.setFromToChart(fromChart, toChart)
   }
 
   _extractData(chartConfig) {

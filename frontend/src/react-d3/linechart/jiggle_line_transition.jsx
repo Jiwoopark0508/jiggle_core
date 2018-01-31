@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
 import { AxisLeft, AxisBottom } from '@vx/axis'
 import TransitionLinePath from './transition_line_path'
+import _ from 'lodash'
 
 import * as d3 from 'd3'
 
@@ -24,26 +25,51 @@ const yMax = height - margin.top - margin.bottom
 
 
 export default class JiggleLineTransition {
-    constructor() {
+    constructor(props) {
+        // super(props)
         this.transition = ""
         this.node = null
+        this.fromChart = null
+        this.toChart = null
+        this.transPathLines = []
     }
-    componentDidMount(){
-        console.log(this.node)
+
+    setFromToChart(fromChart, toChart) {
+        /**
+         * setState fromChart toChart
+         * set fromChart and toChart then trigger animation
+         */
+        
+        this.fromChart = fromChart
+        this.toChart = toChart
+        let that = this;
+
     }
-    componentWillMount(){
-        console.log(null)
+    
+    playAllTransitions() {
+        this.transPathLines.forEach(function(el) {
+            el.playTransition()
+        })    
     }
-    renderChartTransition(config) {
-        let series = config.dataSet // It has to have a form of 
+
+
+    renderTransition(config) {
+        let dataSeries = _.zip(this.fromChart.data,
+                               this.toChart.data) 
+
+        let flatten = this.toChart.data.reduce((rec, d) => {
+                return rec.concat(d)
+            }, [])
+    
+            let data = flatten.reduce((rec, d) => {
+                return rec.concat(d)
+            }, [])
+    
         /**
          * Temporal scale and accessor
          */
 
-        let data = series.reduce((rec, d) => {
-            return rec.concat(d.to)
-        }, [])
-        
+
         const x = d => new Date(d.date)
         const y = d => d.close
         const xScale = d3.scaleTime()
@@ -62,13 +88,15 @@ export default class JiggleLineTransition {
                     fill="#eeeeee"/>
 
                 <Group top={margin.top} left={margin.left}>
-                    {series.map((d, i) => {
+                    {dataSeries.map((d, i) => {
                         return (
                             <TransitionLinePath 
                                 key={i}
-                                ref={(node) => {this.node = node}}
-                                prevData={series[0].from}
-                                nextData={series[0].to}
+                                ref={(node) => {this.transPathLines.push(node)}}
+                                prevData={d[0]}
+                                nextData={d[1]}
+                                duration={config.duration}
+                                delay={config.delay}
                                 xScale={xScale}
                                 yScale={yScale}
                             />

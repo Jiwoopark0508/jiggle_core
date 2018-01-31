@@ -32,22 +32,30 @@ export default class TransitionLinePath extends React.Component {
     constructor(props){
         super(props)
         this.prevPath = null
+        this.startsAt = 0
+        this.endsAt = 0
+        this.transPath = null
         this._playTransition = this._playTransition.bind(this)
+        this.playTransition = this.playTransition.bind(this)
     }
-    componentDidMount(){
-        // console.log(this.prevPath)
-        this._playTransition()
-        // console.log(d3.transition)
+    componentDidMount() {
+        this.startsAt = this.prevPath.getTotalLength();
+        this.endsAt = this.transPath.getTotalLength();
     }
-    _playTransition() {
-        let startsAt = this.prevPath.getTotalLength()
-        let endsAt = this.nextPath.getTotalLength()        
-        // console.log(d3.select(this.nextPath))
-        d3.select(this.nextPath)
+    playTransition() {
+        this._playTransition(800, 800)
+    }
+    _playTransition(duration, delay) {
+        let endsAt = this.endsAt
+        let startsAt = this.startsAt
+        console.log(endsAt, startsAt)
+        // this.transPath.interrupt()
+
+        d3.select(this.transPath)
             .attr("stroke-dasharray", endsAt + " " + (endsAt - startsAt))
             .attr("stroke-dashoffset", (endsAt - startsAt))
             .transition()
-            .duration(7500)
+            .duration(duration)
             .attr("stroke-dashoffset", 0)
     }
 
@@ -67,7 +75,7 @@ export default class TransitionLinePath extends React.Component {
                     style={{"display" : "none"}}
                 />
                 <LinePath 
-                    innerRef={(node) => this.nextPath = node}
+                    innerRef={(node) => this.transPath = node}
                     data = {props.nextData}
                     xScale={props.xScale}
                     yScale={props.yScale}
