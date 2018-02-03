@@ -1,6 +1,10 @@
 import React from "react";
-import BarChartFactory from "./barchart/BarChartFactory";
-import { ParseData } from "./common/utils";
+import BarFactory from "./factory/bar-factory";
+import GroupedBarFactory from "./factory/grouped-bar-factory";
+import StackedBarFactory from "./factory/stacked-bar-factory";
+import { parseBar } from "./parser/bar-parser";
+import { parseGroupedBar } from "./parser/grouped-bar-parser";
+import { parseStackedBar } from "./parser/stacked-bar-parser";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -9,12 +13,27 @@ export default class Workspace extends React.Component {
 
   componentDidMount() {
     const props = this.props;
-    props.charts.forEach(chart => ParseData(chart));
-    const factory = new BarChartFactory();
-    // const rendererStatic = factory.renderChartStatic();
-    // rendererStatic(this.node, props.charts[1]);
-    const renderer = factory.renderChartTransition();
-    renderer(this.node, [...props.charts]);
+
+    // bar
+    props.charts.forEach(chart => parseBar(chart));
+    const factory = new BarFactory();
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[1]);
+    const renderTransition = factory.renderTransition();
+    const shouldMakeGIF = true;
+    renderTransition(this.node, [...props.charts], shouldMakeGIF);
+
+    // grouped bar
+    // props.charts.forEach(chart => parseGroupedBar(chart));
+    // const factory = new GroupedBarFactory();
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[0]);
+
+    // stacked bar
+    // props.charts.forEach(chart => parseStackedBar(chart));
+    // const factory = new StackedBarFactory();
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[0]);
   }
 
   render() {

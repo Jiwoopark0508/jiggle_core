@@ -24,3 +24,8 @@ yarn-error.log*
 
 .tern-project
 >>>>>>> jiwoo
+
+node_modules/
+frontend/public/main.js
+frontend/public/worker.js
+package-lock.json
