@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import makeGIF from "../../gif/makeGIF";
 import recordTransition from "../../gif/d3-record";
 
+// branch: gif
 export default class BarFactory {
   renderChart() {
     const renderer = (svgElement, chart) => {
