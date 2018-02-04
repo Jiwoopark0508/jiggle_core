@@ -19,9 +19,9 @@ export default class Workspace extends React.Component {
     const factory = new BarFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
-    const renderTransition = factory.renderTransition();
-    renderTransition(this.node, [...props.charts]);
-    // const record = factory.recordTransition(this.node, [...props.charts]);
+    // const renderTransition = factory.renderTransition();
+    // renderTransition(this.node, [...props.charts]);
+    const record = factory.recordTransition(this.node, [...props.charts]);
 
     // grouped bar
     // props.charts.forEach(chart => parseGroupedBar(chart));
