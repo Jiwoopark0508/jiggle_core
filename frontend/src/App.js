@@ -4,18 +4,15 @@ import Workspace from "./react-d3/Workspace";
 import { chart0, chart1, chart2, chart3 } from "./react-d3/data/bar-data";
 import { gChart0 } from "./react-d3/data/grouped-bar-data";
 import { sChart0 } from "./react-d3/data/stacked-bar-data";
-import { appleStock } from "@vx/mock-data";
+// import { appleStock } from "@vx/mock-data";
 
-const data1 = appleStock;
-const data2 = appleStock.map(d => {
-  return { close: d.close * 2, date: d.date };
-});
-const data3 = appleStock.map(d => {
-  return { close: d.close * 3, date: d.date };
-});
-/**
- *
- */
+// const data1 = appleStock;
+// const data2 = appleStock.map(d => {
+//   return { close: d.close * 2, date: d.date };
+// });
+// const data3 = appleStock.map(d => {
+//   return { close: d.close * 3, date: d.date };
+// });
 // const chart1 = {
 //   data : [data1.slice(0, data1.length / 3),
 //           data2.slice(0, data2.length / 3),],
@@ -51,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Workspace charts={[chart0, chart1, chart2, chart3]} />
+        <Workspace charts={[chart0, chart1]} />
         <div id="gif" />
       </div>
     );

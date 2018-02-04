@@ -158,6 +158,7 @@ export default class BarFactory {
       .append("rect")
       .attr("fill", chart.color)
       .call(this._applyFocus, chart)
+      .attr("rx", chart.radius)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
@@ -166,7 +167,8 @@ export default class BarFactory {
       .append("g")
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.height_g})`)
-      .call(d3.axisBottom(chart.xScale));
+      .call(chart.customXAxis);
+    // .call(d3.axisBottom(chart.xScale));
     return g;
   }
 
@@ -176,7 +178,8 @@ export default class BarFactory {
       .transition()
       .duration(chart.duration)
       .delay(chart.accumedDelay)
-      .call(d3.axisBottom(chart.xScale));
+      .call(chart.customXAxis);
+    // .call(d3.axisBottom(chart.xScale));
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
     rect
@@ -197,6 +200,7 @@ export default class BarFactory {
       .delay(chart.accumedDelay)
       .attr("fill", chart.color)
       .call(that._applyFocus, chart) // apply focus
+      .attr("rx", chart.radius)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
