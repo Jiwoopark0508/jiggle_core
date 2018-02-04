@@ -61,12 +61,10 @@ export default class BarFactory {
       const tweeners = this._getAllTweeners(g);
       const totalDuration = cht1.accumedDelay + cht1.duration;
       allElements.interrupt();
-      console.log(totalDuration);
       const frames = 20 * totalDuration / 1000;
 
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
-        // if (i === 0) return; // skip white background
         promises.push(
           new Promise(function(resolve1, reject) {
             addFrame((f + 1) / frames * totalDuration, resolve1);
@@ -79,13 +77,11 @@ export default class BarFactory {
           .select(svgElement)
           .selectAll("*")
           .remove();
-
         resolve0();
       });
 
       function jumpToTime(t) {
         tweeners.forEach(function(tween) {
-          // console.log(tween);
           tween(t);
         });
       }
@@ -96,9 +92,7 @@ export default class BarFactory {
           serialized = new XMLSerializer().serializeToString(svgElement),
           blob = new Blob([serialized], { type: "image/svg+xml" }),
           url = URL.createObjectURL(blob);
-
         img.onload = function() {
-          // console.log(chart.duration / frames);
           gif.addFrame(img, {
             delay: totalDuration / frames,
             copy: true
