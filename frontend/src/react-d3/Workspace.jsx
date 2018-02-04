@@ -37,6 +37,14 @@ export default class Workspace extends React.Component {
   }
 
   render() {
-    return <svg ref={node => (this.node = node)} />;
+    return (
+      <div>
+        <svg
+          width={this.props.width}
+          height={this.props.height}
+          ref={node => (this.node = node)}
+        />
+      </div>
+    );
   }
 }
