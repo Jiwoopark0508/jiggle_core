@@ -1,6 +1,4 @@
 import * as d3 from "d3";
-import makeGIF from "../../gif/makeGIF";
-// import recordTransition from "../../gif/d3-record";
 
 export default class BarFactory {
   renderChart() {
@@ -32,7 +30,6 @@ export default class BarFactory {
       repeat: 0
     });
     const gifToPresent = d3.select("#gif");
-    // console.log(gifToPresent);
     gif.on("progress", function(p) {
       gifToPresent.text(d3.format("%")(p) + " rendered");
     });
@@ -41,7 +38,6 @@ export default class BarFactory {
         .text("")
         .append("img")
         .attr("src", URL.createObjectURL(blob));
-      // d3.timer(jumpToTime);
     });
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
@@ -115,14 +111,10 @@ export default class BarFactory {
   }
 
   _getAllTweeners(g) {
-    // console.log("getAllTweeners called.");
     let tweeners = [];
     const allElements = g.selectAll("*");
-    // console.log(allElements);
-
     allElements.each(function(d, i) {
       const node = this;
-      // node: rect, axis, etc.
       const pending = d3
         .entries(this.__transition)
         .filter(function(tr) {
@@ -132,48 +124,24 @@ export default class BarFactory {
           return tr.value;
         });
       if (pending.length === 0) return;
-      // console.log(pending);
       pending.forEach(function(tran, i) {
-        // console.log(tran);
-        // tran: rect, axis, etc.
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
         tran.tween.forEach(function(tween) {
-          // tween: fill, opacity, x, y, width, height, etc.
-          // console.log(node);
-          // console.log(tween.value);
           const tweener = (tween.value.call(node, d, i) || (() => {})).bind(
             node
           );
           (function(idx) {
             tweeners.push(function(t) {
-              // if (true) {
-              //   t = relativeTime(t, tran.duration, tran.accumedDelay);
-              // }
-              // console.log(tran.delay, tran.duration);
               if (t >= tran.delay && t < tran.delay + tran.duration) {
-                // if (true) {
                 const relativeTime = (t - tran.delay) / tran.duration;
-                // console.log(t);
-                // console.log(tran);
-                // console.log(node);
-                // console.dir(tweener);
-                // console.log(relativeTime);
                 tweener(ease(relativeTime));
-                // console.log(ease(t));
-                // tweener(ease(t));
               }
             });
           })(i);
         });
-        // console.log("-----");
       });
     });
-
-    function relativeTime(ms, duration, delay) {
-      return Math.min(1, Math.max(0, (ms - delay) / duration));
-    }
-
     return tweeners;
   }
 
@@ -215,10 +183,8 @@ export default class BarFactory {
       .duration(chart.duration)
       .delay(chart.accumedDelay)
       .call(d3.axisBottom(chart.xScale));
-
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
-
     rect
       .exit() // Exit selection
       .transition()
@@ -226,7 +192,6 @@ export default class BarFactory {
       .delay(chart.accumedDelay)
       .style("opacity", 0)
       .remove();
-
     rect
       .enter() // Enter selection
       .append("rect")
@@ -258,16 +223,5 @@ export default class BarFactory {
             chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
         );
     }
-  }
-
-  // deprecated
-  _checkDiffsForTransition(origChart, nextChart) {
-    const diffs = {};
-    for (let key in nextChart) {
-      if (origChart[key] !== nextChart[key]) {
-        diffs[key] = nextChart[key];
-      }
-    }
-    return diffs;
   }
 }
