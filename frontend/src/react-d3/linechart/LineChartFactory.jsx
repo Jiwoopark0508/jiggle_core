@@ -6,7 +6,7 @@ import JiggleLineTransition from './jiggle_line_transition';
 
 export default class LineChartFactory {
   constructor() {
-    this.transPath = null
+    this.lineInstance = null
   }
   renderChartStatic() {
     const renderer = (svgElement, chartConfig) => {
@@ -17,11 +17,11 @@ export default class LineChartFactory {
   
   renderChartTransition() {
     const renderer = (svgElement, chartConfigList) => {
-      this._drawTransitionChart(svgElement, chartConfigList[0], chartConfigList[1])
-      
-      for (let i = 0; i < chartConfigList.length - 1; i++ ) {
-        
-      }
+      this._drawTransitionChart(svgElement, chartConfigList[0], chartConfigList[chartConfigList.length - 1])
+
+      let chartDelay = 0
+      this.lineInstance.chartList = chartConfigList
+      this.lineInstance.playAllTransition()
     }
     return renderer;
   }
@@ -37,19 +37,19 @@ export default class LineChartFactory {
     // this function draw transition between two chart configs
     let line_transition_instance = new JiggleLineTransition();
     line_transition_instance.setFromToChart(fromChart, toChart)
-    this.transPath = line_transition_instance;
+    this.lineInstance = line_transition_instance;
 
     let jiggle_line_transition = line_transition_instance.renderTransition(toChart)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
   }
 
-  _triggerTransition(fromChart, toChart) {
-    // transition from fromChart to toChart
-    this.transPath.setFromToChart(fromChart, toChart)
-  }
+  // _triggerTransition(fromChart, toChart) {
+  //   // transition from fromChart to toChart
+  //   this.transPath.setFromToChart(fromChart, toChart)
+  // }
 
-  _extractData(chartConfig) {
+  // _extractData(chartConfig) {
 
-  }
+  // }
 
 }

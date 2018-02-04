@@ -10,23 +10,26 @@ const data3 = appleStock.map((d) => { return {"close" : d.close * 3, "date" : d.
  * 
  */
 const chart1 = {
-  data : [data1.slice(0, data1.length / 3), 
-          data2.slice(0, data2.length / 3),],
-  duration : 750,
-  delay : 3000
+  data : [data1.slice(0, data1.length / 8), 
+          data2.slice(0, data2.length / 4),
+          data3.slice(0, data3.length / 4),],
+  duration : 1000,
+  delay : 1000
 }
 
 const chart2 = {
-  data : [data1.slice(0, data1.length * 2 / 3),
-          data2.slice(0, data2.length * 2 / 3),],
-  duration : 750,
-  delay : 3000
+  data : [data1.slice(0, data1.length * 1 / 3),
+          data2.slice(0, data2.length * 1 / 3),
+          data3.slice(0, data3.length * 2 / 4),],
+  duration : 2000,
+  delay : 2000
 }
 
 const chart3 = {
   data : [data1.slice(0, data1.length),
-          data2.slice(0, data2.length),],
-  duration : 750,
+          data2.slice(0, data2.length * 5 / 10),
+          data3.slice(0, data3.length),],
+  duration : 3000,
   delay : 3000
 }
 

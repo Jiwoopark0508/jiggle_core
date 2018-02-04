@@ -37,26 +37,48 @@ export default class TransitionLinePath extends React.Component {
         this.transPath = null
         this._playTransition = this._playTransition.bind(this)
         this.playTransition = this.playTransition.bind(this)
+        this.state = {
+            prevData : this.props.prevData,
+            nextData : this.props.nextData
+        }
     }
+    
     componentDidMount() {
         this.startsAt = this.prevPath.getTotalLength();
         this.endsAt = this.transPath.getTotalLength();
     }
-    playTransition() {
-        this._playTransition(800, 800)
+    
+    componentDidUpdate() {
+        this.startsAt = this.prevPath.getTotalLength();
+        this.endsAt = this.transPath.getTotalLength();
     }
-    _playTransition(duration, delay) {
+
+    setPrevNextData(prev, next) {
+        this.setState({
+            prevData : prev,
+            nextData : next
+        })
+
+        this.playTransition(1000, 1000)
+    }
+
+    playTransition(duration, delay) {
+        let g = d3.select(this.transPath)
+        g.call(this._playTransition, duration, delay)
+        // this._playTransition(duration, delay)
+    }
+
+    _playTransition(g, duration, delay) {
         let endsAt = this.endsAt
         let startsAt = this.startsAt
-        console.log(endsAt, startsAt)
         // this.transPath.interrupt()
-
-        d3.select(this.transPath)
+        g
             .attr("stroke-dasharray", endsAt + " " + (endsAt - startsAt))
             .attr("stroke-dashoffset", (endsAt - startsAt))
             .transition()
             .duration(duration)
             .attr("stroke-dashoffset", 0)
+
     }
 
     render() {
@@ -67,7 +89,7 @@ export default class TransitionLinePath extends React.Component {
                 <LinePath 
                     className="hellWorld"
                     innerRef={(node) => this.prevPath = node}
-                    data = {props.prevData}
+                    data = {this.state.prevData}
                     xScale={props.xScale}
                     yScale={props.yScale}
                     x={x}
@@ -76,7 +98,7 @@ export default class TransitionLinePath extends React.Component {
                 />
                 <LinePath 
                     innerRef={(node) => this.transPath = node}
-                    data = {props.nextData}
+                    data = {this.state.nextData}
                     xScale={props.xScale}
                     yScale={props.yScale}
                     x={x}
