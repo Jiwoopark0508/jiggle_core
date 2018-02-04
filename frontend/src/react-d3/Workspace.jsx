@@ -1,9 +1,11 @@
 import React from "react";
-import BarChartFactory from "./barchart/BarChartFactory";
-import { ParseData } from "./common/utils";
-import LineChartFactory from "./linechart/LineChartFactory";
-import * as d3 from 'd3'
-
+import BarFactory from "./factory/bar-factory";
+import GroupedBarFactory from "./factory/grouped-bar-factory";
+import StackedBarFactory from "./factory/stacked-bar-factory";
+import { parseBar } from "./parser/bar-parser";
+import { parseGroupedBar } from "./parser/grouped-bar-parser";
+import { parseStackedBar } from "./parser/stacked-bar-parser";
+import LineChartFactory from './linechart/LineChartFactory'
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -12,22 +14,38 @@ export default class Workspace extends React.Component {
 
   componentDidMount() {
     const props = this.props;
-    // props.charts.forEach(chart => ParseData(chart));
-    // const factory = new BarChartFactory();
+
+    // // bar
+    // props.charts.forEach(chart => parseBar(chart));
     const factory = new LineChartFactory();
-    // console.log(d3.select(this.node).trasition())
-    // const rendererStatic = factory.renderChartStatic();
-    // rendererStatic(this.node, props.chart);
-    const renderer = factory.renderChartTransition();
-    renderer(this.node, [...props.chart]);
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[1]);
+    const renderTransition = factory.renderChartTransition();
+    renderTransition(this.node, [...props.charts]);
+    // const record = factory.recordTransition(this.node, [...props.charts]);
+
+    // grouped bar
+    // props.charts.forEach(chart => parseGroupedBar(chart));
+    // const factory = new GroupedBarFactory();
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[0]);
+
+    // stacked bar
+    // props.charts.forEach(chart => parseStackedBar(chart));
+    // const factory = new StackedBarFactory();
+    // const renderer = factory.renderChart();
+    // renderer(this.node, props.charts[0]);
   }
 
   render() {
     return (
       <div>
-          <svg width={this.props.width}
-              height={this.props.height}
-              ref={node => (this.node = node)} />
-      </div>)
+        <svg
+          width={this.props.width}
+          height={this.props.height}
+          ref={node => (this.node = node)}
+        />
+      </div>
+    );
   }
 }
