@@ -1,6 +1,4 @@
 import * as d3 from "d3";
-import makeGIF from "../../gif/makeGIF";
-import recordTransition from "../../gif/d3-record";
 
 export default class BarFactory {
   renderChart() {
@@ -11,7 +9,7 @@ export default class BarFactory {
   }
 
   renderTransition() {
-    const renderer = (svgElement, charts, shouldMakeGIF = false) => {
+    const renderer = (svgElement, charts) => {
       let g = this._drawChart(svgElement, charts[0]);
       charts.forEach((cht, i) => {
         if (i !== 0) {
@@ -22,6 +20,129 @@ export default class BarFactory {
       });
     };
     return renderer;
+  }
+
+  recordTransition(svgElement, charts) {
+    if (charts.length === 0) return;
+    let gif = new window.GIF({
+      workers: 1,
+      quality: 10,
+      repeat: 0
+    });
+    const gifToPresent = d3.select("#gif");
+    gif.on("progress", function(p) {
+      gifToPresent.text(d3.format("%")(p) + " rendered");
+    });
+    gif.on("finished", function(blob) {
+      gifToPresent
+        .text("")
+        .append("img")
+        .attr("src", URL.createObjectURL(blob));
+    });
+    let chain = Promise.resolve();
+    charts.forEach((cht, i) => {
+      if (i < 1) return;
+      let cht0 = charts[i - 1];
+      let cht1 = charts[i];
+      chain = chain.then(() =>
+        this._recordSingleTransition(gif, svgElement, cht0, cht1)
+      );
+    });
+    chain.then(() => gif.render());
+  }
+
+  _recordSingleTransition(gif, svgElement, cht0, cht1) {
+    return new Promise((resolve0, reject) => {
+      let g = this._drawChart(svgElement, cht0);
+      cht1.accumedDelay = cht1.delay;
+      g.call(this._applyTransition, this, cht1);
+
+      const allElements = g.selectAll("*");
+      const tweeners = this._getAllTweeners(g);
+      const totalDuration = cht1.accumedDelay + cht1.duration;
+      allElements.interrupt();
+      console.log(totalDuration);
+      const frames = 20 * totalDuration / 1000;
+
+      let promises = [];
+      d3.range(frames).forEach(function(f, i) {
+        // if (i === 0) return; // skip white background
+        promises.push(
+          new Promise(function(resolve1, reject) {
+            addFrame((f + 1) / frames * totalDuration, resolve1);
+          })
+        );
+      });
+
+      Promise.all(promises).then(function(results) {
+        d3
+          .select(svgElement)
+          .selectAll("*")
+          .remove();
+
+        resolve0();
+      });
+
+      function jumpToTime(t) {
+        tweeners.forEach(function(tween) {
+          // console.log(tween);
+          tween(t);
+        });
+      }
+
+      function addFrame(t, resolve1) {
+        jumpToTime(t);
+        let img = new Image(),
+          serialized = new XMLSerializer().serializeToString(svgElement),
+          blob = new Blob([serialized], { type: "image/svg+xml" }),
+          url = URL.createObjectURL(blob);
+
+        img.onload = function() {
+          // console.log(chart.duration / frames);
+          gif.addFrame(img, {
+            delay: totalDuration / frames,
+            copy: true
+          });
+          resolve1();
+        };
+        img.src = url;
+      }
+    });
+  }
+
+  _getAllTweeners(g) {
+    let tweeners = [];
+    const allElements = g.selectAll("*");
+    allElements.each(function(d, i) {
+      const node = this;
+      const pending = d3
+        .entries(this.__transition)
+        .filter(function(tr) {
+          return tr.key !== "active" && tr.key !== "count";
+        })
+        .map(function(tr) {
+          return tr.value;
+        });
+      if (pending.length === 0) return;
+      pending.forEach(function(tran, i) {
+        if (tran.tween.length === 0) return;
+        var ease = tran.ease || (d => d);
+        tran.tween.forEach(function(tween) {
+          const tweener = (tween.value.call(node, d, i) || (() => {})).bind(
+            node
+          );
+          (function(idx) {
+            tweeners.push(function(t) {
+              if (t >= tran.delay && t < tran.delay + tran.duration) {
+                const relativeTime = (t - tran.delay) / tran.duration;
+                tweener(ease(relativeTime));
+              }
+            });
+          })(i);
+        });
+      });
+    });
+    return tweeners;
   }
 
   _drawChart(svgElement, chart) {
@@ -41,7 +162,7 @@ export default class BarFactory {
       .data(chart.data, chart.dataKey)
       .enter()
       .append("rect")
-      .attr("fill", "steelblue")
+      .attr("fill", chart.color)
       .call(this._applyFocus, chart)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
@@ -64,15 +185,13 @@ export default class BarFactory {
       .call(d3.axisBottom(chart.xScale));
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
-
     rect
       .exit() // Exit selection
       .transition()
-      .duration(chart.duration / 2)
+      .duration(chart.duration)
       .delay(chart.accumedDelay)
       .style("opacity", 0)
       .remove();
-
     rect
       .enter() // Enter selection
       .append("rect")
@@ -104,16 +223,5 @@ export default class BarFactory {
             chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
         );
     }
-  }
-
-  // deprecated
-  _checkDiffsForTransition(origChart, nextChart) {
-    const diffs = {};
-    for (let key in nextChart) {
-      if (origChart[key] !== nextChart[key]) {
-        diffs[key] = nextChart[key];
-      }
-    }
-    return diffs;
   }
 }

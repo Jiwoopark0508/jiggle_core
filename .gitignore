@@ -29,3 +29,4 @@ node_modules/
 frontend/public/main.js
 frontend/public/worker.js
 package-lock.json
+frontend/src/gif/

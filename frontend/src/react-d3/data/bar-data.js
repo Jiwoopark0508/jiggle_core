@@ -16,6 +16,26 @@ B,.01492
 C,.02782
 D,.03386`;
 
+// const csv0 = `letter,frequency
+// A,.06167`;
+
+// const csv1 = `letter,frequency
+// A,.08167
+// B,.01492`;
+
+// const csv2 = `letter,frequency
+// A,.08167`;
+
+// const csv3 = `letter,frequency
+// A,.08167
+// B,.02782
+// C,.03386`;
+
+// const csv2 = `letter,frequency
+// A,.08167
+// B,.01492
+// C,.02782`;
+
 const csv3 = `letter,frequency
 A,.08167
 B,.01492
@@ -80,7 +100,7 @@ export const chart2 = {
   margins,
   focusType: "startAndEnd",
   duration: 2000,
-  delay: 0,
+  delay: 2000,
   accumedDelay,
   backgroundColor,
   color: "steelblue",
