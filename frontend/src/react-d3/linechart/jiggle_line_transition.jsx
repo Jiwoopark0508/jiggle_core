@@ -5,6 +5,7 @@ import { AxisLeft, AxisBottom } from '@vx/axis'
 import TransitionLinePath from './transition_line_path'
 import _ from 'lodash'
 
+
 import * as d3 from 'd3'
 
 // Variables which change with props later
@@ -20,9 +21,11 @@ const margin = {
     right : 80
 }
 
+const x = d => new Date(d.date)
+const y = d => d.close
+
 const xMax = width - margin.left - margin.right
 const yMax = height - margin.top - margin.bottom
-
 
 export default class JiggleLineTransition extends React.Component {
     constructor(props) {
@@ -37,10 +40,6 @@ export default class JiggleLineTransition extends React.Component {
     }
 
     setFromToChart(fromChart, toChart) {
-        /**
-         * setState fromChart toChart
-         * set fromChart and toChart then trigger animation
-         */
         this.fromChart = fromChart
         this.toChart = toChart
         let that = this;
@@ -48,45 +47,36 @@ export default class JiggleLineTransition extends React.Component {
     }
     
     playAllTransition(duration, delay) {
-        // Go through All Transition LineChart
         let fromChart, toChart;
+        let queue = []
+        let accumedDelay = 0;
         process.nextTick(() => {
-            for(let i = 0; i < this.chartList.length - 1; i++ ) {       
-                /**
-                 * 여기에 이렇게 하면 안될까?? 
-                 * setTimeout(function(x, y) {
-                 *  return function() {
-                 *      this.setFromChartToChart(fromChart, toChart)
-                 *      this.playThisTransition()
-                 *  }
-                 * }(this.chartList[i]), this.chartList[i].duration)
-                 */
-                // this.transPathLines.forEach(function(el) {
-                //     el.playTransition(1000 * (i + 1), 3000 * (i + 1))
-                // })     
+            for(let i = 0; i < this.chartList.length - 1; i++ ) {          
                 fromChart = this.chartList[i]
                 toChart = this.chartList[i + 1]
-
-                this.setFromToChart(fromChart, toChart)
+                queue.push({
+                    from : fromChart.data,
+                    to : toChart.data,
+                    delay : toChart.delay,
+                    duration : toChart.duration
+                })
             }  
+            queue.forEach((d, i) => {
+                accumedDelay += d.delay
+                setTimeout(() => {
+                    this.transPathLines.forEach((l, i) => {
+                            l.setPrevNextData(d.from[i],
+                            d.to[i],
+                            d.duration, 
+                            d.delay)
+                        })
+                    }, accumedDelay )
 
-            setTimeout(() => {
-                this.transPathLines[1].setPrevNextData(fromChart.data[1].slice(0,4), toChart.data[1].slice(0, 100))
-                this.transPathLines[0].setPrevNextData(fromChart.data[0].slice(0,4), toChart.data[0].slice(0, 100))
-            }, 1000)
-            setTimeout(() => {
-                this.transPathLines[1].setPrevNextData(fromChart.data[1].slice(0, 100), toChart.data[1].slice(0,300))
-            }, 5000)
-            setTimeout(() => {
-                this.transPathLines[1].setPrevNextData(fromChart.data[1].slice(0, 300), toChart.data[1])
-            }, 9000)
+                accumedDelay += d.duration;
+            })
+
         })
     }
-
-    playThisTransition() {
-
-    }
-    
 
     renderTransition(config) {
         
@@ -116,8 +106,10 @@ export default class JiggleLineTransition extends React.Component {
                 .range([yMax, 0])
                 .domain([0, d3.max(data, y)])
 
+        // Temporal scale and accessor ends
         return (
-            <g>
+            <g
+                ref={(node) => this.domNode = node}>
                 <rect x={0} y = {0} 
                     width={width}
                     height={height}
@@ -131,6 +123,8 @@ export default class JiggleLineTransition extends React.Component {
                                 ref={(node) => {this.transPathLines.push(node)}}
                                 prevData={d[0]} // initial Data
                                 nextData={d[1]}
+                                x={x}
+                                y={y}
                                 // duration={config.duration}
                                 // delay={config.delay}
                                 xScale={xScale}
