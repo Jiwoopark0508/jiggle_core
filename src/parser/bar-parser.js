@@ -38,16 +38,23 @@ export function parseBar(chart) {
       if (value < min) chart.indexToFocus[0] = +i;
       if (value > max) chart.indexToFocus[1] = +i;
     });
+  } else if (chart.focusType === "end") {
+    chart.indexToFocus = [chart.data.length - 1];
   }
 
-  chart.radius = 6;
   chart.width_g = chart.width_svg - chart.margins.left - chart.margins.right;
   chart.height_g = chart.height_svg - chart.margins.top - chart.margins.bottom;
+
+  chart.easing = d3[chart.easing];
+  chart.delayInOrder = (d, i) => {
+    return i * 200 + chart.accumedDelay;
+  };
+
   chart.xScale = d3
     .scaleBand()
     .domain(chart.data.map(chart.xAccessor))
     .rangeRound([0, chart.width_g])
-    .padding(0.5);
+    .padding(chart.paddingBtwRects);
   chart.yScale = d3
     .scaleLinear()
     .domain([0, d3.max(chart.data, chart.yAccessor)])
@@ -63,12 +70,5 @@ export function parseBar(chart) {
       .call(d3.axisBottom(chart.xScale))
       .selectAll(".domain,line")
       .style("display", "none");
-    // g.select(".domain").remove();
-    // g
-    //   .transition()
-    //   .duration(chart.duration)
-    //   .delay(chart.accumedDelay);
-
-    // console.log(g.select(".domain"));
   };
 }

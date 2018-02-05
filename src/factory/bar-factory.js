@@ -3,14 +3,14 @@ import * as d3 from "d3";
 export default class BarFactory {
   renderChart() {
     const renderer = (svgElement, chart) => {
-      this._drawChart(svgElement, chart);
+      this._drawChart(this, svgElement, chart);
     };
     return renderer;
   }
 
   renderTransition() {
     const renderer = (svgElement, charts) => {
-      let g = this._drawChart(svgElement, charts[0]);
+      let g = this._drawChart(this, svgElement, charts[0]);
       charts.forEach((cht, i) => {
         if (i !== 0) {
           cht.accumedDelay =
@@ -53,7 +53,7 @@ export default class BarFactory {
 
   _recordSingleTransition(gif, svgElement, cht0, cht1) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawChart(svgElement, cht0);
+      let g = this._drawChart(this, svgElement, cht0);
       cht1.accumedDelay = cht1.delay;
       g.call(this._applyTransition, this, cht1);
 
@@ -61,7 +61,7 @@ export default class BarFactory {
       const tweeners = this._getAllTweeners(g);
       const totalDuration = cht1.accumedDelay + cht1.duration;
       allElements.interrupt();
-      const frames = 20 * totalDuration / 1000;
+      const frames = 30 * totalDuration / 1000;
 
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
@@ -139,7 +139,7 @@ export default class BarFactory {
     return tweeners;
   }
 
-  _drawChart(svgElement, chart) {
+  _drawChart(that, svgElement, chart) {
     let svg = d3
       .select(svgElement)
       .attr("width", chart.width_svg)
@@ -158,7 +158,6 @@ export default class BarFactory {
       .append("rect")
       .attr("fill", chart.color)
       .call(this._applyFocus, chart)
-      .attr("rx", chart.radius)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
@@ -168,7 +167,6 @@ export default class BarFactory {
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.height_g})`)
       .call(chart.customXAxis);
-    // .call(d3.axisBottom(chart.xScale));
     return g;
   }
 
@@ -179,7 +177,6 @@ export default class BarFactory {
       .duration(chart.duration)
       .delay(chart.accumedDelay)
       .call(chart.customXAxis);
-    // .call(d3.axisBottom(chart.xScale));
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
     rect
@@ -196,11 +193,11 @@ export default class BarFactory {
       .attr("y", d => chart.height_g)
       .merge(rect) // Enter + Update selection
       .transition()
+      .ease(chart.easing)
       .duration(chart.duration)
-      .delay(chart.accumedDelay)
+      .delay(chart[chart.delayType])
       .attr("fill", chart.color)
       .call(that._applyFocus, chart) // apply focus
-      .attr("rx", chart.radius)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
@@ -208,7 +205,7 @@ export default class BarFactory {
   }
 
   _applyFocus(rect, chart) {
-    if (chart.focusType === "startAndEnd" || chart.focusType === "minAndMax") {
+    if (chart.focusType !== "") {
       rect
         .attr(
           "fill",
@@ -220,6 +217,59 @@ export default class BarFactory {
           (d, i) =>
             chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
         );
+    }
+  }
+
+  _drawPathRect(g, chart, isHide) {
+    g
+      .attr("d", (d, i) => {
+        return rounded_rect(
+          chart.xScale(d[chart.xLabel]),
+          chart.yScale(d[chart.yLabel]),
+          chart.xScale.bandwidth(),
+          chart.height_g - chart.yScale(d[chart.yLabel]),
+          chart.radius,
+          !isHide,
+          !isHide,
+          false,
+          false
+        );
+      })
+      .style("fill", chart.color);
+
+    function rounded_rect(x, y, w, h, r, tl, tr, bl, br) {
+      var retval;
+      retval = "M" + (x + r) + "," + y;
+      retval += "h" + (w - 2 * r);
+      if (tr) {
+        retval += "a" + r + "," + r + " 0 0 1 " + r + "," + r;
+      } else {
+        retval += "h" + r;
+        retval += "v" + r;
+      }
+      retval += "v" + (h - 2 * r);
+      if (br) {
+        retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + r;
+      } else {
+        retval += "v" + r;
+        retval += "h" + -r;
+      }
+      retval += "h" + (2 * r - w);
+      if (bl) {
+        retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + -r;
+      } else {
+        retval += "h" + -r;
+        retval += "v" + -r;
+      }
+      retval += "v" + (2 * r - h);
+      if (tl) {
+        retval += "a" + r + "," + r + " 0 0 1 " + r + "," + -r;
+      } else {
+        retval += "v" + -r;
+        retval += "h" + r;
+      }
+      retval += "z";
+      return retval;
     }
   }
 }
