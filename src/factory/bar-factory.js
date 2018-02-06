@@ -193,11 +193,9 @@ export default class BarFactory {
       .attr("y", d => chart.height_g)
       .merge(rect) // Enter + Update selection
       .transition()
-      .ease(chart.easing)
+      // .ease(chart.easing)
       .duration(chart.duration)
-      .delay((d, i) => {
-        return i * 200 + chart.accumedDelay;
-      })
+      .delay(chart[chart.delayType])
       .attr("fill", chart.color)
       .call(that._applyFocus, chart) // apply focus
       .attr("x", d => chart.xScale(d[chart.xLabel]))
