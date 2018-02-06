@@ -193,7 +193,7 @@ export default class BarFactory {
       .attr("y", d => chart.height_g)
       .merge(rect) // Enter + Update selection
       .transition()
-      // .ease(chart.easing)
+      .ease(d3.easeBackOut)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
       .attr("fill", chart.color)
