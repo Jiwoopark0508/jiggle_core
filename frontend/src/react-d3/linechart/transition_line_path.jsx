@@ -12,79 +12,73 @@ import * as d3 from 'd3'
 export default class TransitionLinePath extends React.Component {
     constructor(props){
         super(props)
-        this.prevPath = null
+        this.pathList = []
+        this.lengthList = []
         this.transPath = null
-        this.startsAt = 0
-        this.endsAt = 0
         this._playTransition = this._playTransition.bind(this)
         this.playTransition = this.playTransition.bind(this)
-        this.state = {
-            prevData : this.props.prevData,
-            nextData : this.props.nextData
-        }
+        console.log(this.props.chartList)
+        this.durationList = this.props.chartList.map((c) => {return c.duration})
+        this.delayList = this.props.chartList.map((c) => {return c.delay})
     }
     
     componentDidMount() {
-        this.startsAt = this.prevPath.getTotalLength();
-        this.endsAt = this.transPath.getTotalLength();
+        this.pathList.forEach((p, i) => {
+            this.lengthList.push(p.getTotalLength())
+        })
+        this.totalLength = this.lengthList[this.lengthList.length - 1]
+        
+        d3.select(this.transPath)
+            .attr("stroke-dasharray", this.totalLength)
+    }
+
+    playTransition() {
+        let g = d3.select(this.transPath)
+        this._playTransition(g, this, 1)
+    }
+
+    _playTransition(g, that, idx) {
+        let startsAt = this.lengthList[idx - 1]
+        let endsAt = this.lengthList[idx]
+        if (!endsAt) return;
+        g
+            .attr("stroke-dashoffset", this.totalLength - startsAt)
+            .transition()
+            .delay(that.delayList[idx])
+            .duration(that.durationList[idx])
+            .attr("stroke-dashoffset", this.totalLength - endsAt)
+            .on("end", function() {
+                g.call(that._playTransition, that, idx + 1)
+            })
     }
     
-    componentDidUpdate() {
-        this.startsAt = this.prevPath.getTotalLength();
-        this.endsAt = this.transPath.getTotalLength();
-    }
-
-    setPrevNextData(prev, next, duration, delay) {
-        this.setState({
-            prevData : prev,
-            nextData : next
-        })
-        this.playTransition(duration, delay)
-    }
-
-    playTransition(duration, delay) {
-        let g = d3.select(this.transPath)
-        g.call(this._playTransition, duration, delay)
-    }
-
-    _playTransition(g, duration, delay) {
-
-        let endsAt = this.endsAt
-        let startsAt = this.startsAt
-        g
-            .attr("stroke-dasharray", endsAt + " " + (endsAt - startsAt))
-            .attr("stroke-dashoffset", (endsAt - startsAt))
-            .transition()
-            .duration(duration)
-            .delay(delay)
-            .attr("stroke-dashoffset", 0)
-
-    }
-
     render() {
         const props = this.props;
-
         return (
             <Group>
                 <LinePath 
-                    className="hellWorld"
-                    innerRef={(node) => this.prevPath = node}
-                    data = {this.state.prevData}
-                    xScale={props.xScale}
-                    yScale={props.yScale}
-                    x={props.x}
-                    y={props.y}
-                    style={{"display" : "none"}}
-                />
-                <LinePath 
                     innerRef={(node) => this.transPath = node}
-                    data = {this.state.nextData}
+                    data = {this.props.dataList[this.props.dataList.length - 1]}
                     xScale={props.xScale}
                     yScale={props.yScale}
                     x={props.x}
                     y={props.y}
                 />
+                {this.props.dataList.map((d, i) => {
+                    return (
+                        <LinePath
+                            key={i}
+                            innerRef={(node) => this.pathList.push(node)}
+                            data = {d}
+                            xScale={props.xScale}
+                            yScale={props.yScale}
+                            x={props.x}
+                            y={props.y}  
+                            style={{display: "none"}}
+                        />
+                    )
+                })}
             </Group> 
         )  
-    }
+    } 
 }

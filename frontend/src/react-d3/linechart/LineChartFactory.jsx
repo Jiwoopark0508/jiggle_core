@@ -17,13 +17,22 @@ export default class LineChartFactory {
   
   renderChartTransition() {
     const renderer = (svgElement, chartConfigList) => {
-      this._drawTransitionChart(svgElement, chartConfigList[0], chartConfigList[chartConfigList.length - 1])
+      this._drawTransitionChart(svgElement, chartConfigList)
 
-      let chartDelay = 0
       this.lineInstance.chartList = chartConfigList
-      this.lineInstance.playAllTransition()
+      this.lineInstance.playWholeLineTransition(chartConfigList)
     }
     return renderer;
+  }
+  
+  _drawTransitionChart(svgElement, chartConfigList) {
+    // this function draw transition between two chart configs
+    let line_transition_instance = new JiggleLineTransition();
+    this.lineInstance = line_transition_instance;
+    let jiggle_line_transition = line_transition_instance.renderTransition(chartConfigList)
+    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
+
+    return jiggle_line_transition
   }
   
   recordTransition(svgElement, charts) {
@@ -33,7 +42,6 @@ export default class LineChartFactory {
       quality: 10,
       repeat: 0
     })
-    console.log(charts)
     const gifToPresent = d3.select("#gif");
     gif.on("progress", function(p) {
       gifToPresent.text(d3.format("%")(p) + " rendered")
@@ -155,18 +163,6 @@ export default class LineChartFactory {
     let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
 
     ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
-  }
-
-  _drawTransitionChart(svgElement, fromChart, toChart) {
-    // this function draw transition between two chart configs
-    let line_transition_instance = new JiggleLineTransition();
-    line_transition_instance.setFromToChart(fromChart, toChart)
-    this.lineInstance = line_transition_instance;
-
-    let jiggle_line_transition = line_transition_instance.renderTransition(toChart)
-    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
-
-    return jiggle_line_transition
   }
 
 }
