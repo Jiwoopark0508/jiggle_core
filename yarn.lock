@@ -18,6 +18,14 @@
   dependencies:
     d3-shape "^1.0.6"
 
+"@vx/glyph@^0.0.153":
+  version "0.0.153"
+  resolved "https://registry.yarnpkg.com/@vx/glyph/-/glyph-0.0.153.tgz#efb743ad4800a946892e9dba92636995165fd7b9"
+  dependencies:
+    "@vx/group" "0.0.153"
+    classnames "^2.2.5"
+    d3-shape "^1.2.0"
+
 "@vx/group@0.0.153", "@vx/group@^0.0.153":
   version "0.0.153"
   resolved "https://registry.yarnpkg.com/@vx/group/-/group-0.0.153.tgz#4ec2ce37cf31b0f0b3d46dd8ee6b0eaf7e763bc6"

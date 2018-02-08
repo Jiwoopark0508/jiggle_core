@@ -2,23 +2,22 @@ import React, { Component } from "react";
 import "./App.css";
 
 import Workspace from "./Workspace";
-import { chart0, chart1, chart2, chart3 } from "./data/bar-data";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
 import { appleStock } from "@vx/mock-data";
 import { dummy } from './data/line_dummy'
 
-const data1 = appleStock;
-const data2 = appleStock.map(d => {
-  return { close: d.close * 2, date: d.date };
+const data1 = dummy;
+const data2 = dummy.map(d => {
+  return { x: d.x, y: d.y * 2 };
 });
-const data3 = appleStock.map(d => {
-  return { close: d.close * 3, date: d.date };
+const data3 = dummy.map(d => {
+  return { x: d.x, y: d.y * 3 };
 });
 
 const chart1 = {
-  data : [data1.slice(0, data1.length / 3),
-          data2.slice(0, data2.length / 3),],
+  data : [data1.slice(0, 1),
+          data2.slice(0, 1),],
   duration : 750,
   delay : 3000
 }
@@ -26,10 +25,10 @@ const chart1 = {
 const chart2 = {
   data : [
           data1.slice(0, data1.length * 1 / 3),
-          data2.slice(0, data1.length * 1 / 4),
+          data2.slice(0, data1.length * 1 / 3),
         ],
-  duration : 2000,
-  delay : 1000
+  duration : 500,
+  delay : 1500
 }
 
 const chart3 = {
@@ -37,7 +36,7 @@ const chart3 = {
           data1.slice(0, data1.length),
           data2.slice(0, data1.length),
         ],
-  duration : 3000,
+  duration : 1000,
   delay : 1000
 }
 

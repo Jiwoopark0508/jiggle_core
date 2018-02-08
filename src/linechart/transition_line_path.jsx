@@ -6,6 +6,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
+import { GlyphDot } from '@vx/glyph';
 import { AxisLeft, AxisBottom } from '@vx/axis'
 import * as d3 from 'd3'
 
@@ -14,10 +15,10 @@ export default class TransitionLinePath extends React.Component {
         super(props)
         this.pathList = []
         this.lengthList = []
+        this.glyphList = []
         this.transPath = null
         this._playTransition = this._playTransition.bind(this)
         this.playTransition = this.playTransition.bind(this)
-        console.log(this.props.chartList)
         this.durationList = this.props.chartList.map((c) => {return c.duration})
         this.delayList = this.props.chartList.map((c) => {return c.delay})
     }
@@ -27,17 +28,18 @@ export default class TransitionLinePath extends React.Component {
             this.lengthList.push(p.getTotalLength())
         })
         this.totalLength = this.lengthList[this.lengthList.length - 1]
-        
+
         d3.select(this.transPath)
             .attr("stroke-dasharray", this.totalLength)
     }
 
-    playTransition() {
+    playTransition(idx, partial) {
+        if (!idx) idx = 1;
         let g = d3.select(this.transPath)
-        this._playTransition(g, this, 1)
+        this._playTransition(g, this, idx, partial)
     }
-
-    _playTransition(g, that, idx) {
+    
+    _playTransition(g, that, idx, partial) {
         let startsAt = this.lengthList[idx - 1]
         let endsAt = this.lengthList[idx]
         if (!endsAt) return;
@@ -48,8 +50,11 @@ export default class TransitionLinePath extends React.Component {
             .duration(that.durationList[idx])
             .attr("stroke-dashoffset", this.totalLength - endsAt)
             .on("end", function() {
-                g.call(that._playTransition, that, idx + 1)
+                if (!partial) {
+                    g.call(that._playTransition, that, idx + 1)
+                }
             })
+        
     }
     
     render() {
@@ -63,6 +68,7 @@ export default class TransitionLinePath extends React.Component {
                     yScale={props.yScale}
                     x={props.x}
                     y={props.y}
+                    stroke={props.stroke}
                 />
                 {this.props.dataList.map((d, i) => {
                     return (

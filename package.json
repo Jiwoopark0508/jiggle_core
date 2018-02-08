@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@vx/axis": "^0.0.153",
+    "@vx/glyph": "^0.0.153",
     "@vx/group": "^0.0.153",
     "@vx/mock-data": "^0.0.153",
     "@vx/shape": "^0.0.153",

@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import * as d3 from "d3";
-import JiggleLineStatic from './jiggle_line_static'
-import JiggleLineTransition from './jiggle_line_transition';
+import JiggleLineStatic from '../linechart/jiggle_line_static'
+import JiggleLineTransition from '../linechart/jiggle_line_transition';
+import _ from "lodash"
 
 export default class LineChartFactory {
   constructor() {
@@ -20,7 +21,7 @@ export default class LineChartFactory {
       this._drawTransitionChart(svgElement, chartConfigList)
 
       this.lineInstance.chartList = chartConfigList
-      this.lineInstance.playWholeLineTransition(chartConfigList)
+      this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
     return renderer;
   }
@@ -29,7 +30,7 @@ export default class LineChartFactory {
     // this function draw transition between two chart configs
     let line_transition_instance = new JiggleLineTransition();
     this.lineInstance = line_transition_instance;
-    let jiggle_line_transition = line_transition_instance.renderTransition(chartConfigList)
+    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
 
     return jiggle_line_transition
@@ -56,71 +57,77 @@ export default class LineChartFactory {
     let chain = Promise.resolve()
     charts.forEach((cht, i) => {
       if (i < 1) return;
-      let cht0 = charts[i - 1]
-      let cht1 = charts[i]
       chain = chain.then(() => 
-        this._recordSingleTransition(gif, svgElement, cht0, cht1)
+        this._recordSingleTransition(gif, svgElement, charts, i)
       )
     })
-    // chain.then(() => gif.render())
+    chain.then(() => gif.render())
   }
   
-  _recordSingleTransition(gif, svgElement, cht0, cht1) {
+  _recordSingleTransition(gif, svgElement, chtList, idx) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, cht0, cht1)
-      cht1.accumedDelay = cht1.delay;
+      let g = this._drawTransitionChart(svgElement, chtList)
       let component = g._self
       g = d3.select(g._self.domNode)
-      g.call(this._applyTransition, cht0, cht1, component)
 
+      g.call(this._applyTransition, component, idx, true)
+      
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
-      const totalDuration = cht1.accumedDelay + cht1.duration;
+      
+      let totalDuration = 0
+      for(var i = 1; i < chtList.length; i++) {
+        let c = chtList[i]
+        totalDuration += c.duration + c.delay
+      }
+
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
 
-    //   let promises = [];
-    //   d3.range(frames).forEach(function(f, i) {
-    //     promises.push(
-    //       new Promise(function(resolve1, reject) {
-    //         addFrame((f + 1) / frames * totalDuration, resolve1);
-    //     }))
-    //   })
-    //   Promise.all(promises).then(function(results) {
-    //     d3
-    //       .select(svgElement)
-    //       .selectAll("*")
-    //       .remove();
-    //     resolve0();
-    //   })
-    //   function jumpToTime(t) {
-    //     tweeners.forEach(function(tween) {
-    //       tween(t);
-    //     })
-    //   }
+      // console.log(allElements)
+      console.log(tweeners)
+      // console.log(frames)
 
-    //   function addFrame(t, resolve1) {
-    //     jumpToTime(t);
-    //     let img = new Image(),
-    //       serialized = new XMLSerializer().serializeToString(svgElement),
-    //       blob = new Blob([serialized], {type: "image/svg+xml"}),
-    //       url = URL.createObjectURL(blob);
-    //     img.onload = function() {
-    //       gif.addFrame(img, {
-    //         delay : totalDuration / frames,
-    //         copy : true
-    //       })
-    //       resolve1()
-    //     }
-    //     img.src = url
-    //   }
+      let promises = [];
+      d3.range(frames).forEach(function(f, i) {
+        promises.push(
+          new Promise(function(resolve1, reject) {
+            addFrame((f + 1) / frames * totalDuration, resolve1);
+        }))
+      })
+      Promise.all(promises).then(function(results) {
+        d3
+          .select(svgElement)
+          .selectAll("*")
+
+        resolve0();
+      })
+      function jumpToTime(t) {
+        tweeners.forEach(function(tween) {
+          tween(t);
+        })
+      }
+
+      function addFrame(t, resolve1) {
+        jumpToTime(t);
+        let img = new Image(),
+          serialized = new XMLSerializer().serializeToString(svgElement),
+          blob = new Blob([serialized], {type: "image/svg+xml"}),
+          url = URL.createObjectURL(blob);
+        img.onload = function() {
+          gif.addFrame(img, {
+            delay : totalDuration / frames,
+            copy : true
+          })
+          resolve1()
+        }
+        img.src = url
+      }
     })
   }
 
-  _applyTransition(g, cht0, cht1, component) {
-    component.transPathLines.forEach((l, i) => {
-      l.setPrevNextData(cht0.data[i], cht1.data[i], cht1.duration, cht1.delay)
-    })
+  _applyTransition(g, component, idx, record) {
+    component.playWholeLineTransition(idx, true, record)
   }
 
   _getAllTweeners(g) {

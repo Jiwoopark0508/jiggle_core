@@ -8,24 +8,33 @@ import _ from 'lodash'
 
 import * as d3 from 'd3'
 
-export default class JiggleLineTransition extends React.Component {
+export default class JiggleLineTransition  {
     constructor(props) {
-        super(props)
         this.transition = ""
         this.node = null
         this.transPathLines = []
         this.dataSeries = null
     }
 
-    playWholeLineTransition(cht) {
-        process.nextTick(() => {
+    playWholeLineTransition(idx, partial, record) {
+        console.log(idx, partial)
+        console.log(this.transPathLines)
+        if (record) {
             this.transPathLines.forEach((l, i) => {
-                l.playTransition()
+                l.playTransition(idx, partial)
             })
-        },)
+        }
+        else {
+            process.nextTick(() => {
+                this.transPathLines.forEach((l, i) => {
+                    l.playTransition(idx, partial)
+                })
+            })
+        }
+
     }
 
-    renderTransition(chartList) {
+    renderTransitionLine(chartList) {
         /**
          * Data preprocessing
          */
@@ -45,7 +54,7 @@ export default class JiggleLineTransition extends React.Component {
         datas = _.zip.apply(_, datas)
 
         /**
-         * Temporal scale and accessor
+         * Temporal and manual scale and accessor
          */
 
         // Variables which change with props later
@@ -65,9 +74,9 @@ export default class JiggleLineTransition extends React.Component {
         const yMax = height - margin.top - margin.bottom
 
 
-        const x = d => new Date(d.date)
-        const y = d => d.close
-        const xScale = d3.scaleTime()
+        const x = d => d.x
+        const y = d => d.y
+        const xScale = d3.scaleLinear()
                 .range([0, xMax])
                 .domain(d3.extent(data, x))
 
@@ -83,7 +92,7 @@ export default class JiggleLineTransition extends React.Component {
                 <rect x={0} y = {0} 
                     width={width}
                     height={height}
-                    fill="#3e3e3e"/>
+                    fill="#52B9EC"/>
                 
                 <Group top={margin.top} left={margin.left}>
                     {datas.map((d, i) => {
@@ -97,6 +106,7 @@ export default class JiggleLineTransition extends React.Component {
                                 y={y}
                                 xScale={xScale}
                                 yScale={yScale}
+                                stroke={"white"}
                             />
                             )
                         })
@@ -106,8 +116,8 @@ export default class JiggleLineTransition extends React.Component {
                         top={0}
                         left={0}
                         label={'세로축'}
-                        stroke={'yellow'}
-                        tickStroke='#f8f8f8'
+                        stroke={'white'}
+                        tickStroke='white'
                         numTicks={4}
                         labelProps = {{
                             textAnchor: 'middle',
@@ -126,11 +136,27 @@ export default class JiggleLineTransition extends React.Component {
                     />
             
                     <AxisBottom
-                    scale={xScale}
-                    top={yMax}
-                    label={'시간'}
-                    stroke={'#f8f8f8'}
-                    tickTextFill={'#f8f8f8'}
+                        scale={xScale}
+                        top={yMax}
+                        label={'시간'}
+                        stroke={'white'}
+                        tickTextFill={'white'}
+                        tickStroke='white'
+                        numTicks={4}
+                        labelProps = {{
+                            textAnchor: 'middle',
+                            fontFamily: 'Arial',
+                            fontSize: 10,
+                            fill: 'white',
+                        }}
+                        tickLabelProps = {(tickValue, index) => ({
+                            textAnchor: 'end',
+                            fontFamily: 'Arial',
+                            fontSize: 10,
+                            fill: 'white',
+                            dx: '-0.25em',
+                            dy: '-0.25em'
+                        })}
                     />
 
                 </Group>
