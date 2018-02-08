@@ -175,7 +175,7 @@ export default class BarFactory {
       .select(".x.axis")
       .transition()
       .duration(chart.duration)
-      .delay(chart.accumedDelay)
+      .delay(chart[chart.delayType])
       .call(chart.customXAxis);
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
@@ -193,7 +193,7 @@ export default class BarFactory {
       .attr("y", d => chart.height_g)
       .merge(rect) // Enter + Update selection
       .transition()
-      .ease(d3.easeBackOut)
+      .ease(chart.easing)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
       .attr("fill", chart.color)

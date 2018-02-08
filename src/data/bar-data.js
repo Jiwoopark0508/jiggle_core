@@ -13,23 +13,23 @@ const arr1 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
-  ["Q3", ".28"]
+  ["Q3", ".24"]
 ];
 
 const arr2 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
-  ["Q3", ".28"],
-  ["Q4", ".90"]
+  ["Q3", ".24"],
+  ["Q4", ".80"]
 ];
 
 const arr3 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
-  ["Q3", ".28"],
-  ["Q4", ".90"]
+  ["Q3", ".24"],
+  ["Q4", ".80"]
 ];
 
 const type = "bar";
@@ -38,12 +38,12 @@ const height_svg = 500;
 const margins = { top: 40, bottom: 40, left: 30, right: 30 };
 const focusType = "";
 const backgroundColor = "white";
-const color = "#512cdb";
-const colorToFocus = "#e5b443";
+const color = "#e5b443";
+const colorToFocus = "#512cdb";
 const opacity = 1;
-const opacityToHide = 0.15;
+const opacityToHide = 0.25;
 const duration = 0;
-const delay = 0;
+const delay = 1000;
 const accumedDelay = 0;
 const paddingBtwRects = 0.4;
 const easing = "easeCubic";
@@ -60,7 +60,7 @@ export const chart0 = {
 
   focusType,
   duration,
-  delay,
+  delay: 0,
   accumedDelay,
   easing,
   delayType,
@@ -82,8 +82,8 @@ export const chart1 = {
   margins,
 
   focusType,
-  duration: 1000,
-  delay: 0,
+  duration: 1500,
+  delay,
   accumedDelay,
   easing: "easeBackOut",
   delayType: "delayInOrder",
@@ -94,7 +94,7 @@ export const chart1 = {
   color,
   colorToFocus,
   opacity: 1,
-  opacityToHide: 0.15
+  opacityToHide
 };
 
 export const chart2 = {
@@ -105,11 +105,11 @@ export const chart2 = {
   margins,
 
   focusType: "end",
-  duration: 1000,
-  delay: 1500,
+  duration: 1500,
+  delay,
   accumedDelay,
   easing: "easeBackOut",
-  delayType,
+  delayType: "delayInOrder",
 
   backgroundColor,
   paddingBtwRects,
@@ -117,7 +117,7 @@ export const chart2 = {
   color,
   colorToFocus,
   opacity: 1,
-  opacityToHide: 0.15
+  opacityToHide
 };
 
 export const chart3 = {
@@ -128,8 +128,8 @@ export const chart3 = {
   margins,
 
   focusType: "end",
-  duration: 2000,
-  delay: 0,
+  duration: 1000,
+  delay,
   accumedDelay,
   easing: "easeBackOut",
   delayType,
@@ -140,7 +140,7 @@ export const chart3 = {
   color,
   colorToFocus,
   opacity: 1,
-  opacityToHide: 0.15
+  opacityToHide
 };
 
 // const csv0 = `letter,frequency
