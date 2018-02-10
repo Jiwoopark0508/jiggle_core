@@ -27,10 +27,10 @@ export default class TransitionLinePath extends React.Component {
         this.pathList.forEach((p, i) => {
             this.lengthList.push(p.getTotalLength())
         })
-        this.totalLength = this.lengthList[this.lengthList.length - 1]
 
+        this.totalLength = this.lengthList[this.lengthList.length - 1]
         d3.select(this.transPath)
-            .attr("stroke-dasharray", this.totalLength)
+        .attr("stroke-dasharray", this.totalLength)
     }
 
     playTransition(idx, partial) {

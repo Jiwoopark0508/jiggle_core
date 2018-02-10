@@ -19,8 +19,6 @@ export default class LineChartFactory {
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
       this._drawTransitionChart(svgElement, chartConfigList)
-
-      this.lineInstance.chartList = chartConfigList
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
     return renderer;
@@ -28,7 +26,7 @@ export default class LineChartFactory {
   
   _drawTransitionChart(svgElement, chartConfigList) {
     // this function draw transition between two chart configs
-    let line_transition_instance = new JiggleLineTransition();
+    let line_transition_instance = new JiggleLineTransition(chartConfigList);
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])

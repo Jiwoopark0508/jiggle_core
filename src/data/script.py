@@ -9,5 +9,5 @@ with open(sys.argv[1], 'r') as f, open(sys.argv[2], 'w') as w:
     for ln in f:
         ln = ln.split()
         print(ln)
-        w.write('[\"{}\", \"{}\"],\n'.format(ln[0], ln[1]))
+        w.write('[\"{}\", \"{}\", \"{}\"],\n'.format(ln[0], ln[1], ln[2]))
 
