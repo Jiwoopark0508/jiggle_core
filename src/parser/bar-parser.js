@@ -47,7 +47,15 @@ export function parseBar(chart) {
 
   chart.easing = d3[chart.easing];
   chart.delayInOrder = (d, i) => {
-    return i * 200 + chart.accumedDelay;
+    const term = 200;
+    let eachDelay = 0;
+    if (chart.accumedDelay === 0) {
+      eachDelay = i * term;
+    } else {
+      eachDelay = chart.accumedDelay - (chart.data.length - 1 - i) * term;
+      // if (eachDelay < 0) eachDelay += chart.accumedDelay;
+    }
+    return eachDelay;
   };
 
   chart.xScale = d3
