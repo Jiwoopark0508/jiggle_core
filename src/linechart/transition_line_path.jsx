@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
 import { GlyphDot } from '@vx/glyph';
-import { AxisLeft, AxisBottom } from '@vx/axis'
 import * as d3 from 'd3'
 
 export default class TransitionLinePath extends React.Component {

@@ -26,6 +26,15 @@
     classnames "^2.2.5"
     d3-shape "^1.2.0"
 
+"@vx/grid@^0.0.153":
+  version "0.0.153"
+  resolved "https://registry.yarnpkg.com/@vx/grid/-/grid-0.0.153.tgz#42457f50957d5b28c7716f153eaa0e33f5e61531"
+  dependencies:
+    "@vx/group" "0.0.153"
+    "@vx/point" "0.0.153"
+    "@vx/shape" "0.0.153"
+    classnames "^2.2.5"
+
 "@vx/group@0.0.153", "@vx/group@^0.0.153":
   version "0.0.153"
   resolved "https://registry.yarnpkg.com/@vx/group/-/group-0.0.153.tgz#4ec2ce37cf31b0f0b3d46dd8ee6b0eaf7e763bc6"
@@ -38,7 +47,7 @@
   dependencies:
     d3-random "^1.0.3"
 
-"@vx/point@0.0.153":
+"@vx/point@0.0.153", "@vx/point@^0.0.153":
   version "0.0.153"
   resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.153.tgz#c0623f72804026a5afe7e1602bb27cd7b0847afc"
 

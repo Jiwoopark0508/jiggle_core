@@ -2,6 +2,8 @@ import React from 'react'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
 import { AxisLeft, AxisBottom } from '@vx/axis'
+import { GridColumns } from '@vx/grid'
+import StripeColumns from './meta-components/stripe_columns'
 import TransitionLinePath from './transition_line_path'
 import _ from 'lodash'
 import moment from 'moment'
@@ -46,12 +48,14 @@ export default class JiggleLineTransition {
          */
         let parsedResult = lineParser(chartList)
         let processedData = parsedResult[0]
+
         let flatten_data = processedData.reduce((rec, d) => {
             return rec.concat(d)
         }, []).reduce((rec, d) => {
             return rec.concat(d)
         }, [])
         let accessors = parsedResult[1]
+        let header = parsedResult[2]
         /**
          * Temporal and manual scale and accessor
          */
@@ -85,20 +89,70 @@ export default class JiggleLineTransition {
         
         const xScale = d3.scaleTime()
                 .range([0, xMax])
-                .domain(d3.extent(flatten_data, x))
+                .domain(d3.extent(flatten_data, x)).nice()
         const yScale = d3.scaleLinear()
                 .range([yMax, 0])
                 .domain(y_extent).nice()
-
         return (
             <g
                 ref={(node) => this.domNode = node}>
                 <rect x={0} y = {0} 
                     width={width}
                     height={height}
-                    fill={"#52B9EC"}/>
+                    fill={"#f8f8f8"}/>
                 
                 <Group top={margin.top} left={margin.left}>
+                    <Group>
+                        <StripeColumns
+                            scale={xScale}
+                            height={yMax}
+                            numTicks={8}
+                        />
+                        <AxisBottom
+                            scale={xScale}
+                            top={yMax}
+                            label={header[0]}
+                            stroke={'#e2e2e2'}
+                            numTicks={4}
+                            hideTicks={true}
+                            labelProps = {{
+                                textAnchor: 'middle',
+                                fontFamily: 'Arial',
+                                fontSize: 10,
+                                fill: '#2e2e2e',
+                            }}
+                            tickLabelProps = {(tickValue, index) => ({
+                                textAnchor: 'end',
+                                fontFamily: 'Arial',
+                                fontSize: 10,
+                                fill: '#2e2e2e',
+                                dx: '-0.25em',
+                                dy: '-0.25em'
+                            })}
+                        />
+                        <AxisLeft
+                            scale={yScale}
+                            top={0}
+                            left={0}
+                            label={header[1]}
+                            stroke={'#e2e2e2'}
+                            hideTicks={true}
+                            numTicks={4}
+                            labelProps = {{
+                                textAnchor: 'middle',
+                                fontFamily: 'Arial',
+                                fontSize: 10,
+                                fill: '#2e2e2e',
+                            }}
+                            tickLabelProps = {(tickValue, index) => ({
+                                textAnchor: 'end',
+                                fontFamily: 'Arial',
+                                fontSize: 10,
+                                fill: '#2e2e2e',
+                                dx: '-0.25em',
+                            })}
+                        />
+                    </Group>
                     {processedData.map((d, i) => {
                         return (
                             <TransitionLinePath 
@@ -107,61 +161,14 @@ export default class JiggleLineTransition {
                                 dataList={d}
                                 chartList={chartList}
                                 x={x}
-                                y={accessors[i + 1]}ㅋ
+                                y={accessors[i + 1]}
                                 xScale={xScale}
                                 yScale={yScale}
                             />
                             )
                         })
                     }
-                    <AxisLeft
-                        scale={yScale}
-                        top={0}
-                        left={0}
-                        label={'세로축'}
-                        stroke={'white'}
-                        tickStroke='white'
-                        numTicks={4}
-                        labelProps = {{
-                            textAnchor: 'middle',
-                            fontFamily: 'Arial',
-                            fontSize: 10,
-                            fill: 'white',
-                        }}
-                        tickLabelProps = {(tickValue, index) => ({
-                            textAnchor: 'end',
-                            fontFamily: 'Arial',
-                            fontSize: 10,
-                            fill: 'white',
-                            dx: '-0.25em',
-                            dy: '-0.25em'
-                        })}
-                    />
-            
-                    <AxisBottom
-                        scale={xScale}
-                        top={yMax}
-                        label={'시간'}
-                        stroke={'white'}
-                        tickTextFill={'white'}
-                        tickStroke='white'
-                        numTicks={4}
-                        labelProps = {{
-                            textAnchor: 'middle',
-                            fontFamily: 'Arial',
-                            fontSize: 10,
-                            fill: 'white',
-                        }}
-                        tickLabelProps = {(tickValue, index) => ({
-                            textAnchor: 'end',
-                            fontFamily: 'Arial',
-                            fontSize: 10,
-                            fill: 'white',
-                            dx: '-0.25em',
-                            dy: '-0.25em'
-                        })}
-                    />
-
+                    
                 </Group>
             </g>
         )
