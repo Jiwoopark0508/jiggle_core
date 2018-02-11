@@ -29,15 +29,18 @@ export default class TransitionLinePath extends React.Component {
 
         this.totalLength = this.lengthList[this.lengthList.length - 1]
         d3.select(this.transPath)
-        .attr("stroke-dasharray", this.totalLength)
+            .attr("stroke-dasharray", this.totalLength)
     }
 
     playTransition(idx, partial) {
         if (!idx) idx = 1;
         let g = d3.select(this.transPath)
         this._playTransition(g, this, idx, partial)
+        this._glyphTransition()
     }
-    
+    _glyphTransition() {
+        console.log(d3.select(this.glyphList))
+    }
     _playTransition(g, that, idx, partial) {
         let startsAt = this.lengthList[idx - 1]
         let endsAt = this.lengthList[idx]
@@ -53,7 +56,6 @@ export default class TransitionLinePath extends React.Component {
                     g.call(that._playTransition, that, idx + 1)
                 }
             })
-        
     }
     
     render() {
@@ -68,6 +70,18 @@ export default class TransitionLinePath extends React.Component {
                     x={props.x}
                     y={props.y}
                     stroke={props.stroke}
+                    glyph={(d, i) => {
+                        let dot = <GlyphDot
+                            className={"glyph-dots"}
+                            key={`line-dot-${i}`}
+                            cx={props.xScale(props.x(d))}
+                            cy={props.yScale(props.y(d))}
+                            r={3}
+                            fill={"steelblue"}
+                        />
+                        this.glyphList.push(dot)
+                        return dot;
+                    }}
                 />
                 {this.props.dataList.map((d, i) => {
                     return (

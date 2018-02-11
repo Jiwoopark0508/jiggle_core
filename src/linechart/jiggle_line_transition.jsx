@@ -41,7 +41,6 @@ export default class JiggleLineTransition {
                 })
             })
         }
-
     }
 
     renderTransitionLine(chartList) {
@@ -86,7 +85,7 @@ export default class JiggleLineTransition {
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain).nice()
-        console.log(xScale(xScale.ticks(8)[0]), xScale(xScale.ticks(8)[1]))
+        
         const yScale = d3.scaleLinear()
                 .range([yMax, 0])
                 .domain(y_extent).nice()
