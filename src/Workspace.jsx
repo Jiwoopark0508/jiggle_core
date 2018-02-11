@@ -6,6 +6,8 @@ import { parseBar } from "./parser/bar-parser";
 import { parseGroupedBar } from "./parser/grouped-bar-parser";
 import { parseStackedBar } from "./parser/stacked-bar-parser";
 import LineChartFactory from './factory/line-factory'
+// import SmallDataLineChartFactory from './factory/small-line-factory'
+// import LargeDataLineChartFactory from './factory/large-line-factory'
 
 export default class Workspace extends React.Component {
   constructor(props) {

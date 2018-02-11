@@ -24,15 +24,17 @@ export default class JiggleLineTransition {
         })
     }
 
-
-
     playWholeLineTransition(idx, partial, record) {
         if (record) {
+            // Line Transition
             this.transPathLines.forEach((l, i) => {
                 l.playTransition(idx, partial)
             })
         }
         else {
+            // Glyph Transition
+            // Glyph Transition Location
+            // Line Transition
             process.nextTick(() => {
                 this.transPathLines.forEach((l, i) => {
                     l.playTransition(idx, partial)
@@ -56,16 +58,9 @@ export default class JiggleLineTransition {
         }, [])
         let accessors = parsedResult[1]
         let header = parsedResult[2]
-        /**
-         * Temporal and manual scale and accessor
-         */
 
-        // Variables which change with props later
         const width = 750
         const height = 400
-
-        // Bounds
-
         const margin = {
             top : 60,
             bottom : 60,
@@ -86,10 +81,12 @@ export default class JiggleLineTransition {
             y_extent = y_extent.concat(d3.extent(flatten_data, f))
         })
         y_extent = d3.extent(y_extent)
-        
+
+        let xScaleDomain = d3.extent(flatten_data, x)
         const xScale = d3.scaleTime()
-                .range([0, xMax])
-                .domain(d3.extent(flatten_data, x)).nice()
+            .range([0, xMax])
+            .domain(xScaleDomain).nice()
+        console.log(xScale(xScale.ticks(8)[0]), xScale(xScale.ticks(8)[1]))
         const yScale = d3.scaleLinear()
                 .range([yMax, 0])
                 .domain(y_extent).nice()

@@ -18,6 +18,8 @@ export default class LineChartFactory {
   
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
+      // const allElements = g.selectAll("*");
+      // Stop all transition, and re draw
       this._drawTransitionChart(svgElement, chartConfigList)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
