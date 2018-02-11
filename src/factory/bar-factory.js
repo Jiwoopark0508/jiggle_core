@@ -153,6 +153,16 @@ export default class BarFactory {
         `translate(${chart.margins.left},${chart.margins.top})`
       );
     g
+      .append("g")
+      .attr("class", "y axis")
+      .attr("transform", `translate(${chart.margins.left / 2}, 0)`)
+      .call(chart.customYAxis);
+    g
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", `translate(0, ${chart.height_g})`)
+      .call(chart.customXAxis);
+    g
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
       .enter()
@@ -163,15 +173,16 @@ export default class BarFactory {
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
       .attr("height", d => chart.height_g - chart.yScale(d[chart.yLabel]));
-    g
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0, ${chart.height_g})`)
-      .call(chart.customXAxis);
     return g;
   }
 
   _applyTransition(g, that, chart) {
+    g
+      .select(".y.axis")
+      .transition()
+      .duration(chart.duration)
+      .delay(chart[chart.delayType])
+      .call(chart.customYAxis);
     g
       .select(".x.axis")
       .transition()
@@ -218,59 +229,6 @@ export default class BarFactory {
           (d, i) =>
             chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
         );
-    }
-  }
-
-  _drawPathRect(g, chart, isHide) {
-    g
-      .attr("d", (d, i) => {
-        return rounded_rect(
-          chart.xScale(d[chart.xLabel]),
-          chart.yScale(d[chart.yLabel]),
-          chart.xScale.bandwidth(),
-          chart.height_g - chart.yScale(d[chart.yLabel]),
-          chart.radius,
-          !isHide,
-          !isHide,
-          false,
-          false
-        );
-      })
-      .style("fill", chart.color);
-
-    function rounded_rect(x, y, w, h, r, tl, tr, bl, br) {
-      var retval;
-      retval = "M" + (x + r) + "," + y;
-      retval += "h" + (w - 2 * r);
-      if (tr) {
-        retval += "a" + r + "," + r + " 0 0 1 " + r + "," + r;
-      } else {
-        retval += "h" + r;
-        retval += "v" + r;
-      }
-      retval += "v" + (h - 2 * r);
-      if (br) {
-        retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + r;
-      } else {
-        retval += "v" + r;
-        retval += "h" + -r;
-      }
-      retval += "h" + (2 * r - w);
-      if (bl) {
-        retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + -r;
-      } else {
-        retval += "h" + -r;
-        retval += "v" + -r;
-      }
-      retval += "v" + (2 * r - h);
-      if (tl) {
-        retval += "a" + r + "," + r + " 0 0 1 " + r + "," + -r;
-      } else {
-        retval += "v" + -r;
-        retval += "h" + r;
-      }
-      retval += "z";
-      return retval;
     }
   }
 }

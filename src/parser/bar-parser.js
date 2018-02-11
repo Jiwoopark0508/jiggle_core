@@ -68,15 +68,39 @@ export function parseBar(chart) {
     .domain([0, d3.max(chart.data, chart.yAccessor)])
     .nice()
     .rangeRound([chart.height_g, 0]);
-  // chart.colorScale = d3
-  //   .scaleOrdinal()
-  //   .domain()
-  //   .range(["#316095", "#4ca8f8", "#512cdb", "#3a84f7"]);
-  chart.xAxis = d3.axisBottom(chart.xScale);
+  chart.customYAxis = function(g) {
+    g
+      .call(
+        d3
+          .axisLeft(chart.yScale)
+          .tickSize(-chart.width_g + chart.margins.right / 2)
+          .tickFormat(function(d) {
+            return this.parentNode.nextSibling
+              ? d
+              : `${d}\n(단위: ${chart.unit})`;
+          })
+      )
+      .selectAll(".domain")
+      .style("display", "none");
+
+    // let lines = g.selectAll(".tick:not(:first-of-type) line");
+    let lines = g.selectAll(".tick line");
+    lines.attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g
+      .selectAll(".tick text")
+      .attr("x", -12)
+      .attr("dy", -4)
+      .style("text-anchor", "start");
+  };
   chart.customXAxis = function(g) {
     g
       .call(d3.axisBottom(chart.xScale))
       .selectAll(".domain,line")
       .style("display", "none");
   };
+  // chart.colorScale = d3
+  //   .scaleOrdinal()
+  //   .domain()
+  //   .range(["#316095", "#4ca8f8", "#512cdb", "#3a84f7"]);
+  // chart.xAxis = d3.axisBottom(chart.xScale);
 }

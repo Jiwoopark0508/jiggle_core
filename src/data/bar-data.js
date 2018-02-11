@@ -38,8 +38,8 @@ const height_svg = 500;
 const margins = { top: 40, bottom: 40, left: 30, right: 30 };
 const focusType = "";
 const backgroundColor = "white";
-const color = "gray";
-const colorToFocus = "#512cdb";
+const color = "#3182bd";
+const colorToFocus = "#e6550d";
 const opacity = 1;
 const opacityToHide = 0.25;
 const duration = 0;
@@ -49,7 +49,12 @@ const paddingBtwRects = 0.4;
 const easing = "easeCubic";
 const radius = 10;
 const delayType = "accumedDelay";
+const unit = "%";
 // const width_rect = 30;
+
+/*
+title, subtitle, reference, caption
+ */
 
 export const chart0 = {
   type,
@@ -68,6 +73,7 @@ export const chart0 = {
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit,
   color,
   colorToFocus,
   opacity,
@@ -91,6 +97,7 @@ export const chart1 = {
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit,
   color,
   colorToFocus,
   opacity: 1,
@@ -114,6 +121,7 @@ export const chart2 = {
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit,
   color,
   colorToFocus,
   opacity: 1,
@@ -137,6 +145,7 @@ export const chart3 = {
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit,
   color,
   colorToFocus,
   opacity: 1,
