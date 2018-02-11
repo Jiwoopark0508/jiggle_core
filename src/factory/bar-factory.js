@@ -76,6 +76,7 @@ export default class BarFactory {
         d3
           .select(svgElement)
           .selectAll("*")
+          // .selectAll("*:not(.classname)")
           .remove();
         resolve0();
       });
