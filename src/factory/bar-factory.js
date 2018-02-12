@@ -10,13 +10,16 @@ export default class BarFactory {
 
   renderTransition() {
     const renderer = (svgElement, charts) => {
-      let g = this._drawChart(this, svgElement, charts[0]);
+      // let g = this._drawChart(this, svgElement, charts[0]);
+      let g = this._drawBI(svgElement, charts[0]);
       charts.forEach((cht, i) => {
-        if (i !== 0) {
+        if (i === 0) {
+          cht.accumedDelay = cht.delay;
+        } else {
           cht.accumedDelay =
             cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
-          g.call(this._applyTransition, this, cht);
         }
+        g.call(this._applyTransition, this, cht);
       });
     };
     return renderer;
@@ -41,9 +44,15 @@ export default class BarFactory {
     });
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
-      if (i < 1) return;
-      let cht0 = charts[i - 1];
-      let cht1 = charts[i];
+      // if (i < 1) return;
+      let cht0, cht1;
+      if (i === 0) {
+        cht0 = "BI";
+        cht1 = charts[i];
+      } else {
+        cht0 = charts[i - 1];
+        cht1 = charts[i];
+      }
       chain = chain.then(() =>
         this._recordSingleTransition(gif, svgElement, cht0, cht1)
       );
@@ -53,7 +62,12 @@ export default class BarFactory {
 
   _recordSingleTransition(gif, svgElement, cht0, cht1) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawChart(this, svgElement, cht0);
+      let g;
+      if (cht0 === "BI") {
+        g = this._drawBI(svgElement, cht1);
+      } else {
+        g = this._drawChart(this, svgElement, cht0);
+      }
       cht1.accumedDelay = cht1.delay;
       g.call(this._applyTransition, this, cht1);
 
@@ -138,6 +152,33 @@ export default class BarFactory {
       });
     });
     return tweeners;
+  }
+
+  _drawBI(svgElement, chart) {
+    let svg = d3
+      .select(svgElement)
+      .attr("width", chart.width_svg)
+      .attr("height", chart.height_svg)
+      .style("background-color", chart.backgroundColor);
+    let g = svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${chart.margins.left},${chart.margins.top})`
+      );
+    g
+      .append("g")
+      .attr("class", "y axis")
+      .attr("transform", `translate(${chart.margins.left / 2}, 0)`);
+    g
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", `translate(0, ${chart.height_g})`);
+    g
+      .append("path")
+      .attr("transform", `translate(0, ${chart.height_g})`)
+      .call(chart.BILine);
+    return g;
   }
 
   _drawChart(that, svgElement, chart) {

@@ -68,6 +68,42 @@ export function parseBar(chart) {
     .domain([0, d3.max(chart.data, chart.yAccessor)])
     .nice()
     .rangeRound([chart.height_g, 0]);
+
+  chart.BILine = function(path) {
+    const data = d3.range(11);
+    const lineXScale = d3
+      .scaleLinear()
+      .domain([0, 10])
+      .range([0, chart.width_g]);
+    const lineYScale = d3
+      .scaleLinear()
+      .domain([0, 10])
+      .range([0, 0]);
+    let line = d3
+      .line()
+      // .interpolate("cardinal")
+      .curve(d3.curveLinear)
+      .x(function(d, i) {
+        return lineXScale(i);
+      })
+      .y(function(d) {
+        return lineYScale(d);
+      });
+    path
+      .attr("d", line(data))
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", "2")
+      .attr("fill", "none");
+    const totalLength = path.node().getTotalLength();
+    path
+      .attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .duration(700)
+      .delay(500)
+      .ease(d3.easeLinear)
+      .attr("stroke-dashoffset", 0);
+  };
   chart.customYAxis = function(g) {
     g
       .call(

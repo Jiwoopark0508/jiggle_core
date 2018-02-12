@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Workspace from "./Workspace";
-import { chart0, chart1, chart2, chart3 } from "./data/bar-data";
+import { chart0, chart1, chart2 } from "./data/bar-data";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
 // import { appleStock } from "@vx/mock-data";
@@ -48,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Workspace charts={[chart0, chart1, chart2, chart3]} />
+        <Workspace charts={[chart0, chart1, chart2]} />
         <div id="gif" />
       </div>
     );

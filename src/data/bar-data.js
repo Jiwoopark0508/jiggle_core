@@ -7,16 +7,16 @@
 //   ["E", ".03386"]
 // ];
 
-const arr0 = [["letter", "frequency"], ["Q1", "0"], ["Q2", "0"], ["Q3", "0"]];
+// const arr0 = [["letter", "frequency"], ["Q1", "0"], ["Q2", "0"], ["Q3", "0"]];
 
-const arr1 = [
+const arr0 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
   ["Q3", ".24"]
 ];
 
-const arr2 = [
+const arr1 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
@@ -24,7 +24,7 @@ const arr2 = [
   ["Q4", ".80"]
 ];
 
-const arr3 = [
+const arr2 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
@@ -56,6 +56,30 @@ const unit = "%";
 title, subtitle, reference, caption
  */
 
+// export const chart0 = {
+//   type,
+//   rawData: arr0,
+//   width_svg,
+//   height_svg,
+//   margins,
+
+//   focusType,
+//   duration,
+//   delay: 0,
+//   accumedDelay,
+//   easing,
+//   delayType,
+
+//   backgroundColor,
+//   paddingBtwRects,
+//   radius,
+//   unit,
+//   color,
+//   colorToFocus,
+//   opacity,
+//   opacityToHide
+// };
+
 export const chart0 = {
   type,
   rawData: arr0,
@@ -64,11 +88,11 @@ export const chart0 = {
   margins,
 
   focusType,
-  duration,
-  delay: 0,
+  duration: 1500,
+  delay: 1800,
   accumedDelay,
-  easing,
-  delayType,
+  easing: "easeBackOut",
+  delayType: "delayInOrder",
 
   backgroundColor,
   paddingBtwRects,
@@ -87,30 +111,6 @@ export const chart1 = {
   height_svg,
   margins,
 
-  focusType,
-  duration: 1500,
-  delay,
-  accumedDelay,
-  easing: "easeBackOut",
-  delayType: "delayInOrder",
-
-  backgroundColor,
-  paddingBtwRects,
-  radius,
-  unit,
-  color,
-  colorToFocus,
-  opacity: 1,
-  opacityToHide
-};
-
-export const chart2 = {
-  type,
-  rawData: arr2,
-  width_svg,
-  height_svg,
-  margins,
-
   focusType: "end",
   duration: 1500,
   delay,
@@ -124,13 +124,13 @@ export const chart2 = {
   unit,
   color,
   colorToFocus,
-  opacity: 1,
+  opacity,
   opacityToHide
 };
 
-export const chart3 = {
+export const chart2 = {
   type,
-  rawData: arr3,
+  rawData: arr2,
   width_svg,
   height_svg,
   margins,
@@ -148,7 +148,7 @@ export const chart3 = {
   unit,
   color,
   colorToFocus,
-  opacity: 1,
+  opacity,
   opacityToHide
 };
 
