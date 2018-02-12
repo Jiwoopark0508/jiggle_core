@@ -14,18 +14,18 @@ export default class Workspace extends React.Component {
   componentDidMount() {
     const props = this.props;
 
-    fetch("http://localhost:3003/template/all").then(function(res) {
-      res.json().then(function(result) {
-        console.dir(result);
-      });
-    });
+    // fetch("http://localhost:3003/template/all").then(function(res) {
+    //   res.json().then(function(result) {
+    //     console.dir(result);
+    //   });
+    // });
     // bar
     props.charts.forEach(chart => parseBar(chart));
     const factory = new BarFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[1]);
-    // const renderTransition = factory.renderTransition();
-    // renderTransition(this.node, [...props.charts]);
+    const renderTransition = factory.renderTransition();
+    renderTransition(this.node, [...props.charts]);
     // const record = factory.recordTransition(this.node, [...props.charts]);
 
     // grouped bar
