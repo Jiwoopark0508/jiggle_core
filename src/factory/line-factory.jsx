@@ -84,10 +84,6 @@ export default class LineChartFactory {
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
 
-      // console.log(allElements)
-      console.log(tweeners)
-      // console.log(frames)
-
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
         promises.push(

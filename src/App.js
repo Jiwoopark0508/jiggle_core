@@ -16,7 +16,7 @@ const chart1 = {
 const chart2 = {
   data : dummie.slice(0, dummie.length / 2),
   duration : 500,
-  delay : 1500
+  delay : 2000
 }
 
 const chart3 = {

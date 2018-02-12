@@ -10,6 +10,7 @@ export default function JiggleGlyph({
   cx,
   cy,
   r,
+  innerRef,
   fill,
   stroke,
   strokeWidth,
@@ -17,8 +18,9 @@ export default function JiggleGlyph({
   ...restProps
 }) {
   return (
-    <Glyph top={top} left={left}>
+    <Group top={top} left={left}>
       <circle
+        ref={innerRef}
         className={classnames('vx-glyph-dot', className)}
         cx={cx}
         cy={cy}
@@ -30,5 +32,6 @@ export default function JiggleGlyph({
         {...restProps}
       />
       {children}
-    </Glyph>
+    </Group>
   );
+}
