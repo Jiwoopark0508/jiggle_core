@@ -155,6 +155,7 @@ export default class BarFactory {
   }
 
   _drawBI(svgElement, chart) {
+    // console.log(chart);
     let svg = d3
       .select(svgElement)
       .attr("width", chart.width_svg)

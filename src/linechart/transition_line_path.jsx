@@ -6,83 +6,85 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
+import { GlyphDot } from '@vx/glyph';
 import { AxisLeft, AxisBottom } from '@vx/axis'
 import * as d3 from 'd3'
-
-// Variables which change with props later
-const width = 750
-const height = 400
-
-const x = d => new Date(d.date)
-const y = d => d.close
-
-// Bounds
-
-const margin = {
-    top : 60,
-    bottom : 60,
-    left: 80,
-    right : 80
-}
-
-const xMax = width - margin.left - margin.right
-const yMax = height - margin.top - margin.bottom
 
 export default class TransitionLinePath extends React.Component {
     constructor(props){
         super(props)
-        this.prevPath = null
-        this.startsAt = 0
-        this.endsAt = 0
+        this.pathList = []
+        this.lengthList = []
+        this.glyphList = []
         this.transPath = null
         this._playTransition = this._playTransition.bind(this)
         this.playTransition = this.playTransition.bind(this)
+        this.durationList = this.props.chartList.map((c) => {return c.duration})
+        this.delayList = this.props.chartList.map((c) => {return c.delay})
     }
+    
     componentDidMount() {
-        this.startsAt = this.prevPath.getTotalLength();
-        this.endsAt = this.transPath.getTotalLength();
-    }
-    playTransition() {
-        this._playTransition(800, 800)
-    }
-    _playTransition(duration, delay) {
-        let endsAt = this.endsAt
-        let startsAt = this.startsAt
-        console.log(endsAt, startsAt)
-        // this.transPath.interrupt()
+        this.pathList.forEach((p, i) => {
+            this.lengthList.push(p.getTotalLength())
+        })
 
+        this.totalLength = this.lengthList[this.lengthList.length - 1]
         d3.select(this.transPath)
-            .attr("stroke-dasharray", endsAt + " " + (endsAt - startsAt))
-            .attr("stroke-dashoffset", (endsAt - startsAt))
-            .transition()
-            .duration(duration)
-            .attr("stroke-dashoffset", 0)
+        .attr("stroke-dasharray", this.totalLength)
     }
 
+    playTransition(idx, partial) {
+        if (!idx) idx = 1;
+        let g = d3.select(this.transPath)
+        this._playTransition(g, this, idx, partial)
+    }
+    
+    _playTransition(g, that, idx, partial) {
+        let startsAt = this.lengthList[idx - 1]
+        let endsAt = this.lengthList[idx]
+        if (!endsAt) return;
+        g
+            .attr("stroke-dashoffset", this.totalLength - startsAt)
+            .transition()
+            .delay(that.delayList[idx])
+            .duration(that.durationList[idx])
+            .attr("stroke-dashoffset", this.totalLength - endsAt)
+            .on("end", function() {
+                if (!partial) {
+                    g.call(that._playTransition, that, idx + 1)
+                }
+            })
+        
+    }
+    
     render() {
         const props = this.props;
-
         return (
             <Group>
                 <LinePath 
-                    className="hellWorld"
-                    innerRef={(node) => this.prevPath = node}
-                    data = {props.prevData}
-                    xScale={props.xScale}
-                    yScale={props.yScale}
-                    x={x}
-                    y={y}
-                    style={{"display" : "none"}}
-                />
-                <LinePath 
                     innerRef={(node) => this.transPath = node}
-                    data = {props.nextData}
+                    data = {this.props.dataList[this.props.dataList.length - 1]}
                     xScale={props.xScale}
                     yScale={props.yScale}
-                    x={x}
-                    y={y}
+                    x={props.x}
+                    y={props.y}
+                    stroke={props.stroke}
                 />
+                {this.props.dataList.map((d, i) => {
+                    return (
+                        <LinePath
+                            key={i}
+                            innerRef={(node) => this.pathList.push(node)}
+                            data = {d}
+                            xScale={props.xScale}
+                            yScale={props.yScale}
+                            x={props.x}
+                            y={props.y}  
+                            style={{display: "none"}}
+                        />
+                    )
+                })}
             </Group> 
         )  
-    }
+    } 
 }

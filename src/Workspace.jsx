@@ -5,6 +5,7 @@ import StackedBarFactory from "./factory/stacked-bar-factory";
 import { parseBar } from "./parser/bar-parser";
 import { parseGroupedBar } from "./parser/grouped-bar-parser";
 import { parseStackedBar } from "./parser/stacked-bar-parser";
+import LineChartFactory from "./factory/line-factory";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -20,8 +21,10 @@ export default class Workspace extends React.Component {
     //   });
     // });
     // bar
+
     props.charts.forEach(chart => parseBar(chart));
     const factory = new BarFactory();
+    // const factory = new LineChartFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[1]);
     const renderTransition = factory.renderTransition();
@@ -44,11 +47,7 @@ export default class Workspace extends React.Component {
   render() {
     return (
       <div>
-        <svg
-          width={this.props.width}
-          height={this.props.height}
-          ref={node => (this.node = node)}
-        />
+        <svg ref={node => (this.node = node)} />
       </div>
     );
   }

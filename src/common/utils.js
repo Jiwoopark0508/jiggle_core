@@ -33,3 +33,7 @@ export function ParseData(chart) {
 
   // return chart;
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
