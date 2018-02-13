@@ -70,18 +70,17 @@ export function parseBar(chart) {
     .rangeRound([chart.height_g, 0]);
 
   chart.BILine = function(path) {
-    const data = d3.range(11);
+    const data = d3.range(2);
     const lineXScale = d3
       .scaleLinear()
-      .domain([0, 10])
+      .domain(data)
       .range([0, chart.width_g]);
     const lineYScale = d3
       .scaleLinear()
-      .domain([0, 10])
+      .domain(data)
       .range([0, 0]);
     let line = d3
       .line()
-      // .interpolate("cardinal")
       .curve(d3.curveLinear)
       .x(function(d, i) {
         return lineXScale(i);
@@ -91,7 +90,7 @@ export function parseBar(chart) {
       });
     path
       .attr("d", line(data))
-      .attr("stroke", "steelblue")
+      .attr("stroke", "#3182bd")
       .attr("stroke-width", "2")
       .attr("fill", "none");
     const totalLength = path.node().getTotalLength();

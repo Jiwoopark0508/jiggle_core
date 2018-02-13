@@ -1,14 +1,3 @@
-// const arr0 = [
-//   ["letter", "frequency"],
-//   ["A", ".06167"],
-//   ["B", ".01492"],
-//   ["C", ".02782"],
-//   ["D", ".08786"],
-//   ["E", ".03386"]
-// ];
-
-// const arr0 = [["letter", "frequency"], ["Q1", "0"], ["Q2", "0"], ["Q3", "0"]];
-
 const arr0 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
@@ -50,35 +39,10 @@ const easing = "easeCubic";
 const radius = 10;
 const delayType = "accumedDelay";
 const unit = "%";
-// const width_rect = 30;
 
 /*
 title, subtitle, reference, caption
  */
-
-// export const chart0 = {
-//   type,
-//   rawData: arr0,
-//   width_svg,
-//   height_svg,
-//   margins,
-
-//   focusType,
-//   duration,
-//   delay: 0,
-//   accumedDelay,
-//   easing,
-//   delayType,
-
-//   backgroundColor,
-//   paddingBtwRects,
-//   radius,
-//   unit,
-//   color,
-//   colorToFocus,
-//   opacity,
-//   opacityToHide
-// };
 
 export const chart0 = {
   type,
@@ -91,7 +55,7 @@ export const chart0 = {
   duration: 1500,
   delay: 1800,
   accumedDelay,
-  easing: "easeBackOut",
+  easing,
   delayType: "delayInOrder",
 
   backgroundColor,
@@ -115,7 +79,7 @@ export const chart1 = {
   duration: 1500,
   delay,
   accumedDelay,
-  easing: "easeBackOut",
+  easing,
   delayType: "delayInOrder",
 
   backgroundColor,
@@ -139,7 +103,7 @@ export const chart2 = {
   duration: 1000,
   delay,
   accumedDelay,
-  easing: "easeBackOut",
+  easing,
   delayType,
 
   backgroundColor,
@@ -152,48 +116,3 @@ export const chart2 = {
   opacityToHide
 };
 
-// const csv0 = `letter,frequency
-// A,.06167
-// B,.01492
-// C,.02782
-// D,.08786
-// E,.03386`;
-
-// const csv1 = `letter,frequency
-// A,.08167
-// B,.01492
-// D,.03386`;
-
-// const csv2 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782
-// D,.03386`;
-
-// const csv3 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782
-// D,.03386
-// E,.01234
-// F,.05647`;
-
-// const csv0 = `letter,frequency
-// A,.06167`;
-
-// const csv1 = `letter,frequency
-// A,.08167
-// B,.01492`;
-
-// const csv2 = `letter,frequency
-// A,.08167`;
-
-// const csv3 = `letter,frequency
-// A,.08167
-// B,.02782
-// C,.03386`;
-
-// const csv2 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782`;
