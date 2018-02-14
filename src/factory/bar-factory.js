@@ -11,7 +11,7 @@ export default class BarFactory {
   renderTransition() {
     const renderer = (svgElement, charts) => {
       // let g = this._drawChart(this, svgElement, charts[0]);
-      let g = this._drawBI(svgElement, charts[0]);
+      let g = this._drawBI(this, svgElement, charts[0]);
       charts.forEach((cht, i) => {
         if (i === 0) {
           cht.accumedDelay = cht.delay;
@@ -60,11 +60,33 @@ export default class BarFactory {
     chain.then(() => gif.render());
   }
 
+  getChildG(gParent) {
+    const layers = ["titleBox", "graph", "axis", "background", "legend"];
+    const childNodes = gParent.selectAll("g").nodes();
+    const result = childNodes.reduce((acc, child) => {
+      const childSelection = d3.select(child);
+      const className = childSelection.attr("class");
+      // console.log(className);
+      layers.forEach((l, i) => {
+        if (className.includes(l)) {
+          // console.log(`${className} includes ${l}`);
+          if (!acc[l]) acc[l] = child;
+          else {
+            acc[l] = [child].concat(acc[l]);
+          }
+        }
+      });
+      return acc;
+    }, {});
+
+    return result;
+  }
+
   _recordSingleTransition(gif, svgElement, cht0, cht1) {
     return new Promise((resolve0, reject) => {
       let g;
       if (cht0 === "BI") {
-        g = this._drawBI(svgElement, cht1);
+        g = this._drawBI(this, svgElement, cht1);
       } else {
         g = this._drawChart(this, svgElement, cht0);
       }
@@ -87,11 +109,6 @@ export default class BarFactory {
       });
 
       Promise.all(promises).then(function(results) {
-        d3
-          .select(svgElement)
-          .selectAll("*")
-          // .selectAll("*:not(.classname)")
-          .remove();
         resolve0();
       });
 
@@ -154,56 +171,82 @@ export default class BarFactory {
     return tweeners;
   }
 
-  _drawBI(svgElement, chart) {
-    let svg = d3
-      .select(svgElement)
+  _drawBI(that, svgElement, chart) {
+    let { gTotal, gXAxis } = that._drawSkeleton(svgElement, chart);
+    gXAxis
+      .append("path")
+      // .attr("transform", `translate(0, ${chart.height_g_body})`)
+      .call(chart.BILine);
+    return gTotal;
+  }
+
+  _drawSkeleton(svgElement, chart) {
+    let svg = d3.select(svgElement);
+    svg.selectAll("*").remove();
+    svg
       .attr("width", chart.width_svg)
       .attr("height", chart.height_svg)
       .style("background-color", chart.backgroundColor);
-    let g = svg
+    let gTotal = svg
       .append("g")
-      .attr(
-        "transform",
-        `translate(${chart.margins.left},${chart.margins.top})`
-      );
-    g
+      .attr("class", "total")
+      .attr("transform", `translate(${chart.x_g_total}, ${chart.y_g_total})`);
+    let gHeader = gTotal.append("g").attr("class", "header");
+    let gBody = gTotal
       .append("g")
-      .attr("class", "y axis")
-      .attr("transform", `translate(${chart.margins.left / 2}, 0)`);
-    g
+      .attr("class", "body")
+      .attr("transform", `translate(0, ${chart.y_g_body})`);
+    let gFooter = gTotal
+      .append("g")
+      .attr("class", "footer")
+      .attr("transform", `translate(0, ${chart.y_g_footer})`);
+
+    let gTitleBox = gHeader.append("g").attr("class", "titleBox");
+    let gLegend = gHeader
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", `translate(${chart.width_g_total}, 0)`)
+      .style("text-anchor", "end");
+
+    let gBackground = gBody.append("g").attr("class", "background");
+    let gXAxis = gBody
       .append("g")
       .attr("class", "x axis")
-      .attr("transform", `translate(0, ${chart.height_g})`);
-    g
-      .append("path")
-      .attr("transform", `translate(0, ${chart.height_g})`)
-      .call(chart.BILine);
-    return g;
+      .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
+    let gYAxis = gBody.append("g").attr("class", "y axis");
+
+    let gReferenceBox = gFooter.append("g").attr("class", "referenceBox");
+
+    return {
+      svg,
+      gTotal,
+      gHeader,
+      gBody,
+      gFooter,
+      gTitleBox,
+      gLegend,
+      gBackground,
+      gXAxis,
+      gYAxis
+    };
   }
 
   _drawChart(that, svgElement, chart) {
-    let svg = d3
-      .select(svgElement)
-      .attr("width", chart.width_svg)
-      .attr("height", chart.height_svg)
-      .style("background-color", chart.backgroundColor);
-    let g = svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(${chart.margins.left},${chart.margins.top})`
-      );
-    g
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", `translate(${chart.margins.left / 2}, 0)`)
-      .call(chart.customYAxis);
-    g
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0, ${chart.height_g})`)
-      .call(chart.customXAxis);
-    g
+    let {
+      svg,
+      gTotal,
+      gHeader,
+      gBody,
+      gFooter,
+      gTitleBox,
+      gLegend,
+      gBackground,
+      gXAxis,
+      gYAxis
+    } = that._drawSkeleton(svgElement, chart);
+    gYAxis.call(chart.customYAxis);
+    gXAxis.call(chart.customXAxis);
+    gBody
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
       .enter()
@@ -213,8 +256,8 @@ export default class BarFactory {
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
-      .attr("height", d => chart.height_g - chart.yScale(d[chart.yLabel]));
-    return g;
+      .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
+    return gTotal;
   }
 
   _applyTransition(g, that, chart) {
@@ -231,7 +274,10 @@ export default class BarFactory {
       .delay(chart[chart.delayType])
       .call(chart.customXAxis);
     // Update selection
-    let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
+    let rect = g
+      .select(".body")
+      .selectAll("rect")
+      .data(chart.data, chart.dataKey);
     rect
       .exit() // Exit selection
       .transition()
@@ -243,7 +289,7 @@ export default class BarFactory {
       .enter() // Enter selection
       .append("rect")
       .attr("x", d => chart.xScale(d[chart.xLabel]))
-      .attr("y", d => chart.height_g)
+      .attr("y", d => chart.height_g_body)
       .merge(rect) // Enter + Update selection
       .transition()
       .ease(chart.easing)
@@ -254,7 +300,7 @@ export default class BarFactory {
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
-      .attr("height", d => chart.height_g - chart.yScale(d[chart.yLabel]));
+      .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
   }
 
   _applyFocus(rect, chart) {

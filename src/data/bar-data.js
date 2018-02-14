@@ -61,7 +61,7 @@ export const chart0 = {
   duration: 1500,
   delay: 1800,
   accumedDelay,
-  easing,
+  easing: "easeBackOut",
   delayType: "delayInOrder",
 
   backgroundColor,
@@ -91,7 +91,7 @@ export const chart1 = {
   duration: 1500,
   delay,
   accumedDelay,
-  easing,
+  easing: "easeBackOut",
   delayType: "delayInOrder",
 
   backgroundColor,

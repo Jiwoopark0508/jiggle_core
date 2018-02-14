@@ -8,10 +8,7 @@ export function parseBar(chart) {
       return acc;
     }, {});
   });
-  // console.log(chart.data);
-  // chart.data = d3.csvParse(chart.rawData); // array of objects
   const sample = Object.entries(chart.data[0]); //data[0]: first row
-  // console.log(sample);
   // sample: [["letter", "A"], ["frequency", ".06167"]]
   const firstSeries = sample[0];
   // firstSeries: ["letter", "A"]
@@ -42,8 +39,22 @@ export function parseBar(chart) {
     chart.indexToFocus = [chart.data.length - 1];
   }
 
-  chart.width_g = chart.width_svg - chart.margins.left - chart.margins.right;
-  chart.height_g = chart.height_svg - chart.margins.top - chart.margins.bottom;
+  chart.width_g_total =
+    chart.width_svg - chart.margins.left - chart.margins.right;
+  chart.width_g_body = chart.width_g_total;
+  chart.height_g_total =
+    chart.height_svg - chart.margins.top - chart.margins.bottom;
+  chart.height_g_header = chart.height_g_total / 5;
+  chart.height_g_footer = chart.height_g_total / 7;
+  chart.height_g_body =
+    chart.height_g_total - chart.height_g_header - chart.height_g_footer;
+
+  chart.x_g_total = chart.margins.left;
+  chart.y_g_total = chart.margins.top;
+  // chart.y_g_header = chart.y_g_total;
+  chart.y_g_body = chart.height_g_header;
+  chart.y_g_xAxis = chart.height_g_body;
+  chart.y_g_footer = chart.y_g_body + chart.height_g_body;
 
   chart.easing = d3[chart.easing];
   chart.delayInOrder = (d, i) => {
@@ -61,20 +72,20 @@ export function parseBar(chart) {
   chart.xScale = d3
     .scaleBand()
     .domain(chart.data.map(chart.xAccessor))
-    .rangeRound([0, chart.width_g])
+    .rangeRound([0, chart.width_g_body])
     .padding(chart.paddingBtwRects);
   chart.yScale = d3
     .scaleLinear()
     .domain([0, d3.max(chart.data, chart.yAccessor)])
     .nice()
-    .rangeRound([chart.height_g, 0]);
+    .rangeRound([chart.height_g_body, 0]);
 
   chart.BILine = function(path) {
     const data = d3.range(2);
     const lineXScale = d3
       .scaleLinear()
       .domain(data)
-      .range([0, chart.width_g]);
+      .range([0, chart.width_g_body]);
     const lineYScale = d3
       .scaleLinear()
       .domain(data)
@@ -108,7 +119,7 @@ export function parseBar(chart) {
       .call(
         d3
           .axisLeft(chart.yScale)
-          .tickSize(-chart.width_g + chart.margins.right / 2)
+          .tickSize(-chart.width_g_body + chart.margins.right / 2)
           .tickFormat(function(d) {
             return this.parentNode.nextSibling
               ? d

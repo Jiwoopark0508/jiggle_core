@@ -17,15 +17,15 @@ export default class Workspace extends React.Component {
     props.charts.forEach(chart => parseBar(chart));
 
     // single bar
-    const factory = new BarFactory();
+    const bar = new BarFactory();
     // draw chart
-    // const renderer = factory.renderChart();
-    // renderer(this.node, props.charts[1]);
+    // const renderer = bar.renderChart();
+    // renderer(this.node, props.charts[0]);
     // draw transition
-    const renderTransition = factory.renderTransition();
-    renderTransition(this.node, [...props.charts]);
+    // const renderTransition = bar.renderTransition();
+    // renderTransition(this.node, [...props.charts]);
     // record transition
-    // const record = factory.recordTransition(this.node, [...props.charts]);
+    const record = bar.recordTransition(this.node, [...props.charts]);
 
     // line
     // const factory = new LineChartFactory();
