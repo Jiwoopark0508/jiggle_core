@@ -174,23 +174,6 @@ export default class BarFactory {
       .append("g")
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.height_g})`);
-    let titleBox = g
-      .append("g")
-      .attr("class", "titleBox")
-      .attr(
-        "transform",
-        `translate(${chart.width_g / 2},${chart.height_g / 2})`
-      );
-    titleBox
-      .append("text")
-      .text(chart.title)
-      // .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("font-family", chart.fontFamily)
-      .attr("font-size", chart.fontSize)
-      .attr("text-anchor", "middle")
-      .attr("fill", chart.fontColor);
     g
       .append("path")
       .attr("transform", `translate(0, ${chart.height_g})`)
@@ -220,19 +203,6 @@ export default class BarFactory {
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.height_g})`)
       .call(chart.customXAxis);
-    let titleBox = g
-      .append("g")
-      .attr("class", "titleBox")
-      .attr("transform", `translate(10,10)`);
-    titleBox
-      .append("text")
-      .text(chart.title)
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("font-family", "sans-serif")
-      .attr("font-size", "10px")
-      .attr("fill", "black");
     g
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
@@ -260,32 +230,6 @@ export default class BarFactory {
       .duration(chart.duration)
       .delay(chart[chart.delayType])
       .call(chart.customXAxis);
-    let titleBox = g.select(".titleBox");
-    titleBox
-      .transition()
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      .attr("transform", `translate(20,20)`);
-    g
-      .select(".titleBox text")
-      .transition()
-      .duration(chart.duration)
-      .delay(chart.accumedDelay)
-      .on("start", function() {
-        console.log(d3.active(this));
-        const t = d3
-          .active(this)
-          .style("opacity", 0)
-          .remove();
-        titleBox
-          .append("text")
-          // .attr("class", "title")
-          .style("opacity", 0)
-          .text(chart.title)
-          .transition(t)
-          .style("opacity", 1);
-      });
-
     // Update selection
     let rect = g.selectAll("rect").data(chart.data, chart.dataKey);
     rect
