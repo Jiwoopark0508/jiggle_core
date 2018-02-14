@@ -39,6 +39,12 @@ const easing = "easeCubic";
 const radius = 10;
 const delayType = "accumedDelay";
 const unit = "%";
+const title = "Title";
+const subTitle = "Subtitle";
+const dataSource = "통계청";
+const fontFamily = "sans-serif";
+const fontSize = "15px";
+const fontColor = "black";
 
 /*
 title, subtitle, reference, caption
@@ -62,6 +68,12 @@ export const chart0 = {
   paddingBtwRects,
   radius,
   unit,
+  title: "이 데이터는",
+  subTitle,
+  dataSource,
+  fontFamily,
+  fontSize,
+  fontColor,
   color,
   colorToFocus,
   opacity,
@@ -86,6 +98,12 @@ export const chart1 = {
   paddingBtwRects,
   radius,
   unit,
+  title: "구라입니다.",
+  subTitle,
+  dataSource,
+  fontFamily,
+  fontSize,
+  fontColor,
   color,
   colorToFocus,
   opacity,
@@ -110,6 +128,12 @@ export const chart2 = {
   paddingBtwRects,
   radius,
   unit,
+  title: "ㅎㅎㅎ",
+  subTitle,
+  dataSource,
+  fontFamily,
+  fontSize,
+  fontColor,
   color,
   colorToFocus,
   opacity,
