@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 * Frontend can now pass callbacks: gif.onProcess & gif.onFinished
-* Don't need to pass the last chart to show the last scene. It automatically adds few frames if it is the last.
+* No need to pass the last chart. It automatically adds few frames.
 
 ### Removed
 
