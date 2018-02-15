@@ -30,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Workspace charts={[chart0, chart1, chart2]} />
+        <Workspace charts={[chart0, chart1]} />
         <div id="gif" />
       </div>
     );

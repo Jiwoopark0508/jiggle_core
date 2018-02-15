@@ -13,14 +13,6 @@ const arr1 = [
   ["Q4", ".80"]
 ];
 
-const arr2 = [
-  ["letter", "frequency"],
-  ["Q1", ".11"],
-  ["Q2", ".22"],
-  ["Q3", ".24"],
-  ["Q4", ".80"]
-];
-
 const type = "bar";
 const width_svg = 400;
 const height_svg = 500;
@@ -45,6 +37,8 @@ const dataSource = "통계청";
 const fontFamily = "sans-serif";
 const fontSize = "15px";
 const fontColor = "black";
+const isLastChart = false;
+const lastFor = 2000;
 
 /*
 title, subtitle, reference, caption
@@ -93,6 +87,7 @@ export const chart1 = {
   accumedDelay,
   easing: "easeBackOut",
   delayType: "delayInOrder",
+  lastFor: 1000,
 
   backgroundColor,
   paddingBtwRects,
@@ -109,34 +104,3 @@ export const chart1 = {
   opacity,
   opacityToHide
 };
-
-export const chart2 = {
-  type,
-  rawData: arr2,
-  width_svg,
-  height_svg,
-  margins,
-
-  focusType: "end",
-  duration: 1000,
-  delay,
-  accumedDelay,
-  easing,
-  delayType,
-
-  backgroundColor,
-  paddingBtwRects,
-  radius,
-  unit,
-  title: "ㅎㅎㅎ",
-  subTitle,
-  dataSource,
-  fontFamily,
-  fontSize,
-  fontColor,
-  color,
-  colorToFocus,
-  opacity,
-  opacityToHide
-};
-

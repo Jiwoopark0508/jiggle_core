@@ -25,26 +25,21 @@ export default class BarFactory {
     return renderer;
   }
 
-  recordTransition(svgElement, charts) {
+  recordTransition(svgElement, charts, onProcess, onFinished) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,
       quality: 10,
       repeat: 0
     });
-    const gifToPresent = d3.select("#gif");
     gif.on("progress", function(p) {
-      gifToPresent.text(d3.format("%")(p) + " rendered");
+      onProcess(p);
     });
     gif.on("finished", function(blob) {
-      gifToPresent
-        .text("")
-        .append("img")
-        .attr("src", URL.createObjectURL(blob));
+      onFinished(blob);
     });
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
-      // if (i < 1) return;
       let cht0, cht1;
       if (i === 0) {
         cht0 = "BI";
@@ -53,6 +48,7 @@ export default class BarFactory {
         cht0 = charts[i - 1];
         cht1 = charts[i];
       }
+      if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
         this._recordSingleTransition(gif, svgElement, cht0, cht1)
       );
@@ -66,7 +62,6 @@ export default class BarFactory {
     const result = childNodes.reduce((acc, child) => {
       const childSelection = d3.select(child);
       const className = childSelection.attr("class");
-      // console.log(className);
       layers.forEach((l, i) => {
         if (className.includes(l)) {
           // console.log(`${className} includes ${l}`);
@@ -107,6 +102,17 @@ export default class BarFactory {
           })
         );
       });
+
+      if (cht1.isLastChart) {
+        const lastSceneFrames = (cht1.lastFor || 2000) / 1000 * 30;
+        d3.range(lastSceneFrames).forEach(function(f, i) {
+          promises.push(
+            new Promise(function(resolve1, reject) {
+              addFrame(totalDuration, resolve1);
+            })
+          );
+        });
+      }
 
       Promise.all(promises).then(function(results) {
         resolve0();

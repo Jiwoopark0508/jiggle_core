@@ -21,11 +21,28 @@ export default class Workspace extends React.Component {
     // draw chart
     // const renderer = bar.renderChart();
     // renderer(this.node, props.charts[0]);
+
     // draw transition
     // const renderTransition = bar.renderTransition();
     // renderTransition(this.node, [...props.charts]);
+
     // record transition
-    const record = bar.recordTransition(this.node, [...props.charts]);
+    const gifDiv = document.getElementById("gif");
+    const onProcess = function(progress) {
+      gifDiv.textContent = progress * 100 + "% rendered";
+    };
+    const onFinished = function(blob) {
+      const imgElement = document.createElement("img");
+      imgElement.src = URL.createObjectURL(blob);
+      gifDiv.appendChild(imgElement);
+    };
+
+    const record = bar.recordTransition(
+      this.node,
+      [...props.charts],
+      onProcess,
+      onFinished
+    );
 
     // line
     // const factory = new LineChartFactory();
