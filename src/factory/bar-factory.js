@@ -64,6 +64,7 @@ export default class BarFactory {
       "title",
       "legend",
       "background",
+      "image",
       "axis",
       "graph",
       "legend",
@@ -226,12 +227,13 @@ export default class BarFactory {
       .style("text-anchor", "end");
 
     let gBackground = gBody.append("g").attr("class", "background");
-    let gXAxis = gBody
+    let gImage = gBackground.append("g").attr("class", "imageG");
+    let gGraph = gBody.append("g").attr("class", "graph");
+    let gXAxis = gGraph
       .append("g")
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
-    let gYAxis = gBody.append("g").attr("class", "y axis");
-    let gGraph = gBody.append("g").attr("class", "graph");
+    let gYAxis = gGraph.append("g").attr("class", "y axis");
 
     let gReferenceBox = gFooter
       .append("g")
@@ -262,6 +264,7 @@ export default class BarFactory {
       gTitleBox,
       gLegend,
       gBackground,
+      gImage,
       gXAxis,
       gYAxis,
       gGraph,
@@ -283,6 +286,7 @@ export default class BarFactory {
       gTitleBox,
       gLegend,
       gBackground,
+      gImage,
       gXAxis,
       gYAxis,
       gGraph,
