@@ -39,23 +39,6 @@ export function parseBar(chart) {
     chart.indexToFocus = [chart.data.length - 1];
   }
 
-  chart.width_g_total =
-    chart.width_svg - chart.margins.left - chart.margins.right;
-  chart.width_g_body = chart.width_g_total;
-  chart.height_g_total =
-    chart.height_svg - chart.margins.top - chart.margins.bottom;
-  chart.height_g_header = chart.height_g_total / 5;
-  chart.height_g_footer = chart.height_g_total / 7;
-  chart.height_g_body =
-    chart.height_g_total - chart.height_g_header - chart.height_g_footer;
-
-  chart.x_g_total = chart.margins.left;
-  chart.y_g_total = chart.margins.top;
-  // chart.y_g_header = chart.y_g_total;
-  chart.y_g_body = chart.height_g_header;
-  chart.y_g_xAxis = chart.height_g_body;
-  chart.y_g_footer = chart.y_g_body + chart.height_g_body;
-
   chart.easing = d3[chart.easing];
   chart.delayInOrder = (d, i) => {
     const term = 200;
@@ -68,6 +51,8 @@ export function parseBar(chart) {
     }
     return eachDelay;
   };
+
+  setSkeleton(chart);
 
   chart.xScale = d3
     .scaleBand()
@@ -144,9 +129,70 @@ export function parseBar(chart) {
       .selectAll(".domain,line")
       .style("display", "none");
   };
+
   // chart.colorScale = d3
   //   .scaleOrdinal()
   //   .domain()
   //   .range(["#316095", "#4ca8f8", "#512cdb", "#3a84f7"]);
   // chart.xAxis = d3.axisBottom(chart.xScale);
+}
+
+function setSkeleton(chart) {
+  const factor_primary_fontsize = 0.08;
+  const factor_secondary_fontsize = 0.045;
+  const factor_tertiary_fontsize = 0.035;
+  const factor_space_between_lines = 5 / 4;
+
+  chart.width_g_total =
+    chart.width_svg - chart.margins.left - chart.margins.right;
+  chart.width_g_body =
+    chart.width_g_total - chart.margins.left - chart.margins.right;
+
+  chart.height_g_total =
+    chart.height_svg - chart.margins.top - chart.margins.bottom;
+
+  chart.fontsize_title =
+    chart.fontsize_title || chart.height_g_total * factor_primary_fontsize;
+  chart.fontsize_subtitle =
+    chart.fontsize_subtitle || chart.height_g_total * factor_secondary_fontsize;
+  chart.fontsize_unit =
+    chart.fontsize_unit || chart.height_g_total * factor_secondary_fontsize;
+  chart.fontsize_legend =
+    chart.fontsize_legend || chart.height_g_total * factor_secondary_fontsize;
+  chart.fontsize_reference =
+    chart.fontsize_reference || chart.height_g_total * factor_tertiary_fontsize;
+  chart.fontsize_madeBy =
+    chart.fontsize_madeBy || chart.height_g_total * factor_tertiary_fontsize;
+
+  chart.y_g_title = chart.fontsize_title;
+  chart.y_g_subtitle =
+    chart.y_g_title * factor_space_between_lines + chart.fontsize_subtitle;
+
+  chart.height_g_header = chart.y_g_subtitle + chart.fontsize_subtitle * 2;
+  chart.height_g_footer = chart.height_g_total / 7;
+  chart.height_g_body =
+    chart.height_g_total - chart.height_g_header - chart.height_g_footer;
+
+  chart.x_g_total = chart.margins.left;
+  chart.x_g_body = chart.margins.left;
+
+  chart.y_g_total = chart.margins.top;
+  // chart.y_g_header = chart.y_g_total;
+  chart.y_g_body = chart.height_g_header;
+  chart.y_g_xAxis = chart.height_g_body;
+  chart.y_g_footer = chart.y_g_body + chart.height_g_body;
+  chart.y_g_referenceBox = chart.fontsize_reference * 3;
+  chart.y_g_madeBy = chart.fontsize_madeBy * factor_space_between_lines;
+
+  chart.fontcolor_title = chart.fontcolor_title || "#000000";
+  chart.fontcolor_subtitle = chart.fontcolor_subtitle || "#4B4949";
+  chart.fontcolor_unit = chart.fontcolor_unit || "#4B4949";
+  chart.fontcolor_legend = chart.fontcolor_legend || "#4B4949";
+  chart.fontcolor_reference = chart.fontcolor_reference || "#7F7F7F";
+  chart.fontcolor_madeBy = chart.fontcolor_madeBy || "#7F7F7F";
+
+  chart.fontstyle_title = chart.fontstyle_title || "bold";
+  chart.fontstyle_unit = chart.fontstyle_unit || "bold";
+  chart.fontstyle_reference = chart.fontstyle_reference || "bold";
+  chart.fontstyle_madeBy = chart.fontstyle_madeBy || "bold";
 }

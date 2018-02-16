@@ -14,9 +14,9 @@ const arr1 = [
 ];
 
 const type = "bar";
-const width_svg = 400;
-const height_svg = 500;
-const margins = { top: 40, bottom: 40, left: 30, right: 30 };
+const width_svg = 750;
+const height_svg = 433;
+const margins = { top: 28, bottom: 40, left: 28, right: 40 };
 const focusType = "";
 const backgroundColor = "white";
 const color = "#3182bd";
@@ -26,19 +26,38 @@ const opacityToHide = 0.25;
 const duration = 0;
 const delay = 1000;
 const accumedDelay = 0;
-const paddingBtwRects = 0.4;
 const easing = "easeCubic";
-const radius = 10;
 const delayType = "accumedDelay";
-const unit = "%";
-const title = "Title";
-const subTitle = "Subtitle";
-const dataSource = "통계청";
-const fontFamily = "sans-serif";
-const fontSize = "15px";
-const fontColor = "black";
+const paddingBtwRects = 0.4;
+const radius = 10;
 const isLastChart = false;
 const lastFor = 2000;
+
+const fontFamily = "sans-serif";
+const title = "Title";
+const subtitle = "Subtitle";
+const unit = "unit";
+const legend = "legend";
+const reference = "reference";
+const madeBy = "anonymous";
+
+const fontsize_title = "";
+const fontsize_subtitle = "";
+const fontsize_unit = "";
+const fontsize_legend = "";
+const fontsize_reference = "";
+
+const fontcolor_title = "";
+const fontcolor_subtitle = "";
+const fontcolor_unit = "";
+const fontcolor_legend = "";
+const fontcolor_reference = "";
+
+const fontstyle_title = "";
+const fontstyle_unit = "";
+const fontstyle_reference = "";
+
+// Line: 4px;
 
 /*
 title, subtitle, reference, caption
@@ -61,13 +80,12 @@ export const chart0 = {
   backgroundColor,
   paddingBtwRects,
   radius,
-  unit,
-  title: "이 데이터는",
-  subTitle,
-  dataSource,
+  unit: "%",
+  title: "주요 금융그룹 충당금",
+  subtitle: "부제는 여기에 위치합니다",
+  reference: "통계청",
+  madeBy: "강선미 기자",
   fontFamily,
-  fontSize,
-  fontColor,
   color,
   colorToFocus,
   opacity,
@@ -93,12 +111,11 @@ export const chart1 = {
   paddingBtwRects,
   radius,
   unit,
-  title: "구라입니다.",
-  subTitle,
-  dataSource,
+  title: "주요 금융그룹 충당금",
+  subtitle: "부제는 여기에 위치합니다",
+  reference,
+  madeBy,
   fontFamily,
-  fontSize,
-  fontColor,
   color,
   colorToFocus,
   opacity,

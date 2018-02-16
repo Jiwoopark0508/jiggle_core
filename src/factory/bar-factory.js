@@ -3,7 +3,7 @@ import * as d3 from "d3";
 export default class BarFactory {
   renderChart() {
     const renderer = (svgElement, chart) => {
-      this._drawChart(this, svgElement, chart);
+      return this._drawChart(this, svgElement, chart);
     };
     return renderer;
   }
@@ -201,7 +201,7 @@ export default class BarFactory {
     let gBody = gTotal
       .append("g")
       .attr("class", "body")
-      .attr("transform", `translate(0, ${chart.y_g_body})`);
+      .attr("transform", `translate(${chart.x_g_body}, ${chart.y_g_body})`);
     let gFooter = gTotal
       .append("g")
       .attr("class", "footer")
@@ -210,7 +210,7 @@ export default class BarFactory {
     let gTitleBox = gHeader.append("g").attr("class", "titleBox");
     let gLegend = gHeader
       .append("g")
-      .attr("class", "legend")
+      .attr("class", "legendBox")
       .attr("transform", `translate(${chart.width_g_total}, 0)`)
       .style("text-anchor", "end");
 
@@ -221,7 +221,25 @@ export default class BarFactory {
       .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
     let gYAxis = gBody.append("g").attr("class", "y axis");
 
-    let gReferenceBox = gFooter.append("g").attr("class", "referenceBox");
+    let gReferenceBox = gFooter
+      .append("g")
+      .attr("class", "referenceBox")
+      .attr("transform", `translate(0, ${chart.y_g_referenceBox})`);
+
+    let gTitle = gTitleBox
+      .append("g")
+      .attr("class", "titleG")
+      .attr("transform", `translate(0, ${chart.fontsize_title})`);
+    let gSubtitle = gTitleBox
+      .append("g")
+      .attr("class", "subtitleG")
+      .attr("transform", `translate(0, ${chart.y_g_subtitle})`);
+
+    let gReference = gReferenceBox.append("g").attr("class", "reference");
+    let gMadeBy = gReferenceBox
+      .append("g")
+      .attr("class", "madeBy")
+      .attr("transform", `translate(0, ${chart.y_g_madeBy})`);
 
     return {
       svg,
@@ -233,7 +251,12 @@ export default class BarFactory {
       gLegend,
       gBackground,
       gXAxis,
-      gYAxis
+      gYAxis,
+      gReferenceBox,
+      gTitle,
+      gSubtitle,
+      gReference,
+      gMadeBy
     };
   }
 
@@ -248,10 +271,28 @@ export default class BarFactory {
       gLegend,
       gBackground,
       gXAxis,
-      gYAxis
+      gYAxis,
+      gReferenceBox,
+      gTitle,
+      gSubtitle,
+      gReference,
+      gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     gYAxis.call(chart.customYAxis);
     gXAxis.call(chart.customXAxis);
+    gTitle
+      .append("text")
+      .attr("class", "titleText")
+      .attr("font-size", chart.fontsize_title + "px")
+      .attr("font-style", chart.fontstyle_title)
+      .attr("fill", chart.fontcolor_title)
+      .text(chart.title);
+    gSubtitle
+      .append("text")
+      .attr("class", "subtitleText")
+      .attr("font-size", chart.fontsize_subtitle + "px")
+      .attr("fill", chart.fontcolor_subtitle)
+      .text(chart.subtitle);
     gBody
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
@@ -263,6 +304,20 @@ export default class BarFactory {
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
       .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
+    gReference
+      .append("text")
+      .attr("class", "referenceText")
+      .attr("font-size", chart.fontsize_reference + "px")
+      .attr("font-style", chart.fontstyle_reference)
+      .attr("fill", chart.fontcolor_reference)
+      .text(`자료 출처: ${chart.reference}`);
+    gMadeBy
+      .append("text")
+      .attr("class", "madeByText")
+      .attr("font-size", chart.fontsize_madeBy + "px")
+      .attr("font-style", chart.fontstyle_madeBy)
+      .attr("fill", chart.fontcolor_madeBy)
+      .text(`만든이: ${chart.madeBy}`);
     return gTotal;
   }
 
