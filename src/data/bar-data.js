@@ -1,30 +1,11 @@
-// const arr0 = [
-//   ["letter", "frequency"],
-//   ["A", ".06167"],
-//   ["B", ".01492"],
-//   ["C", ".02782"],
-//   ["D", ".08786"],
-//   ["E", ".03386"]
-// ];
-
-const arr0 = [["letter", "frequency"], ["Q1", "0"], ["Q2", "0"], ["Q3", "0"]];
-
-const arr1 = [
+const arr0 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
   ["Q3", ".24"]
 ];
 
-const arr2 = [
-  ["letter", "frequency"],
-  ["Q1", ".11"],
-  ["Q2", ".22"],
-  ["Q3", ".24"],
-  ["Q4", ".80"]
-];
-
-const arr3 = [
+const arr1 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
@@ -33,23 +14,54 @@ const arr3 = [
 ];
 
 const type = "bar";
-const width_svg = 400;
-const height_svg = 500;
-const margins = { top: 40, bottom: 40, left: 30, right: 30 };
+const width_svg = 750;
+const height_svg = 433;
+const margins = { top: 28, bottom: 40, left: 28, right: 40 };
 const focusType = "";
 const backgroundColor = "white";
-const color = "#e5b443";
-const colorToFocus = "#512cdb";
+const color = "#3182bd";
+const colorToFocus = "#e6550d";
 const opacity = 1;
 const opacityToHide = 0.25;
 const duration = 0;
 const delay = 1000;
 const accumedDelay = 0;
-const paddingBtwRects = 0.4;
 const easing = "easeCubic";
-const radius = 10;
 const delayType = "accumedDelay";
-// const width_rect = 30;
+const paddingBtwRects = 0.4;
+const radius = 10;
+const isLastChart = false;
+const lastFor = 2000;
+
+const fontFamily = "sans-serif";
+const title = "Title";
+const subtitle = "Subtitle";
+const unit = "unit";
+const legend = "legend";
+const reference = "reference";
+const madeBy = "anonymous";
+
+const fontsize_title = "";
+const fontsize_subtitle = "";
+const fontsize_unit = "";
+const fontsize_legend = "";
+const fontsize_reference = "";
+
+const fontcolor_title = "";
+const fontcolor_subtitle = "";
+const fontcolor_unit = "";
+const fontcolor_legend = "";
+const fontcolor_reference = "";
+
+const fontstyle_title = "";
+const fontstyle_unit = "";
+const fontstyle_reference = "";
+
+// Line: 4px;
+
+/*
+title, subtitle, reference, caption
+ */
 
 export const chart0 = {
   type,
@@ -59,15 +71,21 @@ export const chart0 = {
   margins,
 
   focusType,
-  duration,
-  delay: 0,
+  duration: 1500,
+  delay: 1800,
   accumedDelay,
-  easing,
-  delayType,
+  easing: "easeBackOut",
+  delayType: "delayInOrder",
 
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit: "%",
+  title: "주요 금융그룹 충당금",
+  subtitle: "부제는 여기에 위치합니다",
+  reference: "통계청",
+  madeBy: "강선미 기자",
+  fontFamily,
   color,
   colorToFocus,
   opacity,
@@ -81,110 +99,25 @@ export const chart1 = {
   height_svg,
   margins,
 
-  focusType,
-  duration: 1500,
-  delay,
-  accumedDelay,
-  easing: "easeBackOut",
-  delayType: "delayInOrder",
-
-  backgroundColor,
-  paddingBtwRects,
-  radius,
-  color,
-  colorToFocus,
-  opacity: 1,
-  opacityToHide
-};
-
-export const chart2 = {
-  type,
-  rawData: arr2,
-  width_svg,
-  height_svg,
-  margins,
-
   focusType: "end",
   duration: 1500,
   delay,
   accumedDelay,
   easing: "easeBackOut",
   delayType: "delayInOrder",
+  lastFor: 1000,
 
   backgroundColor,
   paddingBtwRects,
   radius,
+  unit,
+  title: "주요 금융그룹 충당금",
+  subtitle: "부제는 여기에 위치합니다",
+  reference,
+  madeBy,
+  fontFamily,
   color,
   colorToFocus,
-  opacity: 1,
+  opacity,
   opacityToHide
 };
-
-export const chart3 = {
-  type,
-  rawData: arr3,
-  width_svg,
-  height_svg,
-  margins,
-
-  focusType: "end",
-  duration: 1000,
-  delay,
-  accumedDelay,
-  easing: "easeBackOut",
-  delayType,
-
-  backgroundColor,
-  paddingBtwRects,
-  radius,
-  color,
-  colorToFocus,
-  opacity: 1,
-  opacityToHide
-};
-
-// const csv0 = `letter,frequency
-// A,.06167
-// B,.01492
-// C,.02782
-// D,.08786
-// E,.03386`;
-
-// const csv1 = `letter,frequency
-// A,.08167
-// B,.01492
-// D,.03386`;
-
-// const csv2 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782
-// D,.03386`;
-
-// const csv3 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782
-// D,.03386
-// E,.01234
-// F,.05647`;
-
-// const csv0 = `letter,frequency
-// A,.06167`;
-
-// const csv1 = `letter,frequency
-// A,.08167
-// B,.01492`;
-
-// const csv2 = `letter,frequency
-// A,.08167`;
-
-// const csv3 = `letter,frequency
-// A,.08167
-// B,.02782
-// C,.03386`;
-
-// const csv2 = `letter,frequency
-// A,.08167
-// B,.01492
-// C,.02782`;

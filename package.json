@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@vx/axis": "^0.0.153",
+    "@vx/axis": "0.0.153",
     "@vx/glyph": "^0.0.153",
     "@vx/grid": "^0.0.153",
     "@vx/group": "^0.0.153",
@@ -23,7 +23,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.2.2",
+    "jest": "^22.3.0",
+    "regenerator-runtime": "^0.11.1"
   }
 }

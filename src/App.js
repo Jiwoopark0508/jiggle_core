@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 
 import Workspace from "./Workspace";
+import { chart0, chart1, chart2 } from "./data/bar-data";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
 import { appleStock } from "@vx/mock-data";
@@ -47,6 +48,7 @@ const chart4 = {
   duration : 1000,
 }
 
+
 class App extends Component {
   render() {
     return (
@@ -58,7 +60,17 @@ class App extends Component {
             } />
           <div id="gif" />
       </div>
-      );
+    );
+    // return (
+    //   <div>
+    //     <Workspace width="700" height="450"
+    //         charts={[
+    //           chart1, chart2, chart3
+    //         ]
+    //         } />
+    //       <div id="gif" />
+    //   </div>
+    //   );
   }
 }
 
