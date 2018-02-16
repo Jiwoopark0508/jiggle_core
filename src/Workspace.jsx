@@ -21,7 +21,7 @@ export default class Workspace extends React.Component {
     // draw chart
     const renderer = bar.renderChart();
     const gTotal = renderer(this.node, props.charts[0]);
-    console.log(bar.getChildG(gTotal));
+    // console.log(bar.getChildG(renderer(this.node, props.charts[0])));
 
     // draw transition
     // const renderTransition = bar.renderTransition();

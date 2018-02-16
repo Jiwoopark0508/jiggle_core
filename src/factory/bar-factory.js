@@ -57,7 +57,18 @@ export default class BarFactory {
   }
 
   getChildG(gParent) {
-    const layers = ["titleBox", "graph", "axis", "background", "legend"];
+    const layers = [
+      "total",
+      "body",
+      "footer",
+      "title",
+      "legend",
+      "background",
+      "axis",
+      "graph",
+      "legend",
+      "reference"
+    ];
     const childNodes = gParent.selectAll("g").nodes();
     const result = childNodes.reduce((acc, child) => {
       const childSelection = d3.select(child);
@@ -220,6 +231,7 @@ export default class BarFactory {
       .attr("class", "x axis")
       .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
     let gYAxis = gBody.append("g").attr("class", "y axis");
+    let gGraph = gBody.append("g").attr("class", "graph");
 
     let gReferenceBox = gFooter
       .append("g")
@@ -252,6 +264,7 @@ export default class BarFactory {
       gBackground,
       gXAxis,
       gYAxis,
+      gGraph,
       gReferenceBox,
       gTitle,
       gSubtitle,
@@ -272,6 +285,7 @@ export default class BarFactory {
       gBackground,
       gXAxis,
       gYAxis,
+      gGraph,
       gReferenceBox,
       gTitle,
       gSubtitle,
@@ -293,7 +307,7 @@ export default class BarFactory {
       .attr("font-size", chart.fontsize_subtitle + "px")
       .attr("fill", chart.fontcolor_subtitle)
       .text(chart.subtitle);
-    gBody
+    gGraph
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
       .enter()
