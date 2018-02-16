@@ -1,12 +1,14 @@
 import React from 'react'
 import { Group } from '@vx/group'
 import { LinePath } from '@vx/shape'
-import { AxisLeft, AxisBottom } from '@vx/axis'
 import { GridColumns } from '@vx/grid'
+import { GridRows } from '@vx/grid'
 import StripeColumns from './meta-components/stripe_columns'
 import TransitionLinePath from './transition_line_path'
+import AxisLeft from './meta-components/AxisLeft'
+import AxisBottom from './meta-components/AxisBottom'
+import Header from './meta-components/Header'
 import _ from 'lodash'
-import moment from 'moment'
 import numeral from 'numeral'
 
 import * as d3 from 'd3'
@@ -58,13 +60,13 @@ export default class JiggleLineTransition {
         let accessors = parsedResult[1]
         let header = parsedResult[2]
 
-        const width = 750
-        const height = 400
+        const width = 800
+        const height = 500
         const margin = {
-            top : 60,
+            top : 100,
             bottom : 60,
-            left: 80,
-            right : 80
+            left: 60,
+            right : 60
         }
 
         const xMax = width - margin.left - margin.right
@@ -82,13 +84,14 @@ export default class JiggleLineTransition {
         y_extent = d3.extent(y_extent)
 
         let xScaleDomain = d3.extent(flatten_data, x)
+        
         const xScale = d3.scaleTime()
             .range([0, xMax])
-            .domain(xScaleDomain).nice()
+            .domain(xScaleDomain)
         
         const yScale = d3.scaleLinear()
                 .range([yMax, 0])
-                .domain(y_extent).nice()
+                .domain(y_extent)
         return (
             <g
                 ref={(node) => this.domNode = node}>
@@ -96,7 +99,13 @@ export default class JiggleLineTransition {
                     width={width}
                     height={height}
                     fill={"#f8f8f8"}/>
-                
+                <Group>
+                    <Header
+                        font-size={35}
+                        >
+                        {"타이틀 입니다."}
+                    </Header>
+                </Group>
                 <Group top={margin.top} left={margin.left}>
                     <Group>
                         <StripeColumns
@@ -104,12 +113,16 @@ export default class JiggleLineTransition {
                             height={yMax}
                             numTicks={8}
                         />
+                        <GridRows 
+                            scale={yScale}
+                            width={xMax}
+                        />
                         <AxisBottom
                             scale={xScale}
                             top={yMax}
+                            // rangePadding={100}
                             label={header[0]}
                             stroke={'#e2e2e2'}
-                            numTicks={4}
                             hideTicks={true}
                             labelProps = {{
                                 textAnchor: 'middle',
@@ -117,13 +130,14 @@ export default class JiggleLineTransition {
                                 fontSize: 10,
                                 fill: '#2e2e2e',
                             }}
+                            numTicks={6}
                             tickLabelProps = {(tickValue, index) => ({
-                                textAnchor: 'end',
-                                fontFamily: 'Arial',
-                                fontSize: 10,
-                                fill: '#2e2e2e',
-                                dx: '-0.25em',
-                                dy: '-0.25em'
+                                textAnchor: 'middle',
+                                fontFamily: 'Spoqa Hans Regular',
+                                fontSize: 14,
+                                fill: '#7F7F7F',
+                                dx: '2.2em',
+                                dy: '0'
                             })}
                         />
                         <AxisLeft
@@ -141,11 +155,12 @@ export default class JiggleLineTransition {
                                 fill: '#2e2e2e',
                             }}
                             tickLabelProps = {(tickValue, index) => ({
-                                textAnchor: 'end',
-                                fontFamily: 'Arial',
-                                fontSize: 10,
-                                fill: '#2e2e2e',
+                                textAnchor: 'middle',
+                                fontFamily: 'Spoqa Hans Regular',
+                                fontSize: 14,
+                                fill: '#7F7F7F',
                                 dx: '-0.25em',
+                                dy: '-0.25em'
                             })}
                         />
                     </Group>

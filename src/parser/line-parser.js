@@ -5,6 +5,11 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 
+moment.locale("ko",{
+    weekdays: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
+    weekdaysShort: ["일","월","화","수","목","금","토"],
+})
+
 function keyParse(time) {
     return moment(time)
 }

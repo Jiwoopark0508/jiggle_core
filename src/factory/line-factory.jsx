@@ -74,16 +74,14 @@ export default class LineChartFactory {
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
-      
+    
       let totalDuration = 0
-      for(var i = 1; i < chtList.length; i++) {
-        let c = chtList[i]
-        totalDuration += c.duration + c.delay
-      }
+      let cht = chtList[idx]
+      totalDuration = cht.duration + cht.delay
 
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
-
+      console.log(totalDuration)
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
         promises.push(
@@ -141,6 +139,7 @@ export default class LineChartFactory {
         });
       if (pending.length === 0) return;
       pending.forEach(function(tran, i) {
+        console.log(tran)
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
         tran.tween.forEach(function(tween) {

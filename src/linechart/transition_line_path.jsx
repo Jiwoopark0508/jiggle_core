@@ -41,19 +41,20 @@ export default class TransitionLinePath extends React.Component {
     playTransition(idx, partial) {
         if (!idx) idx = 1;
         let g = d3.select(this.transPath)
-        // this._glyphTransition(g, this, 0, 6)
         this._playLineTransition(g, this, idx, partial)
     }
 
-    _glyphTransition(g, that, start, end) {
-        // from start to end give transition
+    _glyphTransition(g, that, start, end, _delay) {
+
         let glyphs = that.glyphList.slice(start - 1, end)
+        let single_delay = _delay / (end - start + 1)
         glyphs.forEach((d, i) => {
             d3.select(d)
                 .transition()
-                .duration(500 * i)
+                .duration(500)
+                .delay(single_delay * i - 100)
                 .style("opacity", 1)
-                .attr("r", 4)
+                .attr("r", 3)
         })
     }
 
@@ -63,19 +64,19 @@ export default class TransitionLinePath extends React.Component {
         if (!endsAt) return;
         let glyph_start = that.glyphCountList[idx - 1]
         let glyph_end = that.glyphCountList[idx]
-        g.call(that._glyphTransition, that, glyph_start, glyph_end)
+        g.call(that._glyphTransition, that, glyph_start, glyph_end, that.delayList[idx])
         g
             .attr("stroke-dashoffset", this.totalLength - startsAt)
             .transition()
-            .delay(that.delayList[idx])
+            .ease(d3.easeQuad)
             .duration(that.durationList[idx])
+            .delay(that.delayList[idx])
             .attr("stroke-dashoffset", this.totalLength - endsAt)
             .on("end", function() {
                 if (!partial) {
                     g.call(that._playLineTransition, that, idx + 1)
-                }
+                } 
             })
-        
     }
     
     render() {
@@ -89,9 +90,10 @@ export default class TransitionLinePath extends React.Component {
                     yScale={props.yScale}
                     x={props.x}
                     y={props.y}
-                    stroke={props.stroke}
+                    strokeWidth={2.5}
                     glyph={(d, i) => {
-                        let dot = <JiggleGlyph
+                        let dot = 
+                        <JiggleGlyph
                             innerRef={(node) => this.glyphList.push(node)}
                             className={"glyph-dots"}
                             key={`line-dot-${i}`}
@@ -102,7 +104,15 @@ export default class TransitionLinePath extends React.Component {
                             strokeWidth={2}
                             fill={"white"}
                             style={{opacity : 0}}
-                        />
+                        >
+                            <text
+                                x={props.xScale(props.x(d))}
+                                y={props.yScale(props.y(d))}
+                                dx={10}
+                                >
+                                {"Hi Text"}
+                            </text>
+                        </JiggleGlyph>
                         return dot;
                     }}
                 />
