@@ -15,23 +15,35 @@ export default function JiggleGlyph({
   stroke,
   strokeWidth,
   strokeDasharray,
+  labelText,
+  x,
+  y,
+  dx,
   ...restProps
 }) {
   return (
-    <Group top={top} left={left}>
-      <circle
-        ref={innerRef}
-        className={classnames('vx-glyph-dot', className)}
-        cx={cx}
-        cy={cy}
-        r={r}
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-        strokeDasharray={strokeDasharray}
-        {...restProps}
-      />
-      {children}
-    </Group>
+      <Group top={top} left={left}>
+        <circle
+          ref={innerRef}
+          className={classnames('vx-glyph-dot', className)}
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
+          strokeDasharray={strokeDasharray}
+          {...restProps}
+        />
+        <text
+            x={cx}
+            y={cy}
+            dx={dx}
+            {...restProps}
+            >
+            {labelText}
+        </text>
+        {children}
+      </Group>
   );
 }

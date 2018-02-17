@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 
 import Workspace from "./Workspace";
-import { chart0, chart1, chart2 } from "./data/bar-data";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
-import { appleStock } from "@vx/mock-data";
 import { dummie } from './data/line_dummy4'
 
 const chart1 = {
@@ -15,7 +13,9 @@ const chart1 = {
   sub_title : "이것은 1부제입니다",
   reference : "이것은 1레퍼런스입니다",
   caption : "이것은 1캡처입니다",
-  delay : 3000
+  delay : 3000,
+  width_svg : 1000,
+  height_svg : 800
 }
 
 const chart2 = {
@@ -26,6 +26,8 @@ const chart2 = {
   caption : "이것은 2캡처입니다",
   delay : 0,
   duration : 1000,
+  width_svg : 1000,
+  height_svg : 800
 }
 
 const chart3 = {
@@ -36,6 +38,8 @@ const chart3 = {
   caption : "이것은 3캡처입니다",
   delay : 1000,
   duration : 1000,
+  width_svg : 1000,
+  height_svg : 800
 }
 
 const chart4 = {
@@ -46,6 +50,8 @@ const chart4 = {
   caption : "이것은 3캡처입니다",
   delay : 1000,
   duration : 1000,
+  width_svg : 1000,
+  height_svg : 800
 }
 
 

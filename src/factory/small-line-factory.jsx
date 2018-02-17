@@ -5,7 +5,9 @@ import JiggleLineStatic from '../linechart/jiggle_line_static'
 import JiggleLineTransition from '../linechart/jiggle_line_transition';
 import _ from "lodash"
 
-export default class LineChartFactory {
+const SMALL = "SMALL" // This template is for small data line
+
+export default class SmallDataLineFactory {
   constructor() {
     this.lineInstance = null
   }
@@ -18,8 +20,6 @@ export default class LineChartFactory {
   
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
-      // const allElements = g.selectAll("*");
-      // Stop all transition, and re draw
       this._drawTransitionChart(svgElement, chartConfigList)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
@@ -28,10 +28,13 @@ export default class LineChartFactory {
   
   _drawTransitionChart(svgElement, chartConfigList) {
     // this function draw transition between two chart configs
-    let line_transition_instance = new JiggleLineTransition(chartConfigList);
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_transition_instance = new JiggleLineTransition(chartConfigList, SMALL);
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
-    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
+    ReactDOM.render(jiggle_line_transition, svgElement)
 
     return jiggle_line_transition
   }
@@ -81,7 +84,6 @@ export default class LineChartFactory {
 
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
-      console.log(totalDuration)
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
         promises.push(
@@ -164,7 +166,7 @@ export default class LineChartFactory {
     let line_static_instance = new JiggleLineStatic();
     let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
 
-    ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
+    ReactDOM.render(jiggle_line, svgElement)
   }
 
 }

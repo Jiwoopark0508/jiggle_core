@@ -10,7 +10,7 @@ import JiggleGlyph from './jiggle_glyph';
 import _ from 'lodash'
 import * as d3 from 'd3'
 
-export default class TransitionLinePath extends React.Component {
+export default class SmallTransitionLinePath extends React.Component {
     constructor(props){
         super(props)
         this.pathList = []

@@ -5,7 +5,9 @@ import JiggleLineStatic from '../linechart/jiggle_line_static'
 import JiggleLineTransition from '../linechart/jiggle_line_transition';
 import _ from "lodash"
 
-export default class LineChartFactory {
+const LARGE = "LARGE"
+
+export default class LargeDataLineFactory {
   constructor() {
     this.lineInstance = null
   }
@@ -28,7 +30,10 @@ export default class LineChartFactory {
   
   _drawTransitionChart(svgElement, chartConfigList) {
     // this function draw transition between two chart configs
-    let line_transition_instance = new JiggleLineTransition(chartConfigList);
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_transition_instance = new JiggleLineTransition(chartConfigList, LARGE);
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])

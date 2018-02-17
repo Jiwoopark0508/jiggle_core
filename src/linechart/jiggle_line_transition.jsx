@@ -5,6 +5,8 @@ import { GridColumns } from '@vx/grid'
 import { GridRows } from '@vx/grid'
 import StripeColumns from './meta-components/stripe_columns'
 import TransitionLinePath from './transition_line_path'
+import SmallTransitionLine from './transition_line_small'
+import LargeTransitionLine from './transition_line_large'
 import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
 import Header from './meta-components/Header'
@@ -14,8 +16,11 @@ import numeral from 'numeral'
 import * as d3 from 'd3'
 import { lineParser, access_gen } from '../parser/line-parser'
 
+const LARGE = "LARGE"
+const SMALL = "SMALL"
+
 export default class JiggleLineTransition {
-    constructor(charts) {
+    constructor(charts, type) {
         this.transition = ""
         this.node = null
         this.transPathLines = []
@@ -24,19 +29,24 @@ export default class JiggleLineTransition {
         this.dataCollection = _.map(this.chartList, (c) => {
             return c.data
         })
+        this.lineType = this.setLineType(type)
+    }
+
+    setLineType(type) {
+        if (type == SMALL) {
+            return (<SmallTransitionLine />)
+        } else if (type == LARGE) {
+            return (<LargeTransitionLine />)
+        }
     }
 
     playWholeLineTransition(idx, partial, record) {
-        if (record) {
-            // Line Transition
+        if (record) { // Record Transition
             this.transPathLines.forEach((l, i) => {
                 l.playTransition(idx, partial)
             })
         }
-        else {
-            // Glyph Transition
-            // Glyph Transition Location
-            // Line Transition
+        else { // Preview Transition
             process.nextTick(() => {
                 this.transPathLines.forEach((l, i) => {
                     l.playTransition(idx, partial)
@@ -84,7 +94,7 @@ export default class JiggleLineTransition {
         y_extent = d3.extent(y_extent)
 
         let xScaleDomain = d3.extent(flatten_data, x)
-        
+
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
@@ -164,7 +174,25 @@ export default class JiggleLineTransition {
                             })}
                         />
                     </Group>
-                    {processedData.map((d, i) => {
+                    { 
+                        processedData.map((d, i) => {
+                            return (
+                                React.cloneElement(this.lineType,
+                                    {
+                                        key : i,
+                                        ref : (node) => {this.transPathLines.push(node)},
+                                        chartList : chartList,
+                                        dataList : d,
+                                        x : x,
+                                        y : accessors[i + 1],
+                                        xScale : xScale,
+                                        yScale : yScale
+                                    }
+                                )
+                            )
+                        })
+                        }
+                    {/* {processedData.map((d, i) => {
                         return (
                             <TransitionLinePath 
                                 key={i}
@@ -178,7 +206,7 @@ export default class JiggleLineTransition {
                             />
                             )
                         })
-                    }
+                    } */}
                     
                 </Group>
             </g>
