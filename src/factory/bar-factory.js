@@ -189,15 +189,6 @@ export default class BarFactory {
     return tweeners;
   }
 
-  _drawBI(that, svgElement, chart) {
-    let { gTotal, gXAxis } = that._drawSkeleton(svgElement, chart);
-    gXAxis
-      .append("path")
-      // .attr("transform", `translate(0, ${chart.height_g_body})`)
-      .call(chart.BILine);
-    return gTotal;
-  }
-
   _drawSkeleton(svgElement, chart) {
     let svg = d3.select(svgElement);
     svg.selectAll("*").remove();
@@ -209,11 +200,11 @@ export default class BarFactory {
       .append("g")
       .attr("class", "total")
       .attr("transform", `translate(${chart.x_g_total}, ${chart.y_g_total})`);
-    let gHeader = gTotal.append("g").attr("class", "header");
     let gBody = gTotal
       .append("g")
       .attr("class", "body")
       .attr("transform", `translate(${chart.x_g_body}, ${chart.y_g_body})`);
+    let gHeader = gTotal.append("g").attr("class", "header");
     let gFooter = gTotal
       .append("g")
       .attr("class", "footer")
@@ -298,6 +289,7 @@ export default class BarFactory {
     } = that._drawSkeleton(svgElement, chart);
     gYAxis.call(chart.customYAxis);
     gXAxis.call(chart.customXAxis);
+    gXAxis.append("path").call(chart.staticBILine);
     gTitle
       .append("text")
       .attr("class", "titleText")
@@ -322,6 +314,20 @@ export default class BarFactory {
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
       .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
+    gGraph
+      .selectAll("text")
+      .data(chart.data, chart.dataKey)
+      .enter()
+      .append("text")
+      .attr("class", "graphText")
+      .attr("font-size", chart.fontsize_graphText + "px")
+      .attr("fill", chart.fontcolor_graphText)
+      .attr("x", d => chart.xScale(d[chart.xLabel]))
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
+      .attr("dx", chart.xScale.bandwidth() / 2)
+      .attr("dy", "-0.5em")
+      .attr("text-anchor", "middle")
+      .text(d => +d[chart.yLabel]);
     gReference
       .append("text")
       .attr("class", "referenceText")
@@ -336,6 +342,12 @@ export default class BarFactory {
       .attr("font-style", chart.fontstyle_madeBy)
       .attr("fill", chart.fontcolor_madeBy)
       .text(`만든이: ${chart.madeBy}`);
+    return gTotal;
+  }
+
+  _drawBI(that, svgElement, chart) {
+    let { gTotal, gXAxis } = that._drawSkeleton(svgElement, chart);
+    gXAxis.append("path").call(chart.BILine);
     return gTotal;
   }
 
@@ -354,7 +366,7 @@ export default class BarFactory {
       .call(chart.customXAxis);
     // Update selection
     let rect = g
-      .select(".body")
+      .select(".graph")
       .selectAll("rect")
       .data(chart.data, chart.dataKey);
     rect

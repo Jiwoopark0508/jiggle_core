@@ -59,6 +59,10 @@ export function parseBar(chart) {
     .domain(chart.data.map(chart.xAccessor))
     .rangeRound([0, chart.width_g_body])
     .padding(chart.paddingBtwRects);
+  while (chart.xScale.bandwidth() > 50) {
+    chart.paddingBtwRects += 0.01;
+    chart.xScale.padding(chart.paddingBtwRects);
+  }
   chart.yScale = d3
     .scaleLinear()
     .domain([0, d3.max(chart.data, chart.yAccessor)])
@@ -99,35 +103,88 @@ export function parseBar(chart) {
       .ease(d3.easeLinear)
       .attr("stroke-dashoffset", 0);
   };
+
+  chart.staticBILine = function(path) {
+    const data = d3.range(2);
+    const lineXScale = d3
+      .scaleLinear()
+      .domain(data)
+      .range([0, chart.width_g_body]);
+    const lineYScale = d3
+      .scaleLinear()
+      .domain(data)
+      .range([0, 0]);
+    let line = d3
+      .line()
+      .curve(d3.curveLinear)
+      .x(function(d, i) {
+        return lineXScale(i);
+      })
+      .y(function(d) {
+        return lineYScale(d);
+      });
+    path
+      .attr("d", line(data))
+      .attr("stroke", chart.colorBI)
+      .attr("stroke-width", "2")
+      .attr("fill", "none");
+    const totalLength = path.node().getTotalLength();
+    path
+      .attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dashoffset", 0);
+  };
+
   chart.customYAxis = function(g) {
+    const yAxis = d3
+      .axisLeft(chart.yScale)
+      .ticks(chart.numOfYAxisTicks)
+      .tickSize(-chart.width_g_body + chart.margins.right / 2)
+      .tickFormat(d => d);
+    const tickArr = chart.yScale.ticks(chart.numOfYAxisTicks);
+    const arrLen = tickArr.length;
+    const y = chart.yScale;
+    const tickDistance = y(tickArr[arrLen - 2]) - y(tickArr[arrLen - 1]);
     g
-      .call(
-        d3
-          .axisLeft(chart.yScale)
-          .tickSize(-chart.width_g_body + chart.margins.right / 2)
-          .tickFormat(function(d) {
-            return this.parentNode.nextSibling
-              ? d
-              : `${d}\n(단위: ${chart.unit})`;
-          })
-      )
-      .selectAll(".domain")
+      .call(yAxis)
+      .selectAll(".domain, .tick line")
       .style("display", "none");
 
-    // let lines = g.selectAll(".tick:not(:first-of-type) line");
-    let lines = g.selectAll(".tick line");
-    lines.attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    // g.selectAll(".tick rect").remove();
+
+    g
+      .selection()
+      .selectAll(".tick")
+      .append("rect")
+      .attr(
+        "fill",
+        (d, i) =>
+          i !== 0 && i % 2 === 1 ? chart.colorStripe1 : chart.colorStripe2
+      )
+      .attr("y", -tickDistance)
+      .attr("width", chart.width_g_body)
+      .attr("height", tickDistance);
+
+    // g.selectAll(".tick line").remove();
+    // lines.attr("stroke", "#777").attr("stroke-dasharray", "2,2");
     g
       .selectAll(".tick text")
-      .attr("x", -12)
-      .attr("dy", -4)
+      .attr("dx", -chart.margins.left)
+      // .attr("dx", function() {
+      //   console.log(this);
+      //   const textWidth = this.getComputedTextLength() * 1.5;
+      //   return -textWidth;
+      // })
+      // .attr("dy", -4)
+      .attr("font-size", chart.fontsize_yAxis + "px")
       .style("text-anchor", "start");
   };
+
   chart.customXAxis = function(g) {
     g
       .call(d3.axisBottom(chart.xScale))
       .selectAll(".domain,line")
       .style("display", "none");
+    g.selectAll(".tick text").attr("font-size", chart.fontsize_xAxis + "px");
   };
 
   // chart.colorScale = d3
@@ -163,6 +220,12 @@ function setSkeleton(chart) {
     chart.fontsize_reference || chart.height_g_total * factor_tertiary_fontsize;
   chart.fontsize_madeBy =
     chart.fontsize_madeBy || chart.height_g_total * factor_tertiary_fontsize;
+  chart.fontsize_yAxis =
+    chart.fontsize_yAxis || chart.height_g_total * factor_tertiary_fontsize;
+  chart.fontsize_xAxis =
+    chart.fontsize_xAxis || chart.height_g_total * factor_tertiary_fontsize;
+  chart.fontsize_graphText =
+    chart.fontsize_graphText || chart.height_g_total * factor_tertiary_fontsize;
 
   chart.y_g_title = chart.fontsize_title;
   chart.y_g_subtitle =
@@ -190,6 +253,10 @@ function setSkeleton(chart) {
   chart.fontcolor_legend = chart.fontcolor_legend || "#4B4949";
   chart.fontcolor_reference = chart.fontcolor_reference || "#7F7F7F";
   chart.fontcolor_madeBy = chart.fontcolor_madeBy || "#7F7F7F";
+  chart.fontcolor_graphText = chart.fontcolor_graphText || "#000000";
+  chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
+  chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
+  chart.colorBI = chart.colorBI || "#3182bd";
 
   chart.fontstyle_title = chart.fontstyle_title || "bold";
   chart.fontstyle_unit = chart.fontstyle_unit || "bold";

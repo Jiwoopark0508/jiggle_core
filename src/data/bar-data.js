@@ -2,7 +2,7 @@ const arr0 = [
   ["letter", "frequency"],
   ["Q1", ".11"],
   ["Q2", ".22"],
-  ["Q3", ".24"]
+  ["Q3", ".28"]
 ];
 
 const arr1 = [
@@ -32,6 +32,9 @@ const paddingBtwRects = 0.4;
 const radius = 10;
 const isLastChart = false;
 const lastFor = 2000;
+const numOfYAxisTicks = 8;
+const colorStripe1 = "";
+const colorStripe2 = "";
 
 const fontFamily = "sans-serif";
 const title = "Title";
@@ -85,6 +88,7 @@ export const chart0 = {
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
+  numOfYAxisTicks,
   fontFamily,
   color,
   colorToFocus,

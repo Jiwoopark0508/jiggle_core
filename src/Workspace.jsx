@@ -19,13 +19,13 @@ export default class Workspace extends React.Component {
     // single bar
     const bar = new BarFactory();
     // draw chart
-    const renderer = bar.renderChart();
+    // const renderer = bar.renderChart();
     // const gTotal = renderer(this.node, props.charts[0]);
-    console.log(bar.getChildG(renderer(this.node, props.charts[0])));
+    // console.log(bar.getChildG(renderer(this.node, props.charts[0])));
 
     // draw transition
-    // const renderTransition = bar.renderTransition();
-    // renderTransition(this.node, [...props.charts]);
+    const renderTransition = bar.renderTransition();
+    renderTransition(this.node, [...props.charts]);
 
     // record transition
     // const gifDiv = document.getElementById("gif");
