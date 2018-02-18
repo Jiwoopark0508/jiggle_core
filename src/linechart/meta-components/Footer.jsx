@@ -8,7 +8,6 @@ export default function Footer({
     left = 40,
     children
 }) {
-    console.log(configs)
     return (
         <Group>
             <Text

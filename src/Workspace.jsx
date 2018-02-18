@@ -16,6 +16,8 @@ export default class Workspace extends React.Component {
     // renderer(this.node, props.charts[0]);
     const renderTransition = factory.renderTransition();
     renderTransition(this.node, [...props.charts]);
+
+    // factory.recordTransition(this.node, [...props.charts]);
   }
 
   render() {

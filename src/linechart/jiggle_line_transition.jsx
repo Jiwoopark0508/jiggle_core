@@ -2,10 +2,11 @@ import React from 'react'
 // import { Group } from '@vx/group'
 import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
-import { GridColumns } from '@vx/grid'
-import { GridRows } from '@vx/grid'
+// import { GridColumns } from '@vx/grid'
+// import { GridRows } from '@vx/grid'
 import { skeleton } from '../common/constant'
-import StripeColumns from './meta-components/stripe_columns'
+// import StripeColumns from './meta-components/stripe_columns'
+import StripeRows from './meta-components/stripe_rows'
 import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
 import LargeTransitionLine from './transition_line_large'
@@ -13,9 +14,9 @@ import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
 import Header from './meta-components/Header'
 import Footer from './meta-components/Footer'
+import * as util from '../common/utils'
 import _ from 'lodash'
 import numeral from 'numeral'
-
 import * as d3 from 'd3'
 import { lineParser, access_gen } from '../parser/line-parser'
 
@@ -143,17 +144,12 @@ export default class JiggleLineTransition {
     _background(chartConfigs, scale) {
         return (
             <Group>
-                <StripeColumns
-                    scale={scale.xScale}
-                    height={scale.yMax}
-                    numTicks={8}
-                    fill={chartConfigs.backgroundColor}
-                />
-                {/* <GridRows 
+                <StripeRows
                     scale={scale.yScale}
                     width={scale.xMax}
-                /> */}
-                
+                    fill={chartConfigs.backgroundColor}
+                    tickValues={scale.yTickValues}
+                />
             </Group>
         )
     }
@@ -202,6 +198,7 @@ export default class JiggleLineTransition {
                         dx: '-1em',
                         dy: '-0.25em'
                     })}
+                    tickValues={scale.yTickValues}
                 />
             </Group>
         )
@@ -241,30 +238,33 @@ export default class JiggleLineTransition {
         const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
 
         const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
-        console.log(xMax)
         const yMax = skeleton.height_body
         
         const x = accessors[0]
-        let y_extent = []
+        let yScaleDomain = []
         accessors.reduce((rec, d) => {
             return rec.concat(d)
         }, [])
         accessors.forEach((f, i) => {
             if (i < 1) return;
-            y_extent = y_extent.concat(d3.extent(flatten_data, f))
+            yScaleDomain = yScaleDomain.concat(d3.extent(flatten_data, f))
         })
-        y_extent = d3.extent(y_extent)
-
+        yScaleDomain = d3.extent(yScaleDomain)
+        
         let xScaleDomain = d3.extent(flatten_data, x)
+        // xScaleDomain = util.padLineDomain(xScaleDomain)
         // let xScaleGraphDomain = padded xScaleDomain
+        yScaleDomain = d3.extent(util.refineYAxis(yScaleDomain))
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
         
         const yScale = d3.scaleLinear()
-                .range([yMax, 0])
-                .domain(y_extent)
+            .range([yMax, 0])
+            .domain(yScaleDomain)
         
+        const yTickValues = util.refineYAxis(yScaleDomain.slice())
+
         const scales = {
             xScale,
             yScale,
@@ -273,7 +273,8 @@ export default class JiggleLineTransition {
             header,
             accessors,
             x,
-            chartList
+            chartList,
+            yTickValues
         }
         
         return (

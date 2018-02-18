@@ -32,7 +32,6 @@ export default class SmallTransitionLinePath extends React.Component {
         this.pathList.forEach((p, i) => {
             this.lengthList.push(p.getTotalLength())
         })
-        console.log(this.glyphCountList)
         this.totalLength = this.lengthList[this.lengthList.length - 1]
         d3.select(this.transPath)
             .attr("stroke-dasharray", this.totalLength)

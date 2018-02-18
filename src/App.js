@@ -22,7 +22,7 @@ const chart1 = {
   margins : {
     top : 40, bottom : 40, left: 60, right : 60
   },
-  ...LIGHT
+  ...DARK
 }
 
 const chart2 = {
