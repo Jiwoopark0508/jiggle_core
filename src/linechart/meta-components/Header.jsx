@@ -1,17 +1,18 @@
 import React from 'react'
 import { Group } from '@vx/group'
-import { Text } from '@vx/text'
+import Text from './Text'
 
-export default function Headers({
+export default function Header({
     configs,
     left = 0,
     top = 0,
+    fontSize,
     children
 }) {
     return (
         <Group top={top} left={left}>
             <Text
-                fontSize={30}
+                fontSize={39}
                 fontFamily={"Spoqa Hans Bold"}
                 fill={configs.colorPrimary}
             >

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Group } from '@vx/group'
-import { Text } from '@vx/text'
+import Text from './Text'
 
 export default function Footer({
     configs,
@@ -10,17 +10,18 @@ export default function Footer({
 }) {
     console.log(configs)
     return (
-        <Group top={configs.height_svg} left={40}>
+        <Group>
             <Text
-                fontSize={30}
+                fontSize={16}
                 fontFamily={"Spoqa Hans Bold"}
                 fill={configs.colorTernary}
             >
-                출 처 - {configs.reference}
+                출처 - {configs.reference}
             </Text>
             <Text
                 y={28}
-                fontFamily={"Spoqa Hans Regular"}
+                fontSize={16}
+                fontFamily={"Spoqa Hans Bold"}
                 fill={configs.colorTernary}
                 >
                 만든 이 - {configs.madeBy}

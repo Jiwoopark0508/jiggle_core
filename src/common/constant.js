@@ -12,4 +12,20 @@ const LIGHT = {
     backgroundColor : "#F4F4F4"
 }
 
-export { DARK, LIGHT }
+const skeleton = {
+    global_margin : {
+        top : 40,
+        left : 60,
+        right : 60,
+        bottom : 40,
+    },
+    height_header : 115,
+    height_body : 320,
+    height_footer : 60,
+    graph_margin : {
+        left : 160,
+        right : 160,
+    }
+}
+
+export { DARK, LIGHT, skeleton }

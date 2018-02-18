@@ -4,6 +4,7 @@ import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
 import { GridColumns } from '@vx/grid'
 import { GridRows } from '@vx/grid'
+import { skeleton } from '../common/constant'
 import StripeColumns from './meta-components/stripe_columns'
 import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
@@ -42,7 +43,14 @@ export default class JiggleLineTransition {
         }
     }
     setSkeleton(chartConfig) {
-        return chartConfig
+        const height_header = 115
+        const height_body = 345
+        const height_footer = 60
+        return {
+            height_header,
+            height_body,
+            height_footer
+        }
     }
     playWholeLineTransition(idx, partial, record) {
         if (record) { // Record Transition
@@ -69,10 +77,12 @@ export default class JiggleLineTransition {
     _header(chartConfigs) {
         return (
             <Group
+                top={20}
+                left={15}
+                className={"header"}
                 innerRef={(node) => {this.header = node}}
             >
                 <Header
-                    font-size={35}
                     configs={chartConfigs}
                     >
                 </Header>
@@ -93,10 +103,11 @@ export default class JiggleLineTransition {
             chartConfig, scale
         )
         return (
-            <Group 
+            <Group
+                className={"body"}
                 innerRef={(node) => {this.body = node}}
-                top={chartConfig.margins.top}
-                left={chartConfig.margins.left}
+                top={skeleton.height_header}
+                left={skeleton.graph_margin.left}
             >
                 {axis}
                 {background}
@@ -122,7 +133,9 @@ export default class JiggleLineTransition {
             )
         })
         return (
-            <Group>
+            <Group
+                className={"graph"}
+                >
                 {lines}
             </Group>
         )
@@ -150,8 +163,6 @@ export default class JiggleLineTransition {
                 <AxisBottom
                     scale={scale.xScale}
                     top={scale.yMax}
-                    // rangePadding={100}
-                    label={scale.header[0]}
                     stroke={chartConfigs.colorSecondary}
                     hideTicks={true}
                     labelProps = {{
@@ -174,7 +185,6 @@ export default class JiggleLineTransition {
                     scale={scale.yScale}
                     top={0}
                     left={0}
-                    label={scale.header[1]}
                     stroke={chartConfigs.colorSecondary}
                     hideTicks={true}
                     numTicks={4}
@@ -189,7 +199,7 @@ export default class JiggleLineTransition {
                         fontFamily: 'Spoqa Hans Regular',
                         fontSize: 14,
                         fill: '#7F7F7F',
-                        dx: '-0.25em',
+                        dx: '-1em',
                         dy: '-0.25em'
                     })}
                 />
@@ -199,9 +209,14 @@ export default class JiggleLineTransition {
     // Footer
     _footer(chartConfig) {
         return (
-        <Footer 
-            configs={chartConfig}
-        />)
+            <Group
+                className="footer"
+                top={chartConfig.height_svg - skeleton.height_footer - skeleton.global_margin.bottom}
+                >
+                <Footer 
+                    configs={chartConfig}
+                />
+            </Group>)
     }
 
     renderTransitionLine(chartList) {
@@ -220,10 +235,14 @@ export default class JiggleLineTransition {
         let header = parsedResult[2]
 
         const chartConfigs = this.getChartConfigs(chartList)
-        const margin = chartConfigs.margins
+        const margin = skeleton.global_margin
+        // TODO --> Amend xMax and yMax
+        const width_g_total = chartConfigs.width_svg - margin.left - margin.right
+        const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
 
-        const xMax = chartConfigs.width_svg - margin.left - margin.right
-        const yMax = chartConfigs.height_svg - margin.top - margin.bottom
+        const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
+        console.log(xMax)
+        const yMax = skeleton.height_body
         
         const x = accessors[0]
         let y_extent = []
@@ -237,7 +256,7 @@ export default class JiggleLineTransition {
         y_extent = d3.extent(y_extent)
 
         let xScaleDomain = d3.extent(flatten_data, x)
-
+        // let xScaleGraphDomain = padded xScaleDomain
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
@@ -258,20 +277,20 @@ export default class JiggleLineTransition {
         }
         
         return (
-            <g
-                ref={(node) => this.domNode = node}>
+            <Group
+                className="total"
+                top={skeleton.global_margin.top}
+                left={skeleton.global_margin.left} 
+                innerRef={(node) => this.domNode = node}>
                 <rect
-                    x={0} y = {0} 
+                    x={-skeleton.global_margin.left} y = {-skeleton.global_margin.top} 
                     width={chartConfigs.width_svg}
                     height={chartConfigs.height_svg}
                     fill={chartConfigs.backgroundColor}/>        
                 {this._header(chartConfigs)}
                 {this._body(chartConfigs, scales, processedData)}
                 {this._footer(chartConfigs)}
-                <Group top={margin.top} left={margin.left}>
-                    
-                </Group>
-            </g>
+            </Group>
         )
     }
 }

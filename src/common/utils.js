@@ -37,3 +37,13 @@ export function ParseData(chart) {
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export function ceil(num, digit) {
+  let radix = Math.pow(10, digit - 1)
+  return Math.ceil(num / radix) * radix
+}
+
+export function floor(num, digit) {
+  let radix = Math.pow(10, digit - 1)
+  return Math.floor(num / radix) * radix
+}
