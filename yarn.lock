@@ -26,6 +26,15 @@
     classnames "^2.2.5"
     d3-shape "^1.2.0"
 
+"@vx/grid@^0.0.153":
+  version "0.0.153"
+  resolved "https://registry.yarnpkg.com/@vx/grid/-/grid-0.0.153.tgz#42457f50957d5b28c7716f153eaa0e33f5e61531"
+  dependencies:
+    "@vx/group" "0.0.153"
+    "@vx/point" "0.0.153"
+    "@vx/shape" "0.0.153"
+    classnames "^2.2.5"
+
 "@vx/group@0.0.153", "@vx/group@^0.0.153":
   version "0.0.153"
   resolved "https://registry.yarnpkg.com/@vx/group/-/group-0.0.153.tgz#4ec2ce37cf31b0f0b3d46dd8ee6b0eaf7e763bc6"
@@ -38,7 +47,7 @@
   dependencies:
     d3-random "^1.0.3"
 
-"@vx/point@0.0.153":
+"@vx/point@0.0.153", "@vx/point@^0.0.153":
   version "0.0.153"
   resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.153.tgz#c0623f72804026a5afe7e1602bb27cd7b0847afc"
 
@@ -52,6 +61,14 @@
     classnames "^2.2.5"
     d3-shape "^1.2.0"
     prop-types "^15.5.10"
+
+"@vx/text@^0.0.153":
+  version "0.0.153"
+  resolved "https://registry.yarnpkg.com/@vx/text/-/text-0.0.153.tgz#4569b56a3385f1f823d461d9eaccbde87129a777"
+  dependencies:
+    classnames "^2.2.5"
+    lodash "^4.17.4"
+    reduce-css-calc "^1.3.0"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -5548,7 +5565,7 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-reduce-css-calc@^1.2.6:
+reduce-css-calc@^1.2.6, reduce-css-calc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/reduce-css-calc/-/reduce-css-calc-1.3.0.tgz#747c914e049614a4c9cfbba629871ad1d2927716"
   dependencies:

@@ -1,11 +1,9 @@
 import React from "react";
+
 import BarFactory from "./factory/bar-factory";
-import GroupedBarFactory from "./factory/grouped-bar-factory";
-import StackedBarFactory from "./factory/stacked-bar-factory";
-import { parseBar } from "./parser/bar-parser";
-import { parseGroupedBar } from "./parser/grouped-bar-parser";
-import { parseStackedBar } from "./parser/stacked-bar-parser";
-import LineChartFactory from "./factory/line-factory";
+import parseBar from "./parser/bar-parser";
+import SmallDataLineFactory from "./factory/small-line-factory";
+import LargeDataLineFactory from "./factory/large-line-factory";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -63,11 +61,11 @@ export default class Workspace extends React.Component {
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
 
-    // stacked bar
-    // props.charts.forEach(chart => parseStackedBar(chart));
-    // const factory = new StackedBarFactory();
+    // const factory = new SmallDataLineFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
+    // const renderTransition = factory.renderTransition();
+    // renderTransition(this.node, [...props.charts]);
   }
 
   render() {

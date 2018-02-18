@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-export function parseBar(chart) {
+export default function parseBar(chart) {
   const columns = chart.rawData[0];
   chart.data = chart.rawData.slice(1).map((arr, i) => {
     return columns.reduce((acc, col, j) => {

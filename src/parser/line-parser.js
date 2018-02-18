@@ -5,6 +5,11 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 
+moment.locale("ko",{
+    weekdays: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
+    weekdaysShort: ["일","월","화","수","목","금","토"],
+})
+
 function keyParse(time) {
     return moment(time)
 }
@@ -24,7 +29,6 @@ function lineParser(chartList) {
         return c.data
     })
     let header = dataList[0][0]
-    console.log(header)
     for(var i = 0; i < dataList.length; i++) {
         let single_column = dataList[i]
         let obj_wrapped = _.map(
@@ -49,11 +53,10 @@ function lineParser(chartList) {
     result.forEach((line, i) => {
         line.forEach((data, i) => {
             data = _.sortBy(data, header[0])
-            console.log(data)
         })
     })
 
     let accessors = accessor_generator(header)
-    return [result, accessors]
+    return [result, accessors, header]
 }
 export { lineParser };

@@ -75,7 +75,7 @@ const fontstyle_reference = "";
 title, subtitle, reference, caption
  */
 
-export const chart0 = {
+export const cht0 = {
   type,
   rawData: arr0,
   width_svg,
@@ -107,7 +107,7 @@ export const chart0 = {
   opacityToHide
 };
 
-export const chart1 = {
+export const cht1 = {
   type,
   rawData: arr1,
   width_svg,
@@ -138,7 +138,7 @@ export const chart1 = {
   opacityToHide
 };
 
-export const chart2 = {
+export const cht2 = {
   type,
   rawData: arr2,
   width_svg,
