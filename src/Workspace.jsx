@@ -16,34 +16,43 @@ export default class Workspace extends React.Component {
     const props = this.props;
     props.charts.forEach(chart => parseBar(chart));
 
+    let flag;
+    // flag = "Static";
+    // flag = "Recording";
+    flag = "Transition";
+
     // single bar
     const bar = new BarFactory();
-    // draw chart
-    // const renderer = bar.renderChart();
+
+    if (flag === "Static") {
+      const renderer = bar.renderChart();
+    }
+
+    if (flag === "Transition") {
+      const renderTransition = bar.renderTransition();
+      renderTransition(this.node, [...props.charts]);
+    }
+
+    if (flag === "Recording") {
+      const gifDiv = document.getElementById("gif");
+      const onProcess = function(progress) {
+        gifDiv.textContent = progress * 100 + "% rendered";
+      };
+      const onFinished = function(blob) {
+        const imgElement = document.createElement("img");
+        imgElement.src = URL.createObjectURL(blob);
+        gifDiv.appendChild(imgElement);
+      };
+
+      const record = bar.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess,
+        onFinished
+      );
+    }
     // const gTotal = renderer(this.node, props.charts[0]);
     // console.log(bar.getChildG(renderer(this.node, props.charts[0])));
-
-    // draw transition
-    const renderTransition = bar.renderTransition();
-    renderTransition(this.node, [...props.charts]);
-
-    // record transition
-    // const gifDiv = document.getElementById("gif");
-    // const onProcess = function(progress) {
-    //   gifDiv.textContent = progress * 100 + "% rendered";
-    // };
-    // const onFinished = function(blob) {
-    //   const imgElement = document.createElement("img");
-    //   imgElement.src = URL.createObjectURL(blob);
-    //   gifDiv.appendChild(imgElement);
-    // };
-
-    // const record = bar.recordTransition(
-    //   this.node,
-    //   [...props.charts],
-    //   onProcess,
-    //   onFinished
-    // );
 
     // line
     // const factory = new LineChartFactory();

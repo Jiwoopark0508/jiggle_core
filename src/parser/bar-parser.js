@@ -39,7 +39,7 @@ export function parseBar(chart) {
     chart.indexToFocus = [chart.data.length - 1];
   }
 
-  chart.easing = d3[chart.easing];
+  chart.easing = d3[chart.easingType];
   chart.delayInOrder = (d, i) => {
     const term = 200;
     let eachDelay = 0;
@@ -68,8 +68,15 @@ export function parseBar(chart) {
     .domain([0, d3.max(chart.data, chart.yAccessor)])
     .nice()
     .rangeRound([chart.height_g_body, 0]);
+  chart.tickArr = chart.yScale.ticks(chart.numOfYAxisTicks);
+  chart.arrLen = chart.tickArr.length;
+  chart.tickDistance =
+    chart.yScale(chart.tickArr[chart.arrLen - 2]) -
+    chart.yScale(chart.tickArr[chart.arrLen - 1]);
 
-  chart.BILine = function(path) {
+  chart.BILine = function(g) {
+    g.selectAll("path.BI").remove();
+    let path = g.append("path").attr("class", "BI");
     const data = d3.range(2);
     const lineXScale = d3
       .scaleLinear()
@@ -104,7 +111,9 @@ export function parseBar(chart) {
       .attr("stroke-dashoffset", 0);
   };
 
-  chart.staticBILine = function(path) {
+  chart.staticBILine = function(g) {
+    g.selectAll("path.BI").remove();
+    let path = g.append("path").attr("class", "BI");
     const data = d3.range(2);
     const lineXScale = d3
       .scaleLinear()
@@ -138,45 +147,25 @@ export function parseBar(chart) {
     const yAxis = d3
       .axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
-      .tickSize(-chart.width_g_body + chart.margins.right / 2)
+      .tickSize(-chart.width_g_body)
       .tickFormat(d => d);
-    const tickArr = chart.yScale.ticks(chart.numOfYAxisTicks);
-    const arrLen = tickArr.length;
-    const y = chart.yScale;
-    const tickDistance = y(tickArr[arrLen - 2]) - y(tickArr[arrLen - 1]);
     g
       .call(yAxis)
-      .selectAll(".domain, .tick line")
+      .selectAll(".domain")
       .style("display", "none");
-
-    // g.selectAll(".tick rect").remove();
-
     g
-      .selection()
-      .selectAll(".tick")
-      .append("rect")
+      .selectAll(".tick text")
+      .attr("font-size", chart.fontsize_yAxis + "px")
+      .attr("dx", -2);
+    g
+      .selectAll(".tick line")
+      .attr("stroke-width", `${chart.tickDistance}`)
       .attr(
-        "fill",
+        "stroke",
         (d, i) =>
           i !== 0 && i % 2 === 1 ? chart.colorStripe1 : chart.colorStripe2
       )
-      .attr("y", -tickDistance)
-      .attr("width", chart.width_g_body)
-      .attr("height", tickDistance);
-
-    // g.selectAll(".tick line").remove();
-    // lines.attr("stroke", "#777").attr("stroke-dasharray", "2,2");
-    g
-      .selectAll(".tick text")
-      .attr("dx", -chart.margins.left)
-      // .attr("dx", function() {
-      //   console.log(this);
-      //   const textWidth = this.getComputedTextLength() * 1.5;
-      //   return -textWidth;
-      // })
-      // .attr("dy", -4)
-      .attr("font-size", chart.fontsize_yAxis + "px")
-      .style("text-anchor", "start");
+      .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
   };
 
   chart.customXAxis = function(g) {
@@ -185,6 +174,17 @@ export function parseBar(chart) {
       .selectAll(".domain,line")
       .style("display", "none");
     g.selectAll(".tick text").attr("font-size", chart.fontsize_xAxis + "px");
+  };
+
+  chart.drawTitle = function(g) {
+    let s = g.selection ? g.selection() : g;
+    s
+      .append("text")
+      .attr("class", "titleText")
+      .attr("font-size", chart.fontsize_title + "px")
+      .attr("font-style", chart.fontstyle_title)
+      .attr("fill", chart.fontcolor_title)
+      .text(chart.title);
   };
 
   // chart.colorScale = d3
