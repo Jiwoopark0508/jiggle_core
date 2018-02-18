@@ -32,7 +32,7 @@ export default class SmallTransitionLinePath extends React.Component {
         this.pathList.forEach((p, i) => {
             this.lengthList.push(p.getTotalLength())
         })
-
+        console.log(this.glyphCountList)
         this.totalLength = this.lengthList[this.lengthList.length - 1]
         d3.select(this.transPath)
             .attr("stroke-dasharray", this.totalLength)
@@ -63,7 +63,7 @@ export default class SmallTransitionLinePath extends React.Component {
         if (!endsAt) return;
         let glyph_start = that.glyphCountList[idx - 1]
         let glyph_end = that.glyphCountList[idx]
-        g.call(that._glyphTransition, that, glyph_start, glyph_end, that.delayList[idx])
+        
         g
             .attr("stroke-dashoffset", this.totalLength - startsAt)
             .transition()
@@ -75,11 +75,14 @@ export default class SmallTransitionLinePath extends React.Component {
                 if (!partial) {
                     g.call(that._playLineTransition, that, idx + 1)
                 } 
+                g.call(that._glyphTransition, that, glyph_start, glyph_end, that.delayList[idx])
             })
     }
     
     render() {
         const props = this.props;
+        const indexLastGlyph = props.dataList[props.dataList.length - 1].length
+        
         return (
             <Group>
                 <LinePath 
@@ -91,6 +94,7 @@ export default class SmallTransitionLinePath extends React.Component {
                     y={props.y}
                     strokeWidth={2.5}
                     glyph={(d, i) => {
+                        if (this.glyphCountList.indexOf(i+1) == -1) return;
                         let dot = 
                             <JiggleGlyph
                                 innerRef={(node) => this.glyphList.push(node)}

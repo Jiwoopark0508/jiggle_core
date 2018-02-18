@@ -4,18 +4,25 @@ import "./App.css";
 import Workspace from "./Workspace";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
-import { dummie } from './data/line_dummy4'
+import { dummie } from './data/line_dummy9'
+import { DARK, LIGHT } from './common/constant'
 
 const chart1 = {
   data : dummie.slice(0, 2),
   duration : 750,
   title : "이것은 1제목입니다.",
-  sub_title : "이것은 1부제입니다",
+  subtitle : "이것은 1부제입니다",
   reference : "이것은 1레퍼런스입니다",
   caption : "이것은 1캡처입니다",
+  madeBy : "강선미 기자",
+
   delay : 3000,
-  width_svg : 1000,
-  height_svg : 800
+  width_svg : 1080,
+  height_svg : 600,
+  margins : {
+    top : 40, bottom : 40, left: 60, right : 60
+  },
+  ...LIGHT
 }
 
 const chart2 = {
@@ -24,10 +31,16 @@ const chart2 = {
   sub_title : "이것은 2부제입니다",
   reference : "이것은 2레퍼런스입니다",
   caption : "이것은 2캡처입니다",
+  madeBy : "강선미 기자",
+
   delay : 0,
   duration : 1000,
-  width_svg : 1000,
-  height_svg : 800
+  width_svg : 700,
+  height_svg : 500,
+  margins : {
+    top : 100, bottom : 60, left: 60, right : 60
+  },
+  ...DARK
 }
 
 const chart3 = {
@@ -38,8 +51,12 @@ const chart3 = {
   caption : "이것은 3캡처입니다",
   delay : 1000,
   duration : 1000,
-  width_svg : 1000,
-  height_svg : 800
+  width_svg : 700,
+  height_svg : 500,
+  margins : {
+    top : 100, bottom : 60, left: 60, right : 60
+  },
+  ...DARK
 }
 
 const chart4 = {
@@ -50,8 +67,12 @@ const chart4 = {
   caption : "이것은 3캡처입니다",
   delay : 1000,
   duration : 1000,
-  width_svg : 1000,
-  height_svg : 800
+  width_svg : 700,
+  height_svg : 500,
+  margins : {
+    top : 100, bottom : 60, left: 60, right : 60
+  },
+  ...DARK
 }
 
 

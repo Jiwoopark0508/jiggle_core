@@ -1,5 +1,6 @@
 import React from 'react'
-import { Group } from '@vx/group'
+// import { Group } from '@vx/group'
+import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
 import { GridColumns } from '@vx/grid'
 import { GridRows } from '@vx/grid'
@@ -10,6 +11,7 @@ import LargeTransitionLine from './transition_line_large'
 import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
 import Header from './meta-components/Header'
+import Footer from './meta-components/Footer'
 import _ from 'lodash'
 import numeral from 'numeral'
 
@@ -39,7 +41,9 @@ export default class JiggleLineTransition {
             return (<LargeTransitionLine />)
         }
     }
-
+    setSkeleton(chartConfig) {
+        return chartConfig
+    }
     playWholeLineTransition(idx, partial, record) {
         if (record) { // Record Transition
             this.transPathLines.forEach((l, i) => {
@@ -53,6 +57,151 @@ export default class JiggleLineTransition {
                 })
             })
         }
+    }
+    
+    getChartConfigs(chartList) {
+        return chartList[0]
+    }
+    getChildG(gParent) {
+        console.log(this.header)
+    }
+    // Header
+    _header(chartConfigs) {
+        return (
+            <Group
+                innerRef={(node) => {this.header = node}}
+            >
+                <Header
+                    font-size={35}
+                    configs={chartConfigs}
+                    >
+                </Header>
+                {/* Place for Legend */}
+            </Group>
+        )
+    }
+    // Body
+    _body(chartConfig, scale, processedData) {
+        let axis = this._axis(
+            chartConfig, scale
+        )
+        let background = this._background(
+            chartConfig, scale
+        )
+        let graph = this._graph(
+            processedData,
+            chartConfig, scale
+        )
+        return (
+            <Group 
+                innerRef={(node) => {this.body = node}}
+                top={chartConfig.margins.top}
+                left={chartConfig.margins.left}
+            >
+                {axis}
+                {background}
+                {graph}
+            </Group>
+        )
+    }
+    _graph(processedData, chartConfigs, scale) {
+        let lines = processedData.map((d, i) => {
+            return (
+                React.cloneElement(this.lineType,
+                    {
+                        key : i,
+                        ref : (node) => {this.transPathLines.push(node)},
+                        chartList : scale.chartList,
+                        dataList : d,
+                        x : scale.x,
+                        y : scale.accessors[i + 1],
+                        xScale : scale.xScale,
+                        yScale : scale.yScale
+                    }
+                )
+            )
+        })
+        return (
+            <Group>
+                {lines}
+            </Group>
+        )
+    }
+    _background(chartConfigs, scale) {
+        return (
+            <Group>
+                <StripeColumns
+                    scale={scale.xScale}
+                    height={scale.yMax}
+                    numTicks={8}
+                    fill={chartConfigs.backgroundColor}
+                />
+                {/* <GridRows 
+                    scale={scale.yScale}
+                    width={scale.xMax}
+                /> */}
+                
+            </Group>
+        )
+    }
+    _axis(chartConfigs, scale) {
+        return (
+            <Group>
+                <AxisBottom
+                    scale={scale.xScale}
+                    top={scale.yMax}
+                    // rangePadding={100}
+                    label={scale.header[0]}
+                    stroke={chartConfigs.colorSecondary}
+                    hideTicks={true}
+                    labelProps = {{
+                        textAnchor: 'middle',
+                        fontFamily: 'Arial',
+                        fontSize: 10,
+                        fill: chartConfigs.colorSecondary,
+                    }}
+                    numTicks={6}
+                    tickLabelProps = {(tickValue, index) => ({
+                        textAnchor: 'middle',
+                        fontFamily: 'Spoqa Hans Regular',
+                        fontSize: 14,
+                        fill: '#7F7F7F',
+                        dx: '2.2em',
+                        dy: '0'
+                    })}
+                />
+                <AxisLeft
+                    scale={scale.yScale}
+                    top={0}
+                    left={0}
+                    label={scale.header[1]}
+                    stroke={chartConfigs.colorSecondary}
+                    hideTicks={true}
+                    numTicks={4}
+                    labelProps = {{
+                        textAnchor: 'middle',
+                        fontFamily: 'Arial',
+                        fontSize: 10,
+                        fill: chartConfigs.colorSecondary,
+                    }}
+                    tickLabelProps = {(tickValue, index) => ({
+                        textAnchor: 'middle',
+                        fontFamily: 'Spoqa Hans Regular',
+                        fontSize: 14,
+                        fill: '#7F7F7F',
+                        dx: '-0.25em',
+                        dy: '-0.25em'
+                    })}
+                />
+            </Group>
+        )
+    }
+    // Footer
+    _footer(chartConfig) {
+        return (
+        <Footer 
+            configs={chartConfig}
+        />)
     }
 
     renderTransitionLine(chartList) {
@@ -70,17 +219,11 @@ export default class JiggleLineTransition {
         let accessors = parsedResult[1]
         let header = parsedResult[2]
 
-        const width = 800
-        const height = 500
-        const margin = {
-            top : 100,
-            bottom : 60,
-            left: 60,
-            right : 60
-        }
+        const chartConfigs = this.getChartConfigs(chartList)
+        const margin = chartConfigs.margins
 
-        const xMax = width - margin.left - margin.right
-        const yMax = height - margin.top - margin.bottom
+        const xMax = chartConfigs.width_svg - margin.left - margin.right
+        const yMax = chartConfigs.height_svg - margin.top - margin.bottom
         
         const x = accessors[0]
         let y_extent = []
@@ -102,111 +245,30 @@ export default class JiggleLineTransition {
         const yScale = d3.scaleLinear()
                 .range([yMax, 0])
                 .domain(y_extent)
+        
+        const scales = {
+            xScale,
+            yScale,
+            yMax,
+            xMax,
+            header,
+            accessors,
+            x,
+            chartList
+        }
+        
         return (
             <g
                 ref={(node) => this.domNode = node}>
-                <rect x={0} y = {0} 
-                    width={width}
-                    height={height}
-                    fill={"#f8f8f8"}/>
-                <Group>
-                    <Header
-                        font-size={35}
-                        >
-                        {"타이틀 입니다."}
-                    </Header>
-                </Group>
+                <rect
+                    x={0} y = {0} 
+                    width={chartConfigs.width_svg}
+                    height={chartConfigs.height_svg}
+                    fill={chartConfigs.backgroundColor}/>        
+                {this._header(chartConfigs)}
+                {this._body(chartConfigs, scales, processedData)}
+                {this._footer(chartConfigs)}
                 <Group top={margin.top} left={margin.left}>
-                    <Group>
-                        <StripeColumns
-                            scale={xScale}
-                            height={yMax}
-                            numTicks={8}
-                        />
-                        <GridRows 
-                            scale={yScale}
-                            width={xMax}
-                        />
-                        <AxisBottom
-                            scale={xScale}
-                            top={yMax}
-                            // rangePadding={100}
-                            label={header[0]}
-                            stroke={'#e2e2e2'}
-                            hideTicks={true}
-                            labelProps = {{
-                                textAnchor: 'middle',
-                                fontFamily: 'Arial',
-                                fontSize: 10,
-                                fill: '#2e2e2e',
-                            }}
-                            numTicks={6}
-                            tickLabelProps = {(tickValue, index) => ({
-                                textAnchor: 'middle',
-                                fontFamily: 'Spoqa Hans Regular',
-                                fontSize: 14,
-                                fill: '#7F7F7F',
-                                dx: '2.2em',
-                                dy: '0'
-                            })}
-                        />
-                        <AxisLeft
-                            scale={yScale}
-                            top={0}
-                            left={0}
-                            label={header[1]}
-                            stroke={'#e2e2e2'}
-                            hideTicks={true}
-                            numTicks={4}
-                            labelProps = {{
-                                textAnchor: 'middle',
-                                fontFamily: 'Arial',
-                                fontSize: 10,
-                                fill: '#2e2e2e',
-                            }}
-                            tickLabelProps = {(tickValue, index) => ({
-                                textAnchor: 'middle',
-                                fontFamily: 'Spoqa Hans Regular',
-                                fontSize: 14,
-                                fill: '#7F7F7F',
-                                dx: '-0.25em',
-                                dy: '-0.25em'
-                            })}
-                        />
-                    </Group>
-                    { 
-                        processedData.map((d, i) => {
-                            return (
-                                React.cloneElement(this.lineType,
-                                    {
-                                        key : i,
-                                        ref : (node) => {this.transPathLines.push(node)},
-                                        chartList : chartList,
-                                        dataList : d,
-                                        x : x,
-                                        y : accessors[i + 1],
-                                        xScale : xScale,
-                                        yScale : yScale
-                                    }
-                                )
-                            )
-                        })
-                        }
-                    {/* {processedData.map((d, i) => {
-                        return (
-                            <TransitionLinePath 
-                                key={i}
-                                ref={(node) => {this.transPathLines.push(node)}}
-                                dataList={d}
-                                chartList={chartList}
-                                x={x}
-                                y={accessors[i + 1]}
-                                xScale={xScale}
-                                yScale={yScale}
-                            />
-                            )
-                        })
-                    } */}
                     
                 </Group>
             </g>

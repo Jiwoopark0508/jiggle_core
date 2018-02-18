@@ -19,6 +19,7 @@ export default function Columns({
   ...restProps
 }) {
     let ticks = scale.ticks(numTicks);
+
     return (
         <Group
             className={cx('vx-columns', className)}
@@ -46,6 +47,7 @@ export default function Columns({
                         width={rx - lx}
                         height={height}
                         isFill={i % 2 == 0}
+                        fill={restProps.fill}
                         {...restProps}
                     />
                 );

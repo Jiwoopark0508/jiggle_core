@@ -11,7 +11,7 @@ export default class Workspace extends React.Component {
   componentDidMount() {
     const props = this.props;
 
-    const factory = new SmallDataLineFactory();
+    const factory = new LargeDataLineFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
     const renderTransition = factory.renderTransition();

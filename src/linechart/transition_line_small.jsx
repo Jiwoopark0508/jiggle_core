@@ -18,7 +18,6 @@ export default class SmallTransitionLinePath extends React.Component {
         this.glyphList = []
         this.transPath = null
         this._playLineTransition = this._playLineTransition.bind(this)
-        // this._glyphTransition = this._glyphTransition.bind(this)
         this.playTransition = this.playTransition.bind(this)
         this.durationList = this.props.chartList.map((c) => {return c.duration})
         this.delayList = this.props.chartList.map((c) => {return c.delay})

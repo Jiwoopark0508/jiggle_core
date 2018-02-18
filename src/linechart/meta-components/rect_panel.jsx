@@ -17,7 +17,7 @@ export default function RectPanel({
         fill,
     }
     let unbackStyle = {
-        fill : "white"
+        fill : "#727272"
     }
     return (
         <rect
