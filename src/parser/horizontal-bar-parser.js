@@ -26,6 +26,9 @@ export default function parseHorizontalBar(chart) {
   chart.dataKey = d => d[chart.yLabel];
   chart.xAccessor = d => +d[chart.xLabel];
   chart.yAccessor = d => d[chart.yLabel];
+
+  setSkeleton(chart);
+
   if (chart.focusType === "startAndEnd") {
     chart.indexToFocus = [0, chart.data.length - 1];
   } else if (chart.focusType === "minAndMax") {
@@ -53,8 +56,6 @@ export default function parseHorizontalBar(chart) {
     }
     return eachDelay;
   };
-
-  setSkeleton(chart);
 
   chart.yScale = d3
     .scaleBand()

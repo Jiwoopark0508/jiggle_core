@@ -26,6 +26,9 @@ export default function parseBar(chart) {
   chart.dataKey = d => d[chart.xLabel];
   chart.xAccessor = d => d[chart.xLabel];
   chart.yAccessor = d => +d[chart.yLabel];
+
+  setSkeleton(chart);
+
   if (chart.focusType === "startAndEnd") {
     chart.indexToFocus = [0, chart.data.length - 1];
   } else if (chart.focusType === "minAndMax") {
@@ -53,8 +56,6 @@ export default function parseBar(chart) {
     }
     return eachDelay;
   };
-
-  setSkeleton(chart);
 
   chart.xScale = d3
     .scaleBand()
@@ -134,7 +135,6 @@ export default function parseBar(chart) {
       .attr("stroke", function(d, i) {
         let colorStripe;
         colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
-        console.log(i, this, colorStripe);
         return colorStripe;
       })
       .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
