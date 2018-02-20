@@ -4,29 +4,33 @@ import "./App.css";
 import Workspace from "./Workspace";
 import { gChart0 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
-import { dummie } from './data/line_dummy6'
+import { dummie } from './data/line_dummy2'
 import { DARK, LIGHT } from './common/constant'
 
 const chart1 = {
-  data : dummie.slice(0, 2),
+  rawData : dummie.slice(0, 2),
   duration : 750,
   title : "주요 금융그룹 충당금 주요 금융그룹",
   subtitle : "이것은 1부제입니다",
   reference : "이것은 1레퍼런스입니다",
   caption : "이것은 1캡처입니다",
   madeBy : "강선미 기자",
-
   delay : 3000,
   width_svg : 1080,
   height_svg : 600,
   margins : {
     top : 40, bottom : 40, left: 60, right : 60
   },
-  ...DARK
+  label : [
+    {row: 1, col: 1, comment : "헬로우"},
+    {row: 40, col: 1, comment : "헬로우2"},
+    {row: 100, col: 1, comment : "헬로우3"},
+  ],
+  ...LIGHT
 }
 
 const chart2 = {
-  data : dummie.slice(0, 3),
+  rawData : dummie.slice(0, 40),
   title : "이것은 2제목입니다.",
   sub_title : "이것은 2부제입니다",
   reference : "이것은 2레퍼런스입니다",
@@ -44,7 +48,7 @@ const chart2 = {
 }
 
 const chart3 = {
-  data : dummie.slice(0, 5),
+  rawData : dummie.slice(0, 100),
   title : "이것은 3제목입니다.",
   sub_title : "이것은 3부제입니다",
   reference : "이것은 3레퍼런스입니다",
@@ -60,7 +64,7 @@ const chart3 = {
 }
 
 const chart4 = {
-  data : dummie,
+  rawData : dummie,
   title : "이것은 3제목입니다.",
   sub_title : "이것은 3부제입니다",
   reference : "이것은 3레퍼런스입니다",
@@ -72,6 +76,11 @@ const chart4 = {
   margins : {
     top : 100, bottom : 60, left: 60, right : 60
   },
+  label : [
+    {row: 1, col: 1, comment : "헬로우"},
+    {row: 2, col: 1, comment : "헬로우2"},
+    {row: 5, col: 1, comment : "헬로우2"},
+  ],
   ...DARK
 }
 

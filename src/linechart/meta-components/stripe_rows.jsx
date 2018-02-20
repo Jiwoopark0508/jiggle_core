@@ -20,7 +20,6 @@ export default function StripeRows({
   tickValues,
   ...restProps
 }) {
-    console.log(tickValues)
     return (
         <Group
             className={cx('vx-columns', className)}
@@ -32,7 +31,6 @@ export default function StripeRows({
                 if(i < 1) return;
                 let ly = scale(tickValues[i - 1]);
                 let ry = scale(tickValues[i])
-                console.log(ly, ry)
                 let fromPoint = new Point({
                     x: 0,
                     y: ry,

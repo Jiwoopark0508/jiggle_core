@@ -10,7 +10,13 @@ const LARGE = "LARGE"
 export default class LargeDataLineFactory {
   constructor() {
     this.lineInstance = null
+    this.modifiedState = null
   }
+
+  modifiedState() {
+    return this.lineInstance.modifiedState;
+  }
+
   renderChartStatic() {
     const renderer = (svgElement, chartConfig) => {
       this._drawStaticChart(svgElement, chartConfig)

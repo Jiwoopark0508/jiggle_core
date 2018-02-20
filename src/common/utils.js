@@ -50,11 +50,7 @@ export function floor(num, digit = 1) {
   return Math.floor(num / radix) * radix
 }
 
-export function niceYaxis(arr) {
-
-}
-
-export function niceXaxis(arr) {
+export function refineXAxis(arr) {
   
 }
 

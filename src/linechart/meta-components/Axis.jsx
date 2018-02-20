@@ -9,7 +9,6 @@ import identity from './utils/identity';
 import getLabelTransform from './utils/labelTransform';
 import ORIENT from './constants/orientation';
 import { divideArray } from './utils/divide'
-import * as d3 from 'd3'
 
 const propTypes = {
   axisClassName: PropTypes.string,

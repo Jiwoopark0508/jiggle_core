@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import * as d3 from "d3";
 import JiggleLineStatic from '../linechart/jiggle_line_static'
 import JiggleLineTransition from '../linechart/jiggle_line_transition';
-import _ from "lodash"
 
 const SMALL = "SMALL" // This template is for small data line
 
@@ -77,6 +76,7 @@ export default class SmallDataLineFactory {
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
+      console.log(tweeners)
     
       let totalDuration = 0
       let cht = chtList[idx]

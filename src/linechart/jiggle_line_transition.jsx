@@ -12,6 +12,7 @@ import SmallTransitionLine from './transition_line_small'
 import LargeTransitionLine from './transition_line_large'
 import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
+import JiggleLabel from './jiggle_label';
 import Header from './meta-components/Header'
 import Footer from './meta-components/Footer'
 import * as util from '../common/utils'
@@ -22,6 +23,7 @@ import { lineParser, access_gen } from '../parser/line-parser'
 
 const LARGE = "LARGE"
 const SMALL = "SMALL"
+const PARTIAL = true
 
 export default class JiggleLineTransition {
     constructor(charts, type) {
@@ -30,10 +32,9 @@ export default class JiggleLineTransition {
         this.transPathLines = []
         this.dataSeries = null
         this.chartList = charts
-        this.dataCollection = _.map(this.chartList, (c) => {
-            return c.data
-        })
         this.lineType = this.setLineType(type)
+        this.modifiedState = {}
+        this.annotationList = [null]
     }
 
     setLineType(type) {
@@ -58,16 +59,33 @@ export default class JiggleLineTransition {
             this.transPathLines.forEach((l, i) => {
                 l.playTransition(idx, partial)
             })
+            this.labelTransition(idx, PARTIAL)
         }
         else { // Preview Transition
             process.nextTick(() => {
                 this.transPathLines.forEach((l, i) => {
                     l.playTransition(idx, partial)
                 })
+                this.labelTransition(1, !PARTIAL)
             })
         }
     }
-    
+    labelTransition(idx, partial) {
+        if(!this.chartList[idx]) return;
+        let elem = this.annotationList[idx]
+        let delay = this.chartList[idx].delay
+        let duration = this.chartList[idx].duration
+        d3.select(elem)
+            .transition()
+            .duration(duration)
+            .delay(delay)
+            .attr("transform", "scale(1)")
+            .on("end", () => {
+                if(!partial){
+                    this.labelTransition(idx + 1, !PARTIAL)
+                }
+            })
+    }
     getChartConfigs(chartList) {
         return chartList[0]
     }
@@ -92,7 +110,7 @@ export default class JiggleLineTransition {
         )
     }
     // Body
-    _body(chartConfig, scale, processedData) {
+    _body(chartConfig, scale, processedData, labels) {
         let axis = this._axis(
             chartConfig, scale
         )
@@ -100,8 +118,9 @@ export default class JiggleLineTransition {
             chartConfig, scale
         )
         let graph = this._graph(
+            chartConfig, scale,
             processedData,
-            chartConfig, scale
+            labels
         )
         return (
             <Group
@@ -116,7 +135,7 @@ export default class JiggleLineTransition {
             </Group>
         )
     }
-    _graph(processedData, chartConfigs, scale) {
+    _graph(chartConfigs, scale, processedData, labels) {
         let lines = processedData.map((d, i) => {
             return (
                 React.cloneElement(this.lineType,
@@ -128,9 +147,24 @@ export default class JiggleLineTransition {
                         x : scale.x,
                         y : scale.accessors[i + 1],
                         xScale : scale.xScale,
-                        yScale : scale.yScale
+                        yScale : scale.yScale,
+                        config : chartConfigs,
+
                     }
                 )
+            )
+        })
+        let annotations = labels.map((d, i) => {
+            return (
+                <JiggleLabel
+                    key={`annotation-${i}`}
+                    innerRef={(node) => this.annotationList.push(node)}
+                    cx={scale.xScale(d.x)}
+                    cy={scale.yScale(d.y)}
+                    dx={d.dx}
+                    dy={d.dy}
+                    note={{title:d.y, comment:d.comment}}
+                    />
             )
         })
         return (
@@ -138,6 +172,7 @@ export default class JiggleLineTransition {
                 className={"graph"}
                 >
                 {lines}
+                {annotations}
             </Group>
         )
     }
@@ -161,12 +196,6 @@ export default class JiggleLineTransition {
                     top={scale.yMax}
                     stroke={chartConfigs.colorSecondary}
                     hideTicks={true}
-                    labelProps = {{
-                        textAnchor: 'middle',
-                        fontFamily: 'Arial',
-                        fontSize: 10,
-                        fill: chartConfigs.colorSecondary,
-                    }}
                     numTicks={6}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'middle',
@@ -184,12 +213,6 @@ export default class JiggleLineTransition {
                     stroke={chartConfigs.colorSecondary}
                     hideTicks={true}
                     numTicks={4}
-                    labelProps = {{
-                        textAnchor: 'middle',
-                        fontFamily: 'Arial',
-                        fontSize: 10,
-                        fill: chartConfigs.colorSecondary,
-                    }}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'middle',
                         fontFamily: 'Spoqa Hans Regular',
@@ -221,25 +244,28 @@ export default class JiggleLineTransition {
          * Data preprocessing
          */
         let parsedResult = lineParser(chartList)
-        let processedData = parsedResult[0]
+        let processedData = parsedResult.result
 
         let flatten_data = processedData.reduce((rec, d) => {
             return rec.concat(d)
         }, []).reduce((rec, d) => {
             return rec.concat(d)
         }, [])
-        let accessors = parsedResult[1]
-        let header = parsedResult[2]
-
+        let accessors = parsedResult.accessors
+        let header = parsedResult.header
+        let annotations = parsedResult.annotations
+        
+        if (this.modifiedState.annotations) annotations = this.modifiedState.annotations;
+        // TODO --> Refactoring (set skeleton)
         const chartConfigs = this.getChartConfigs(chartList)
         const margin = skeleton.global_margin
-        // TODO --> Amend xMax and yMax
         const width_g_total = chartConfigs.width_svg - margin.left - margin.right
         const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
 
         const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
         const yMax = skeleton.height_body
-        
+        // By This line -- //
+
         const x = accessors[0]
         let yScaleDomain = []
         accessors.reduce((rec, d) => {
@@ -289,7 +315,7 @@ export default class JiggleLineTransition {
                     height={chartConfigs.height_svg}
                     fill={chartConfigs.backgroundColor}/>        
                 {this._header(chartConfigs)}
-                {this._body(chartConfigs, scales, processedData)}
+                {this._body(chartConfigs, scales, processedData, annotations)}
                 {this._footer(chartConfigs)}
             </Group>
         )

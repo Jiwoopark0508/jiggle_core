@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Group } from '@vx/group'
+import Group from './meta-components/Group'
 
 export default function JiggleGlyph({
   top = 0,
@@ -11,6 +11,7 @@ export default function JiggleGlyph({
   cy,
   r,
   innerRef,
+  config,
   fill,
   stroke,
   strokeWidth,
@@ -22,7 +23,9 @@ export default function JiggleGlyph({
   ...restProps
 }) {
   return (
-      <Group top={top} left={left}>
+      <Group 
+        
+        top={top} left={left}>
         <circle
           ref={innerRef}
           className={classnames('vx-glyph-dot', className)}
@@ -35,15 +38,6 @@ export default function JiggleGlyph({
           strokeDasharray={strokeDasharray}
           {...restProps}
         />
-        <text
-            x={cx}
-            y={cy}
-            dx={dx}
-            {...restProps}
-            >
-            {labelText}
-        </text>
-        {children}
       </Group>
   );
 }
