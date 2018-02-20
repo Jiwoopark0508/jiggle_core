@@ -59,12 +59,12 @@ import { dummie } from "./data/line_dummy4";
 class App extends Component {
   render() {
     // horizontal
-    return (
-      <div>
-        <Workspace charts={[hCht0, hCht1]} />
-        <div id="gif" />
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <Workspace charts={[hCht0, hCht1]} />
+    //     <div id="gif" />
+    //   </div>
+    // );
 
     // group bar
     // return (
@@ -75,12 +75,12 @@ class App extends Component {
     // );
 
     // single bar
-    // return (
-    //   <div>
-    //     <Workspace charts={[cht0, cht1]} />
-    //     <div id="gif" />
-    //   </div>
-    // );
+    return (
+      <div>
+        <Workspace charts={[cht0, cht1]} />
+        <div id="gif" />
+      </div>
+    );
 
     // return (
     //   <div>

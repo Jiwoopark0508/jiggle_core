@@ -85,11 +85,14 @@ export function setSkeleton(chart) {
   chart.numOfYAxisTicks = chart.numOfYAxisTicks || 5;
 
   chart.easingType = chart.easingType || "easeBackOut";
-  chart.delayType = chart.delayType || "accumedDelay";
+  chart.delayType = chart.delayType || "delayInOrder";
   chart.paddingBtwRects = chart.paddingBtwRects || 0.4;
   chart.opacity = chart.opacity || 1;
   chart.opacityToHide = chart.opacityToHide || 0.25;
 
   chart.duration = chart.duration || 0;
   chart.delay = chart.delay || 1000;
+  chart.accumedDelay = chart.accumedDelay || 0;
+  chart.lastFor = chart.lastFor || 2000;
+  chart.backgroundColor = chart.backgroundColor || "white";
 }

@@ -252,8 +252,8 @@ export default class BarFactory {
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
-      .data(chart.data, chart.dataKey);
-    // .attr("fill", chart.color);
+      .data(chart.data, chart.dataKey)
+      .attr("fill", chart.color);
     rect
       .exit() // Exit selection
       .transition()
@@ -269,14 +269,14 @@ export default class BarFactory {
       .attr("class", "graphRect")
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.height_g_body)
-      // .attr("fill", chart.colorToFocus)
+      .attr("fill", chart.colorToFocus)
       .merge(rect) // Enter + Update selection
       .transition()
       .ease(chart.easing)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
-      .attr("fill", chart.color)
-      .call(this._applyFocus, chart) // apply focus
+      // .attr("fill", chart.color)
+      // .call(this._applyFocus, chart) // apply focus
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", chart.xScale.bandwidth())
