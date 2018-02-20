@@ -4,6 +4,7 @@ import { drawSkeleton, getAllTweeners, drawYLine } from "./common-factory";
 export default class HorizontalBarFactory {
   renderChart() {
     const renderer = (svgElement, chart) => {
+      // this._parseChart(chart);
       const canvas = this._drawChart(this, svgElement, chart);
       return canvas.gTotal;
     };
@@ -13,6 +14,9 @@ export default class HorizontalBarFactory {
   renderTransition() {
     const renderer = (svgElement, charts) => {
       // let canvas = this._drawBI(this, svgElement, charts[0]);
+      // charts.forEach(c => {
+      //   this._parseChart(c);
+      // });
       const canvas = this._drawChart(this, svgElement, charts[0]);
       charts.forEach((cht, i) => {
         if (i === 0) return;
@@ -155,8 +159,8 @@ export default class HorizontalBarFactory {
       gMadeBy
     } = drawSkeleton(svgElement, chart);
     gYAxis.call(chart.customYAxis);
-    gXAxis.call(chart.customXAxis);
-    gYAxis.call(drawYLine, chart);
+    // gXAxis.call(chart.customXAxis);
+    // gYAxis.call(drawYLine, chart);
     // gTitle
     //   .append("text")
     //   .attr("class", "titleText")
@@ -243,11 +247,11 @@ export default class HorizontalBarFactory {
       .duration(chart.duration)
       .delay(chart[chart.delayType])
       .call(chart.customYAxis);
-    canvas.gXAxis
-      .transition()
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      .call(chart.customXAxis);
+    // canvas.gXAxis
+    //   .transition()
+    //   .duration(chart.duration)
+    //   .delay(chart[chart.delayType])
+    //   .call(chart.customXAxis);
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
@@ -329,5 +333,11 @@ export default class HorizontalBarFactory {
             chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
         );
     }
+  }
+
+  _parseChart(chart) {
+    console.log(chart.width_g_body);
+    chart.width_g_body =
+      chart.width_g_total - (chart.margins.left + chart.margins.right) * 4;
   }
 }

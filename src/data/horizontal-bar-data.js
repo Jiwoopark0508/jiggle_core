@@ -28,8 +28,8 @@ const height_svg = 433;
 // const margins = { top: 28, bottom: 40, left: 50, right: 50 };
 const focusType = "";
 const backgroundColor = "white";
-// const color = "#3182bd";
-// const colorToFocus = "#e6550d";
+const color = "#499FC9";
+const colorToFocus = "#E0862D";
 const opacity = 1;
 const opacityToHide = 0.25;
 const duration = 0;
@@ -101,8 +101,8 @@ export const hCht0 = {
   madeBy: "강선미 기자",
   numOfYAxisTicks,
   fontFamily,
-  // color,
-  // colorToFocus,
+  color,
+  colorToFocus,
   opacity,
   opacityToHide
 };
@@ -132,8 +132,8 @@ export const hCht1 = {
   madeBy: "강선미 기자",
   numOfYAxisTicks,
   fontFamily,
-  // color,
-  // colorToFocus,
+  color,
+  colorToFocus,
   opacity,
   opacityToHide
 };
@@ -163,8 +163,8 @@ export const hCht2 = {
   madeBy: "강선미 기자",
   numOfYAxisTicks,
   fontFamily,
-  // color,
-  // colorToFocus,
+  color,
+  colorToFocus,
   opacity,
   opacityToHide
 };
