@@ -319,7 +319,7 @@ export default class BarFactory {
   }
 
   _applyFocus(rect, chart) {
-    if (chart.focusType !== "") {
+    if (chart.focusType !== "" && chart.indexToFocus) {
       rect
         .attr(
           "fill",

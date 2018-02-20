@@ -103,7 +103,7 @@ export function drawSkeleton(svgElement, chart) {
     .append("g")
     .attr("class", "x axis")
     .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
-  if (chart.type.includes("horizontal")) {
+  if (chart.type && chart.type.includes("horizontal")) {
     gYAxis.remove();
     gYAxis = gGraph.append("g").attr("class", "y axis");
   }
