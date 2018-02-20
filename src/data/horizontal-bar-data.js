@@ -22,7 +22,7 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
-const type = "bar";
+const type = "horizontal bar";
 const width_svg = 750;
 const height_svg = 433;
 // const margins = { top: 28, bottom: 40, left: 50, right: 50 };
@@ -75,7 +75,7 @@ const fontstyle_reference = "";
 title, subtitle, reference, caption
  */
 
-export const cht0 = {
+export const hCht0 = {
   type,
   rawData: arr0,
   width_svg,
@@ -107,7 +107,7 @@ export const cht0 = {
   opacityToHide
 };
 
-export const cht1 = {
+export const hCht1 = {
   type,
   rawData: arr1,
   width_svg,
@@ -138,7 +138,7 @@ export const cht1 = {
   opacityToHide
 };
 
-export const cht2 = {
+export const hCht2 = {
   type,
   rawData: arr2,
   width_svg,

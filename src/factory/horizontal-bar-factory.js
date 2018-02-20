@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import { drawSkeleton, getAllTweeners, drawXLine } from "./common-factory";
+import { drawSkeleton, getAllTweeners, drawYLine } from "./common-factory";
 
-export default class BarFactory {
+export default class HorizontalBarFactory {
   renderChart() {
     const renderer = (svgElement, chart) => {
       const canvas = this._drawChart(this, svgElement, chart);
@@ -156,7 +156,7 @@ export default class BarFactory {
     } = drawSkeleton(svgElement, chart);
     gYAxis.call(chart.customYAxis);
     gXAxis.call(chart.customXAxis);
-    gXAxis.call(drawXLine, chart);
+    gYAxis.call(drawYLine, chart);
     // gTitle
     //   .append("text")
     //   .attr("class", "titleText")
@@ -179,10 +179,9 @@ export default class BarFactory {
       .attr("class", "graphRect")
       .attr("fill", chart.color)
       .call(this._applyFocus, chart)
-      .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .attr("width", chart.xScale.bandwidth())
-      .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
+      .attr("width", d => chart.xScale(d[chart.xLabel]))
+      .attr("height", chart.yScale.bandwidth());
     gGraph
       .selectAll("text")
       .data(chart.data, chart.dataKey)
@@ -193,10 +192,10 @@ export default class BarFactory {
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .attr("dx", chart.xScale.bandwidth() / 2)
-      .attr("dy", "-0.5em")
-      .attr("text-anchor", "middle")
-      .text(d => +d[chart.yLabel]);
+      .attr("dx", "0.4em")
+      .attr("dy", chart.yScale.bandwidth() / 2)
+      .attr("alignment-baseline", "middle")
+      .text(d => +d[chart.xLabel]);
     gReference
       .append("text")
       .attr("class", "referenceText")
@@ -261,14 +260,13 @@ export default class BarFactory {
       .delay(chart.accumedDelay)
       .style("opacity", 0)
       .attr("height", 0)
-      .attr("y", chart.height_g_body)
+      .attr("x", 0)
       .remove();
     rect
       .enter() // Enter selection
       .append("rect")
       .attr("class", "graphRect")
-      .attr("x", d => chart.xScale(d[chart.xLabel]))
-      .attr("y", d => chart.height_g_body)
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
       // .attr("fill", chart.colorToFocus)
       .merge(rect) // Enter + Update selection
       .transition()
@@ -277,10 +275,9 @@ export default class BarFactory {
       .delay(chart[chart.delayType])
       .attr("fill", chart.color)
       .call(this._applyFocus, chart) // apply focus
-      .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .attr("width", chart.xScale.bandwidth())
-      .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
+      .attr("width", d => chart.xScale(d[chart.xLabel]))
+      .attr("height", chart.yScale.bandwidth());
 
     let text = canvas.gGraph
       .selectAll("text.graphText")
@@ -290,16 +287,16 @@ export default class BarFactory {
       .transition()
       .duration(chart.duration / 2)
       .delay(chart.accumedDelay)
-      .attr("height", 0)
-      .attr("y", chart.height_g_body)
+      // .attr("height", 0)
+      .attr("x", 0)
       .style("opacity", 0)
       .remove();
     text
       .enter()
       .append("text")
       .attr("class", "graphText")
-      .attr("x", d => chart.xScale(d[chart.xLabel]))
-      .attr("y", chart.height_g_body)
+      // .attr("x", d => chart.xScale(d[chart.xLabel]))
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("opacity", 0)
       // .attr("y", d => chart.yScale(d[chart.yLabel]))
       .merge(text)
@@ -311,11 +308,11 @@ export default class BarFactory {
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .attr("dx", chart.xScale.bandwidth() / 2)
-      .attr("dy", "-0.5em")
-      .attr("text-anchor", "middle")
+      .attr("dx", "0.4em")
+      .attr("dy", chart.yScale.bandwidth() / 2)
+      .attr("alignment-baseline", "middle")
       .attr("opacity", 1)
-      .text(d => +d[chart.yLabel]);
+      .text(d => +d[chart.xLabel]);
   }
 
   _applyFocus(rect, chart) {

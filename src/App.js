@@ -3,7 +3,8 @@ import "./App.css";
 
 import Workspace from "./Workspace";
 import { cht0, cht1, cht2 } from "./data/bar-data";
-import { gChart0 } from "./data/grouped-bar-data";
+import { hCht0, hCht1, hCht2 } from "./data/horizontal-bar-data";
+import { gChart0, gChart1 } from "./data/grouped-bar-data";
 import { sChart0 } from "./data/stacked-bar-data";
 import { dummie } from "./data/line_dummy4";
 
@@ -57,12 +58,30 @@ import { dummie } from "./data/line_dummy4";
 
 class App extends Component {
   render() {
+    // horizontal
+    // return (
+    //   <div>
+    //     <Workspace charts={[hCht0, hCht1]} />
+    //     <div id="gif" />
+    //   </div>
+    // );
+
+    // group bar
     return (
       <div>
-        <Workspace charts={[cht0, cht1]} />
+        <Workspace charts={[gChart1]} />
         <div id="gif" />
       </div>
     );
+
+    // single bar
+    // return (
+    //   <div>
+    //     <Workspace charts={[cht0, cht1]} />
+    //     <div id="gif" />
+    //   </div>
+    // );
+
     // return (
     //   <div>
     //     <Workspace width="1024" height="768"
