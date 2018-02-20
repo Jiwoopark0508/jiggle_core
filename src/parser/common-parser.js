@@ -4,16 +4,15 @@ export function setSkeleton(chart) {
   const factor_tertiary_fontsize = 0.035;
   const factor_space_between_lines = 4 / 3;
   const factor_margin_body = 3;
+
+  chart.width_svg = chart.width_svg || 750;
+  chart.height_svg = chart.height_svg || 433;
   chart.margins = chart.margins || {
     top: chart.height_svg * 0.09,
     bottom: chart.height_svg * 0.09,
     left: chart.width_svg * 0.04,
     right: chart.width_svg * 0.04
   };
-
-  chart.width_svg = chart.width_svg || 750;
-  chart.height_svg = chart.height_svg || 433;
-
   chart.width_g_total =
     chart.width_svg - chart.margins.left - chart.margins.right;
   chart.width_g_body =
