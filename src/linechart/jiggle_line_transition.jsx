@@ -1,11 +1,7 @@
 import React from 'react'
-// import { Group } from '@vx/group'
 import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
-// import { GridColumns } from '@vx/grid'
-// import { GridRows } from '@vx/grid'
 import { skeleton } from '../common/constant'
-// import StripeColumns from './meta-components/stripe_columns'
 import StripeRows from './meta-components/stripe_rows'
 import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
@@ -14,6 +10,7 @@ import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
 import JiggleLabel from './jiggle_label';
 import Header from './meta-components/Header'
+import Legend from './meta-components/Legend'
 import Footer from './meta-components/Footer'
 import * as util from '../common/utils'
 import _ from 'lodash'
@@ -89,23 +86,26 @@ export default class JiggleLineTransition {
     getChartConfigs(chartList) {
         return chartList[0]
     }
-    getChildG(gParent) {
-        console.log(this.header)
-    }
     // Header
-    _header(chartConfigs) {
+    _header(chartConfigs, scales) {
         return (
             <Group
                 top={20}
                 left={15}
-                className={"header"}
+                className={"title"}
                 innerRef={(node) => {this.header = node}}
             >
                 <Header
                     configs={chartConfigs}
                     >
                 </Header>
-                {/* Place for Legend */}
+                <Legend
+                    className="legend"
+                    left={800}
+                    configs={chartConfigs}
+                    headers={scales.header}
+                >
+                </Legend>
             </Group>
         )
     }
@@ -137,6 +137,7 @@ export default class JiggleLineTransition {
     }
     _graph(chartConfigs, scale, processedData, labels) {
         let lines = processedData.map((d, i) => {
+
             return (
                 React.cloneElement(this.lineType,
                     {
@@ -149,7 +150,7 @@ export default class JiggleLineTransition {
                         xScale : scale.xScale,
                         yScale : scale.yScale,
                         config : chartConfigs,
-
+                        color : chartConfigs.graph_colors[i]
                     }
                 )
             )
@@ -178,7 +179,9 @@ export default class JiggleLineTransition {
     }
     _background(chartConfigs, scale) {
         return (
-            <Group>
+            <Group
+                className={"background"}
+            >
                 <StripeRows
                     scale={scale.yScale}
                     width={scale.xMax}
@@ -190,13 +193,15 @@ export default class JiggleLineTransition {
     }
     _axis(chartConfigs, scale) {
         return (
-            <Group>
+            <Group
+                className={"axis"}
+            >
                 <AxisBottom
                     scale={scale.xScale}
                     top={scale.yMax}
                     stroke={chartConfigs.colorSecondary}
                     hideTicks={true}
-                    numTicks={6}
+                    numTicks={100}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'middle',
                         fontFamily: 'Spoqa Hans Regular',
@@ -205,6 +210,7 @@ export default class JiggleLineTransition {
                         dx: '2.2em',
                         dy: '0'
                     })}
+                    tickValues={scale.xTickValues}
                 />
                 <AxisLeft
                     scale={scale.yScale}
@@ -267,20 +273,18 @@ export default class JiggleLineTransition {
         // By This line -- //
 
         const x = accessors[0]
-        let yScaleDomain = []
+        let flattenY = []
         accessors.reduce((rec, d) => {
             return rec.concat(d)
         }, [])
         accessors.forEach((f, i) => {
             if (i < 1) return;
-            yScaleDomain = yScaleDomain.concat(d3.extent(flatten_data, f))
+            flattenY = flattenY.concat(d3.extent(flatten_data, f))
         })
-        yScaleDomain = d3.extent(yScaleDomain)
-        
+
         let xScaleDomain = d3.extent(flatten_data, x)
-        // xScaleDomain = util.padLineDomain(xScaleDomain)
-        // let xScaleGraphDomain = padded xScaleDomain
-        yScaleDomain = d3.extent(util.refineYAxis(yScaleDomain))
+        let yScaleDomain = d3.extent(util.refineYAxis(flattenY.slice()))
+
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
@@ -289,8 +293,9 @@ export default class JiggleLineTransition {
             .range([yMax, 0])
             .domain(yScaleDomain)
         
-        const yTickValues = util.refineYAxis(yScaleDomain.slice())
-
+        const yTickValues = util.refineYAxis(flattenY.slice())
+        const xTickValues = util.refineXAxis(xScaleDomain.slice())
+        
         const scales = {
             xScale,
             yScale,
@@ -300,7 +305,8 @@ export default class JiggleLineTransition {
             accessors,
             x,
             chartList,
-            yTickValues
+            yTickValues,
+            xTickValues
         }
         
         return (
@@ -314,7 +320,7 @@ export default class JiggleLineTransition {
                     width={chartConfigs.width_svg}
                     height={chartConfigs.height_svg}
                     fill={chartConfigs.backgroundColor}/>        
-                {this._header(chartConfigs)}
+                {this._header(chartConfigs, scales)}
                 {this._body(chartConfigs, scales, processedData, annotations)}
                 {this._footer(chartConfigs)}
             </Group>

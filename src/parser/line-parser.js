@@ -20,6 +20,7 @@ function label_generator(labels, data) {
     let ret = []
     labels = _.sortBy(labels, function(o) {return o.row})
     labels.forEach(function(d){
+        console.log(d)
         obj = {
             y : numeral(data[d.row][d.col]).value(),
             x : moment(data[d.row][0]),

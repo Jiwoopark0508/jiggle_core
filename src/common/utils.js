@@ -50,30 +50,24 @@ export function floor(num, digit = 1) {
   return Math.floor(num / radix) * radix
 }
 
-export function refineXAxis(arr) {
-  
+export function refineXAxis(arr, numTick=4) {
+  let ret = []
+  let firstDate = arr[0]
+  let lastDate = arr[arr.length - 1]
+  let interval = lastDate.diff(firstDate) / numTick
+  for(let i = 0; i <= numTick; i++){
+    let date = moment(firstDate).add(interval * i)
+    ret.push(date)
+  }
+  return ret
 }
 
-export function refineYAxis(arr) {
-  // partition arr into 4 equal sizes
-  // this function is for number Type Y axis
+export function refineYAxis(arr, numTick = 4) {
   let firstElem = floor(arr[0])
   let lastElem = floor(arr[arr.length - 1])
   let radix = String(lastElem - firstElem).length
   firstElem = floor(firstElem, radix)
   lastElem = ceil(lastElem, radix)
-  let interval = (lastElem - firstElem) / 4
+  let interval = (lastElem - firstElem) / numTick
   return _.range(firstElem, lastElem + 1, interval)
 }
-
-// export function padLineDomain(arr) { // Pad Line xDomain
-//   let diff_whole = arr[1].diff(arr[0], "days")
-//   let arr1 = moment(arr[1])
-//   let arr0 = moment(arr[0])
-//   let factor = 0.1
-//   arr0.subtract(factor * diff_whole, "days")
-//   arr1.add(factor * diff_whole, "days")
-//   arr.splice(0, 0, arr0)
-//   arr.splice(3, 0, arr1)
-//   return [arr0, arr1]
-// }

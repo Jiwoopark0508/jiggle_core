@@ -27,7 +27,6 @@ export default function JiggleLabel({
   note,
   ...restProps
 }) {
-  console.log(note)
   return (
       <Group 
         innerRef={innerRef}

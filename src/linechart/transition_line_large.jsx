@@ -75,6 +75,7 @@ export default class LargeTransitionLinePath extends React.Component {
                     annotations={props.annotations}
                     x={props.x}
                     y={props.y}
+                    stroke={props.color}
                     strokeWidth={5}
                     strokeLinecap={"round"}
                     glyph={(d, i) => {

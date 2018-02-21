@@ -82,9 +82,10 @@ export default function Axis({
   top = 0,
 }) {
   let values = scale.domain();
-
-  divideArray.call(values, 4)
+  
+  // divideArray.call(values, 4)
   if (tickValues) values = tickValues;
+  console.log(values)
   let format = scale.tickFormat ? scale.tickFormat() : identity;
   if (tickFormat) format = tickFormat;
 
