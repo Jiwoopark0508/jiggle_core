@@ -99,7 +99,7 @@ export function drawSkeleton(svgElement, chart) {
 
   let gBackground = gBody.append("g").attr("class", "background");
   let gImage = gBody.append("g").attr("class", "imageG");
-  let gYAxis = gBody.insert("g", ".imageG").attr("class", "y axis");
+  let gYAxis = gBody.append("g").attr("class", "y axis");
   let gGraph = gBody.append("g").attr("class", "graph");
   let gXAxis = gBody
     .append("g")
