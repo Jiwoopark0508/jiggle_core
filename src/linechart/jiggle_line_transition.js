@@ -1,7 +1,7 @@
 import React from 'react'
 import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
-import { skeleton } from '../common/constant'
+import { skeleton, GRAPH_COLOR } from '../common/constant'
 import StripeRows from './meta-components/stripe_rows'
 import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
@@ -15,12 +15,18 @@ import Footer from './meta-components/Footer'
 import * as util from '../common/utils'
 import _ from 'lodash'
 import numeral from 'numeral'
+import moment from 'moment'
 import * as d3 from 'd3'
 import { lineParser, access_gen } from '../parser/line-parser'
 
 const LARGE = "LARGE"
 const SMALL = "SMALL"
 const PARTIAL = true
+
+function formatDate(date) {
+    date = moment(date).format(`YYYY년 MM월DD일`)
+    return date.split(' ')
+}
 
 export default class JiggleLineTransition {
     constructor(charts, type) {
@@ -137,7 +143,6 @@ export default class JiggleLineTransition {
     }
     _graph(chartConfigs, scale, processedData, labels) {
         let lines = processedData.map((d, i) => {
-
             return (
                 React.cloneElement(this.lineType,
                     {
@@ -164,8 +169,9 @@ export default class JiggleLineTransition {
                     cy={scale.yScale(d.y)}
                     dx={d.dx}
                     dy={d.dy}
-                    note={{title:d.y, comment:d.comment}}
-                    />
+                    // stroke={chartConfigs.graph_colors[i]}
+                    note={{title:d.y, comment:d.value}}
+                />
             )
         })
         return (
@@ -203,7 +209,7 @@ export default class JiggleLineTransition {
                     hideTicks={true}
                     numTicks={100}
                     tickLabelProps = {(tickValue, index) => ({
-                        textAnchor: 'middle',
+                        textAnchor: 'start',
                         fontFamily: 'Spoqa Hans Regular',
                         fontSize: 14,
                         fill: '#7F7F7F',
@@ -211,6 +217,7 @@ export default class JiggleLineTransition {
                         dy: '0'
                     })}
                     tickValues={scale.xTickValues}
+                    tickFormat={formatDate}
                 />
                 <AxisLeft
                     scale={scale.yScale}
@@ -264,6 +271,7 @@ export default class JiggleLineTransition {
         if (this.modifiedState.annotations) annotations = this.modifiedState.annotations;
         // TODO --> Refactoring (set skeleton)
         const chartConfigs = this.getChartConfigs(chartList)
+        chartConfigs.graph_colors = GRAPH_COLOR
         const margin = skeleton.global_margin
         const width_g_total = chartConfigs.width_svg - margin.left - margin.right
         const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
@@ -288,7 +296,7 @@ export default class JiggleLineTransition {
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
-        
+            
         const yScale = d3.scaleLinear()
             .range([yMax, 0])
             .domain(yScaleDomain)

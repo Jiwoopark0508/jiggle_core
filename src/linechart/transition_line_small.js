@@ -88,7 +88,8 @@ export default class SmallTransitionLinePath extends React.Component {
                     yScale={props.yScale}
                     x={props.x}
                     y={props.y}
-                    strokeWidth={2.5}
+                    stroke={props.color}
+                    strokeWidth={3}
                     glyph={(d, i) => {
                         let dot = 
                             <JiggleGlyph
@@ -98,9 +99,9 @@ export default class SmallTransitionLinePath extends React.Component {
                                 cx={props.xScale(props.x(d))}
                                 cy={props.yScale(props.y(d))}
                                 r={3}
-                                stroke={"steelblue"}
+                                stroke={props.color}
                                 strokeWidth={2}
-                                fill={"white"}
+                                fill={i == 0 || i == this.glyphList.length ? "white": props.color}
                                 labelText={"TEXT"}
                                 dx={3}
                                 style={{opacity:0}}

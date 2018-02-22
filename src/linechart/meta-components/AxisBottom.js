@@ -68,29 +68,14 @@ export default function AxisBottom({
   return (
     <Axis
       axisClassName={cx('vx-axis-bottom', axisClassName)}
-      axisLineClassName={axisLineClassName}
-      hideAxisLine={hideAxisLine}
       hideTicks={hideTicks}
-      hideZero={hideZero}
       label={label}
-      labelClassName={labelClassName}
-      labelOffset={labelOffset}
-      labelProps={labelProps}
       left={left}
-      numTicks={numTicks}
-      
-      rangePadding={rangePadding}
       scale={scale}
       stroke={stroke}
-      strokeWidth={strokeWidth}
-      strokeDasharray={strokeDasharray}
-      tickClassName={tickClassName}
-      tickFormat={tickFormat}
       tickLabelProps={tickLabelProps}
-      tickLength={tickLength}
-      tickStroke={tickStroke}
-      tickTransform={tickTransform}
       tickValues={tickValues}
+      tickFormat={tickFormat}
       top={top}
       children={children}
     />

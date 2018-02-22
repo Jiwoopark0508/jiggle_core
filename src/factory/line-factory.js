@@ -139,7 +139,6 @@ export default class LineChartFactory {
         });
       if (pending.length === 0) return;
       pending.forEach(function(tran, i) {
-        console.log(tran)
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
         tran.tween.forEach(function(tween) {

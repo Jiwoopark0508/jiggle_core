@@ -70,27 +70,15 @@ export default function AxisLeft({
     <Axis
       axisClassName={cx('vx-axis-left', axisClassName)}
       axisLineClassName={axisLineClassName}
-      hideAxisLine={hideAxisLine}
       hideTicks={hideTicks}
-      hideZero={hideZero}
       label={label}
-      labelClassName={labelClassName}
-      labelOffset={labelOffset}
       labelProps={labelProps}
       left={left}
       numTicks={numTicks}
       orientation={ORIENT.left}
-      rangePadding={rangePadding}
       scale={scale}
       stroke={stroke}
-      strokeWidth={strokeWidth}
-      strokeDasharray={strokeDasharray}
-      tickClassName={tickClassName}
-      tickFormat={tickFormat}
       tickLabelProps={tickLabelProps}
-      tickLength={tickLength}
-      tickStroke={tickStroke}
-      tickTransform={tickTransform}
       tickValues={tickValues}
       top={top}
       children={children}
