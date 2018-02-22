@@ -156,6 +156,7 @@ export default class BarFactory {
       gMadeBy
     } = drawSkeleton(svgElement, chart);
     gYAxis.call(chart.customYAxis);
+    gBackground.call(chart.drawBackground);
     gXAxis.call(chart.customXAxis);
     gXAxis.call(drawXLine, chart);
     // gTitle
@@ -212,14 +213,13 @@ export default class BarFactory {
       .attr("font-style", chart.fontstyle_madeBy)
       .attr("fill", chart.fontcolor_madeBy)
       .text(`만든이: ${chart.madeBy}`);
-
     images &&
       images.forEach((image, index) => {
         gImage
           .append("svg:image")
-          .attr("xlink:href", `data:${image.mimeType};base64, ${image.base64}`)
-          .attr("x", image.x)
-          .attr("y", image.y)
+          .attr("xlink:href", image.href)
+          .attr("x", image.x - chart.x_g_body - chart.x_g_total)
+          .attr("y", image.y - chart.y_g_body - chart.y_g_total)
           .attr("width", image.width)
           .attr("height", image.height);
       });
@@ -263,6 +263,11 @@ export default class BarFactory {
       .delay(chart[chart.delayType])
       // .delay(chart.accumedDelay)
       .call(chart.customXAxis);
+    canvas.gBackground
+      .transition()
+      .duration(chart.duration)
+      .delay(chart[chart.delayType])
+      .call(chart.drawBackground);
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")

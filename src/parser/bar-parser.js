@@ -114,6 +114,29 @@ export default function parseBar(chart) {
       .attr("stroke-dashoffset", 0);
   };
 
+  chart.drawBackground = function(g) {
+    // g.selectAll("*").remove();
+    const yAxis = d3
+      .axisLeft(chart.yScale)
+      .ticks(chart.numOfYAxisTicks)
+      .tickSize(-chart.width_g_body)
+      .tickFormat(d => d);
+    g
+      .call(yAxis)
+      .selectAll(".domain, .tick text")
+      .style("display", "none");
+    g
+      .selectAll(".tick line")
+      .attr("stroke-width", `${chart.tickDistance}`)
+      .attr("stroke", function(d, i) {
+        let colorStripe;
+        colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
+        // console.log(i, d, this, colorStripe);
+        return colorStripe;
+      })
+      .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
+  };
+
   chart.customYAxis = function(g) {
     // g.selectAll("*").remove();
     const yAxis = d3
@@ -123,27 +146,23 @@ export default function parseBar(chart) {
       .tickFormat(d => d);
     g
       .call(yAxis)
-      .selectAll(".domain")
+      .selectAll(".domain, .tick line")
       .style("display", "none");
     g
       .selectAll(".tick text")
       .attr("font-size", chart.fontsize_yAxis + "px")
       .attr("fill", chart.fontcolor_tickText)
       .attr("dx", -2);
-    g
-      .selectAll(".tick line")
-      .attr("stroke-width", `${chart.tickDistance}`)
-      .attr("stroke", function(d, i) {
-        // if (i === chart.arrLen - 1) {
-        //   console.log(i, "Called.");
-        //   return "transparent";
-        // }
-        let colorStripe;
-        colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
-        // console.log(i, d, this, colorStripe);
-        return colorStripe;
-      })
-      .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
+    // g
+    //   .selectAll(".tick line")
+    //   .attr("stroke-width", `${chart.tickDistance}`)
+    //   .attr("stroke", function(d, i) {
+    //     let colorStripe;
+    //     colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
+    //     // console.log(i, d, this, colorStripe);
+    //     return colorStripe;
+    //   })
+    //   .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
   };
 
   chart.customXAxis = function(g) {

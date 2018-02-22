@@ -9,20 +9,20 @@ const base64 =
   "9U/AC0ulSXrrhMotka/lQy0Ic08FDeIiAmDvA2HX01W05TopS2j2/H4T6FBVbj4YgV5+AecyLk+Ctvms" +
   "QWK8WZZ+Hdf7QGu7fobMuZHyq1DoJLvUqQrfM966EU/qYGwAAAAASUVORK5CYII=";
 
+const href = `data:image/png;base64,${base64}`;
+
 const images = [
+  // {
+  //   href,
+  //   x: 200,
+  //   y: 20,
+  //   width: "100px",
+  //   height: "100px"
+  // },
   {
-    base64,
-    mimeType: "image/png",
-    x: "200px",
-    y: "20px",
-    width: "100px",
-    height: "100px"
-  },
-  {
-    base64,
-    mimeType: "image/png",
-    x: "300px",
-    y: "20px",
+    href,
+    x: 50,
+    y: 50,
     width: "100px",
     height: "100px"
   }
