@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { GRAPH_COLOR } from './common/constant'
 import Workspace from "./Workspace";
-import { dummie } from './data/line_dummy10'
+import { dummie } from './data/line_dummy2'
 import { DARK, LIGHT } from './common/constant'
 
 

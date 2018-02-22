@@ -10,13 +10,25 @@ export default class SmallDataLineFactory {
   constructor() {
     this.lineInstance = null
   }
-  renderChartStatic() {
-    const renderer = (svgElement, chartConfig) => {
-      this._drawStaticChart(svgElement, chartConfig)
+  renderChart() {
+    const renderer = (svgElement, chartConfigList) => {
+      this._drawStaticChart(svgElement, chartConfigList)
     }
     return renderer;
   }
-  
+
+  _drawStaticChart(svgElement, chartConfigList) {
+    // this function draw transition between two chart configs
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_transition_instance = new JiggleLineTransition(chartConfigList, SMALL);
+    this.lineInstance = line_transition_instance;
+    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
+    ReactDOM.render(jiggle_line_transition, svgElement)
+
+    return jiggle_line_transition
+  }
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
       this._drawTransitionChart(svgElement, chartConfigList)
@@ -161,12 +173,4 @@ export default class SmallDataLineFactory {
     });
     return tweeners;
   }
-
-  _drawStaticChart(svgElement, chartConfig) {
-    let line_static_instance = new JiggleLineStatic();
-    let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
-
-    ReactDOM.render(jiggle_line, svgElement)
-  }
-
 }

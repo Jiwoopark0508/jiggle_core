@@ -59,7 +59,6 @@ export function refineXAxis(arr, numTick=4) {
     let date = moment(firstDate).add(interval * i)
     ret.push(date)
   }
-  console.log(ret)
   return ret
 }
 
@@ -73,7 +72,6 @@ export function refineYAxis(arr, numTick = 4) {
   return _.range(firstElem, lastElem + 1, interval)
 }
 
-export function newLine(arr) {
-  return `<tspan></tspan>
-  `
+export function formatDate(date, format) {
+  return moment(date).format(format).split(' ')
 }

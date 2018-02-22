@@ -87,7 +87,6 @@ export default function Axis({
   if (tickValues) values = tickValues;
   let format = scale.tickFormat ? scale.tickFormat() : identity;
   if (tickFormat) format = tickFormat;
-  console.log(format)
   const range = scale.range();
   const range0 = range[0] + 0.5 - rangePadding;
   const range1 = range[range.length - 1] + 0.5 + rangePadding;

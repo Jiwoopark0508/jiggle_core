@@ -19,10 +19,10 @@ export default class Workspace extends React.Component {
 
 
     const factory = new LargeDataLineFactory();
-    // const renderer = factory.renderChart();
-    // renderer(this.node, props.charts[0]);
-    const renderTransition = factory.renderTransition();
-    renderTransition(this.node, [...props.charts]);
+    const renderer = factory.renderChart();
+    renderer(this.node, [...props.charts]);
+    // const renderTransition = factory.renderTransition();
+    // renderTransition(this.node, [...props.charts]);
 
     // factory.recordTransition(this.node, [...props.charts]);
   }

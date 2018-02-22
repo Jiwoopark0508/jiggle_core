@@ -13,15 +13,23 @@ export default class LargeDataLineFactory {
     this.modifiedState = null
   }
 
-  modifiedState() {
-    return this.lineInstance.modifiedState;
-  }
-
-  renderChartStatic() {
+  renderChart() {
     const renderer = (svgElement, chartConfig) => {
       this._drawStaticChart(svgElement, chartConfig)
     }
     return renderer;
+  }
+  _drawStaticChart(svgElement, chartConfigList) {
+    // this function draw transition between two chart configs
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_transition_instance = new JiggleLineTransition(chartConfigList, LARGE);
+    this.lineInstance = line_transition_instance;
+    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
+    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
+
+    return jiggle_line_transition
   }
   
   renderTransition() {
@@ -170,12 +178,4 @@ export default class LargeDataLineFactory {
     });
     return tweeners;
   }
-
-  _drawStaticChart(svgElement, chartConfig) {
-    let line_static_instance = new JiggleLineStatic();
-    let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
-
-    ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
-  }
-
 }
