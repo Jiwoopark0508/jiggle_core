@@ -75,70 +75,33 @@ const fontstyle_reference = "";
 title, subtitle, reference, caption
  */
 
-export const hCht0 = {
-  type,
+export const hcht0 = {
+  type: "horizontal bar",
   rawData: arr0,
-  width_svg,
-  height_svg,
-  // margins,
-
-  focusType,
-  // duration: 1500,
-  // delay: 1800,
   duration: 0,
   delay: 0,
-  accumedDelay,
-  easingType: "easeBackOut",
-  delayType: "delayInOrder",
 
-  backgroundColor,
-  paddingBtwRects,
-  radius,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
-  madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  fontFamily,
-  color,
-  colorToFocus,
-  opacity,
-  opacityToHide
+  madeBy: "강선미 기자"
 };
 
-export const hCht1 = {
-  type,
+export const hcht1 = {
+  type: "horizontal bar",
   rawData: arr1,
-  width_svg,
-  height_svg,
-  // margins,
-
-  focusType: "end",
   duration: 1500,
   delay: 2000,
-  accumedDelay,
-  easingType: "easeBackOut",
-  delayType: "delayInOrder",
-  lastFor: 2000,
 
-  backgroundColor,
-  paddingBtwRects,
-  radius,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
-  madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  fontFamily,
-  color,
-  colorToFocus,
-  opacity,
-  opacityToHide
+  madeBy: "강선미 기자"
 };
 
-export const hCht2 = {
+export const hcht2 = {
   type,
   rawData: arr2,
   width_svg,

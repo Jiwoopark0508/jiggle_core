@@ -115,6 +115,7 @@ export default function parseBar(chart) {
   };
 
   chart.customYAxis = function(g) {
+    // g.selectAll("*").remove();
     const yAxis = d3
       .axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
@@ -133,8 +134,13 @@ export default function parseBar(chart) {
       .selectAll(".tick line")
       .attr("stroke-width", `${chart.tickDistance}`)
       .attr("stroke", function(d, i) {
+        // if (i === chart.arrLen - 1) {
+        //   console.log(i, "Called.");
+        //   return "transparent";
+        // }
         let colorStripe;
         colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
+        // console.log(i, d, this, colorStripe);
         return colorStripe;
       })
       .attr("transform", `translate(0,${-chart.tickDistance / 2})`);

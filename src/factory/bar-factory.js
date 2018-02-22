@@ -1,19 +1,20 @@
 import * as d3 from "d3";
 import { drawSkeleton, getAllTweeners, drawXLine } from "./common-factory";
+import { getImageUrlFromBase64 } from "../common/utils";
 
 export default class BarFactory {
   renderChart() {
-    const renderer = (svgElement, chart) => {
-      const canvas = this._drawChart(this, svgElement, chart);
+    const renderer = (svgElement, chart, images) => {
+      const canvas = this._drawChart(this, svgElement, chart, images);
       return canvas.gTotal;
     };
     return renderer;
   }
 
   renderTransition() {
-    const renderer = (svgElement, charts) => {
+    const renderer = (svgElement, charts, images) => {
       // let canvas = this._drawBI(this, svgElement, charts[0]);
-      const canvas = this._drawChart(this, svgElement, charts[0]);
+      const canvas = this._drawChart(this, svgElement, charts[0], images);
       charts.forEach((cht, i) => {
         if (i === 0) return;
 
@@ -33,7 +34,7 @@ export default class BarFactory {
     return renderer;
   }
 
-  recordTransition(svgElement, charts, onProcess, onFinished) {
+  recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,
@@ -61,19 +62,19 @@ export default class BarFactory {
       const cht1 = charts[i];
       if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
-        this._recordSingleTransition(gif, svgElement, cht0, cht1)
+        this._recordSingleTransition(gif, svgElement, cht0, cht1, images)
       );
     });
     chain.then(() => gif.render());
   }
 
-  _recordSingleTransition(gif, svgElement, cht0, cht1) {
+  _recordSingleTransition(gif, svgElement, cht0, cht1, images) {
     return new Promise((resolve0, reject) => {
       let canvas;
       if (cht0 === "BI") {
         canvas = this._drawBI(this, svgElement, cht1);
       } else {
-        canvas = this._drawChart(this, svgElement, cht0);
+        canvas = this._drawChart(this, svgElement, cht0, images);
         // g = canvas.gTotal;
       }
       const g = canvas.gTotal;
@@ -90,7 +91,7 @@ export default class BarFactory {
       d3.range(frames).forEach(function(f, i) {
         promises.push(
           new Promise(function(resolve1, reject) {
-            addFrame((f + 1) / frames * totalDuration, resolve1);
+            addFrame(f / frames * totalDuration, resolve1);
           })
         );
       });
@@ -134,7 +135,7 @@ export default class BarFactory {
     });
   }
 
-  _drawChart(that, svgElement, chart) {
+  _drawChart(that, svgElement, chart, images) {
     let {
       svg,
       gTotal,
@@ -211,6 +212,17 @@ export default class BarFactory {
       .attr("font-style", chart.fontstyle_madeBy)
       .attr("fill", chart.fontcolor_madeBy)
       .text(`만든이: ${chart.madeBy}`);
+
+    images &&
+      images.forEach((image, index) => {
+        gImage
+          .append("svg:image")
+          .attr("xlink:href", `data:${image.mimeType};base64, ${image.base64}`)
+          .attr("x", image.x)
+          .attr("y", image.y)
+          .attr("width", image.width)
+          .attr("height", image.height);
+      });
     return {
       svg,
       gTotal,
@@ -243,11 +255,13 @@ export default class BarFactory {
       .transition()
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      // .delay(chart.accumedDelay)
       .call(chart.customYAxis);
     canvas.gXAxis
       .transition()
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      // .delay(chart.accumedDelay)
       .call(chart.customXAxis);
     // Update selection
     let rect = canvas.gGraph
@@ -274,6 +288,7 @@ export default class BarFactory {
       .transition()
       .ease(chart.easing)
       .duration(chart.duration)
+      // .delay(chart.accumedDelay)
       .delay(chart[chart.delayType])
       // .attr("fill", chart.color)
       // .call(this._applyFocus, chart) // apply focus
@@ -307,6 +322,7 @@ export default class BarFactory {
       .ease(chart.easing)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      // .delay(chart.accumedDelay)
       .attr("font-size", chart.fontsize_graphText + "px")
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
@@ -319,7 +335,7 @@ export default class BarFactory {
   }
 
   _applyFocus(rect, chart) {
-    if (chart.focusType !== "" && chart.indexToFocus) {
+    if (chart.indexToFocus) {
       rect
         .attr(
           "fill",

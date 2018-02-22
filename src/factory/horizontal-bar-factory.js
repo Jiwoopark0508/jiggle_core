@@ -182,7 +182,7 @@ export default class HorizontalBarFactory {
       .append("rect")
       .attr("class", "graphRect")
       .attr("fill", chart.color)
-      .call(this._applyFocus, chart)
+      // .call(this._applyFocus, chart)
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", d => chart.xScale(d[chart.xLabel]))
       .attr("height", chart.yScale.bandwidth());
@@ -246,6 +246,7 @@ export default class HorizontalBarFactory {
       .transition()
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      // .delay(chart.accumedDelay)
       .call(chart.customYAxis);
     // canvas.gXAxis
     //   .transition()
@@ -255,8 +256,8 @@ export default class HorizontalBarFactory {
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
-      .data(chart.data, chart.dataKey);
-    // .attr("fill", chart.color);
+      .data(chart.data, chart.dataKey)
+      .attr("fill", chart.color);
     rect
       .exit() // Exit selection
       .transition()
@@ -271,14 +272,15 @@ export default class HorizontalBarFactory {
       .append("rect")
       .attr("class", "graphRect")
       .attr("y", d => chart.yScale(d[chart.yLabel]))
-      // .attr("fill", chart.colorToFocus)
+      .attr("fill", chart.colorToFocus)
       .merge(rect) // Enter + Update selection
       .transition()
       .ease(chart.easing)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
-      .attr("fill", chart.color)
-      .call(this._applyFocus, chart) // apply focus
+      // .delay(chart.accumedDelay)
+      // .attr("fill", chart.color)
+      // .call(this._applyFocus, chart) // apply focus
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", d => chart.xScale(d[chart.xLabel]))
       .attr("height", chart.yScale.bandwidth());
@@ -308,6 +310,7 @@ export default class HorizontalBarFactory {
       .ease(chart.easing)
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      // .delay(chart.accumedDelay)
       .attr("font-size", chart.fontsize_graphText + "px")
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.xScale(d[chart.xLabel]))
@@ -336,7 +339,7 @@ export default class HorizontalBarFactory {
   }
 
   _parseChart(chart) {
-    console.log(chart.width_g_body);
+    // console.log(chart.width_g_body);
     chart.width_g_body =
       chart.width_g_total - (chart.margins.left + chart.margins.right) * 4;
   }
