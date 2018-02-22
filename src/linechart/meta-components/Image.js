@@ -14,7 +14,8 @@ export default function Images({
                         <image 
                             x={d.x || 0}
                             y={d.y || 0}
-                            href={`data:image/png;base64,${d.base64}`}
+                            key={`jg-image-${i}`}
+                            href={`${d.href}`}
                             height={d.height}
                             width={d.width}
                         />

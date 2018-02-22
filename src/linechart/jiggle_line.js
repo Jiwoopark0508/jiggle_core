@@ -25,8 +25,8 @@ const LARGE = "LARGE"
 const SMALL = "SMALL"
 const PARTIAL = true
 
-function formatDate(date) {
-    date = moment(date).format(`YYYY년 MM월DD일`)
+function formatDate(date, idx) {
+    date = moment(date).format(`YYYY년 M월DD일`)
     return date.split(' ')
 }
 
@@ -148,6 +148,8 @@ export default class JiggleLine {
     _image(imageList) {
         return (
             <Group
+                top={-155}
+                left={-220}
                 className={"image"}
             >
                 <Image 
@@ -225,7 +227,8 @@ export default class JiggleLine {
                     numTicks={100}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'start',
-                        fontFamily: 'Spoqa Hans Regular',
+                        fontFamily: 'Spoqa Hans',
+                        fontWeight: 400,
                         fontSize: 14,
                         fill: '#7F7F7F',
                         dx: '2.2em',
@@ -243,7 +246,7 @@ export default class JiggleLine {
                     numTicks={4}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'middle',
-                        fontFamily: 'Spoqa Hans Regular',
+                        fontFamily: 'Spoqa Hans',
                         fontSize: 14,
                         fill: '#7F7F7F',
                         dx: '-1em',

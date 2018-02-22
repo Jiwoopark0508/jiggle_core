@@ -12,15 +12,17 @@ export default function Footer({
         <Group>
             <Text
                 fontSize={16}
-                fontFamily={"Spoqa Hans Bold"}
+                fontFamily={"Spoqa Hans"}
                 fill={configs.colorTernary}
+                fontWeight={700}
             >
                 출처 - {configs.reference}
             </Text>
             <Text
                 y={28}
                 fontSize={16}
-                fontFamily={"Spoqa Hans Bold"}
+                fontFamily={"Spoqa Hans"}
+                fontWeight={700}
                 fill={configs.colorTernary}
                 >
                 만든 이 - {configs.madeBy}

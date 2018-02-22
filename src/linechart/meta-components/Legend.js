@@ -15,6 +15,7 @@ export default function Legend({
         <Group top={top} left={left}>
             <Text
                 fontFamily="Spoqa Hans Bold"
+                fontWeight={700}
             >
                 단위
             </Text>
@@ -33,7 +34,7 @@ export default function Legend({
                             <Text
                                 x={30}
                                 y={22 * (i + 1)}
-                                fontFamily="Spoqa Hans Regular"
+                                fontFamily="Spoqa Hans"
                             >
                                 {d}
                             </Text>

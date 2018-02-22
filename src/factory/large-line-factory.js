@@ -72,7 +72,7 @@ export default class LargeDataLineFactory {
   
   _recordSingleTransition(gif, svgElement, chtList, idx) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, chtList)
+      let g = this._drawChart(svgElement, chtList)
       let component = g._self
       g = d3.select(g._self.domNode)
 

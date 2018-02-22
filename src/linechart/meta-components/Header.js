@@ -13,14 +13,16 @@ export default function Header({
         <Group top={top} left={left}>
             <Text
                 fontSize={39}
-                fontFamily={"Spoqa Hans Bold"}
+                fontFamily={"Spoqa Hans"}
                 fill={configs.colorPrimary}
+                fontWeight={700}
             >
                 {configs.title}
             </Text>
             <Text
                 y={28}
-                fontFamily={"Spoqa Hans Regular"}
+                fontFamily={"Spoqa Hans"}
+                fontWeight={400}
                 fill={configs.colorSecondary}
                 >
                 {configs.subtitle}

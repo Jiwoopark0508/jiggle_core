@@ -165,7 +165,7 @@ export default function Axis({
                     <tspan
                       key={`newLine-${i}`}
                       dy={19 * i}
-                      dx={-53 * i}
+                      dx={-50 * i}
                     >
                       {d}
                     </tspan>
