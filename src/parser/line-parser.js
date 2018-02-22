@@ -5,11 +5,6 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 
-moment.locale("ko",{
-    weekdays: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
-    weekdaysShort: ["일","월","화","수","목","금","토"],
-})
-
 function keyParse(time) {
     return moment(time)
 }
@@ -20,13 +15,30 @@ function accessor_generator(header) {
     })
 }
 
+function label_generator(labels, data) {
+    let obj = {}
+    let ret = []
+    labels = _.sortBy(labels, function(o) {return o.row})
+    labels.forEach(function(d){
+        console.log(d)
+        obj = {
+            y : numeral(data[d.row][d.col]).value(),
+            x : moment(data[d.row][0]),
+            comment : d.comment,
+            dx : 30,
+            dy : -30
+        }
+        ret.push(obj)
+    })
+    return ret
+}
+
 function lineParser(chartList) {
     let result = []
     // get chartList parse data
     let err = true;
-    
     let dataList = _.map(chartList, (c, i) => {
-        return c.data
+        return c.rawData
     })
     let header = dataList[0][0]
     for(var i = 0; i < dataList.length; i++) {
@@ -57,6 +69,7 @@ function lineParser(chartList) {
     })
 
     let accessors = accessor_generator(header)
-    return [result, accessors, header]
+    let annotations = label_generator(chartList[0].label, dataList[dataList.length - 1])
+    return {result, accessors, header, annotations}
 }
 export { lineParser };

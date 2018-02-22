@@ -172,7 +172,6 @@ export function getChildG(gParent) {
     const className = childSelection.attr("class");
     layers.forEach((l, i) => {
       if (className.includes(l)) {
-        // console.log(`${className} includes ${l}`);
         if (!acc[l]) acc[l] = child;
         else {
           acc[l] = [child].concat(acc[l]);

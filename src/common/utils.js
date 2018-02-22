@@ -1,4 +1,6 @@
 import * as d3 from "d3";
+import moment from "moment";
+import _ from "lodash";
 
 export function getImageUrlFromBase64(base64, mimeType) {
   const binary = fixBinary(atob(base64));
@@ -55,4 +57,36 @@ export function ParseData(chart) {
 
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function ceil(num, digit = 1) {
+  let radix = Math.pow(10, digit - 1);
+  return Math.ceil(num / radix) * radix;
+}
+
+export function floor(num, digit = 1) {
+  let radix = Math.pow(10, digit - 1);
+  return Math.floor(num / radix) * radix;
+}
+
+export function refineXAxis(arr, numTick = 4) {
+  let ret = [];
+  let firstDate = arr[0];
+  let lastDate = arr[arr.length - 1];
+  let interval = lastDate.diff(firstDate) / numTick;
+  for (let i = 0; i <= numTick; i++) {
+    let date = moment(firstDate).add(interval * i);
+    ret.push(date);
+  }
+  return ret;
+}
+
+export function refineYAxis(arr, numTick = 4) {
+  let firstElem = floor(arr[0]);
+  let lastElem = floor(arr[arr.length - 1]);
+  let radix = String(lastElem - firstElem).length;
+  firstElem = floor(firstElem, radix);
+  lastElem = ceil(lastElem, radix);
+  let interval = (lastElem - firstElem) / numTick;
+  return _.range(firstElem, lastElem + 1, interval);
 }

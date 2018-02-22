@@ -1,60 +1,34 @@
 import React, { Component } from "react";
 import "./App.css";
-
+import { GRAPH_COLOR } from "./common/constant";
 import Workspace from "./Workspace";
-import { cht0, cht1, cht2 } from "./data/bar-data";
-import { hCht0, hCht1, hCht2 } from "./data/horizontal-bar-data";
-import { gChart0, gChart1 } from "./data/grouped-bar-data";
-import { sChart0 } from "./data/stacked-bar-data";
-import { dummie } from "./data/line_dummy4";
+import { dummie } from "./data/line_dummy11";
+import { DARK, LIGHT } from "./common/constant";
+import { cht0, cht1 } from "./data/bar-data";
+import { gcht0, gcht1 } from "./data/grouped-bar-data";
+import { hcht0, hcht1 } from "./data/horizontal-bar-data";
 
-// const chart1 = {
-//   data : dummie.slice(0, 2),
-//   duration : 750,
-//   title : "이것은 1제목입니다.",
-//   sub_title : "이것은 1부제입니다",
-//   reference : "이것은 1레퍼런스입니다",
-//   caption : "이것은 1캡처입니다",
-//   delay : 3000,
-//   width_svg : 1000,
-//   height_svg : 800
-// }
-
-// const chart2 = {
-//   data : dummie.slice(0, 3),
-//   title : "이것은 2제목입니다.",
-//   sub_title : "이것은 2부제입니다",
-//   reference : "이것은 2레퍼런스입니다",
-//   caption : "이것은 2캡처입니다",
-//   delay : 0,
-//   duration : 1000,
-//   width_svg : 1000,
-//   height_svg : 800
-// }
-
-// const chart3 = {
-//   data : dummie.slice(0, 5),
-//   title : "이것은 3제목입니다.",
-//   sub_title : "이것은 3부제입니다",
-//   reference : "이것은 3레퍼런스입니다",
-//   caption : "이것은 3캡처입니다",
-//   delay : 1000,
-//   duration : 1000,
-//   width_svg : 1000,
-//   height_svg : 800
-// }
-
-// const chart4 = {
-//   data : dummie,
-//   title : "이것은 3제목입니다.",
-//   sub_title : "이것은 3부제입니다",
-//   reference : "이것은 3레퍼런스입니다",
-//   caption : "이것은 3캡처입니다",
-//   delay : 1000,
-//   duration : 1000,
-//   width_svg : 1000,
-//   height_svg : 800
-// }
+const chart1 = {
+  rawData: dummie,
+  duration: 750,
+  title: "주요 금융그룹 충당금 주요 금융그룹",
+  subtitle: "이것은 1부제입니다",
+  reference: "이것은 1레퍼런스입니다",
+  caption: "이것은 1캡처입니다",
+  madeBy: "강선미 기자",
+  delay: 3000,
+  width_svg: 1080,
+  height_svg: 600,
+  margins: {
+    top: 40,
+    bottom: 40,
+    left: 60,
+    right: 60
+  },
+  label: [],
+  ...LIGHT,
+  graph_colors: GRAPH_COLOR
+};
 
 class App extends Component {
   render() {
@@ -67,7 +41,7 @@ class App extends Component {
     if (flag === "horizontal") {
       return (
         <div>
-          <Workspace charts={[hCht0, hCht1]} />
+          <Workspace charts={[hcht0, hcht1]} />
           <div id="gif" />
         </div>
       );
@@ -76,7 +50,7 @@ class App extends Component {
     if (flag === "group") {
       return (
         <div>
-          <Workspace charts={[gChart1]} />
+          <Workspace charts={[gcht1]} />
           <div id="gif" />
         </div>
       );
@@ -112,6 +86,18 @@ class App extends Component {
     //       <div id="gif" />
     //   </div>
     //   );
+
+    // Jiwoo's
+    // return (
+    //   <div>
+    //     <Workspace width="1024" height="768"
+    //         charts={[
+    //           chart1
+    //         ]
+    //         } />
+    //       <div id="gif" />
+    //   </div>
+    // );
   }
 }
 

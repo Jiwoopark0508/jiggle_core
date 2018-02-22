@@ -14,10 +14,11 @@ export default function RectPanel({
     ...restProps
 }) {
     let backStyle = {
-        fill,
+        fill : "none"
     }
     let unbackStyle = {
-        fill : "white"
+        fill : "#727272",
+        fillOpacity: 0.1
     }
     return (
         <rect

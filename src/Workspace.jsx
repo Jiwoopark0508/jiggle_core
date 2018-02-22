@@ -10,35 +10,7 @@ import SmallDataLineFactory from "./factory/small-line-factory";
 import LargeDataLineFactory from "./factory/large-line-factory";
 import { getImageUrlFromBase64 } from "./common/utils";
 
-const base64 =
-  "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB1klEQVR42n2TzytEURTHv3e8N1joRhZG" +
-  "zJsoCjsLhcw0jClKWbHwY2GnLGUlIfIP2IjyY2djZTHSMJNQSilFNkz24z0/Ms2MrnvfvMu8mcfZvPvu" +
-  "Pfdzz/mecwgKLNYKb0cFEgXbRvwV2s2HuWazCbzKA5LvNecDXayBjv9NL7tEpSNgbYzQ5kZmAlSXgsGG" +
-  "XmS+MjhKxDHgC+quyaPKQtoPYMQPOh5U9H6tBxF+Icy/aolqAqLP5wjWd5r/Ip3YXVILrF4ZRYAxDhCO" +
-  "J/yCwiMI+/xgjOEzmzIhAio04GeGayIXjQ0wGoAuQ5cmIjh8jNo0GF78QwNhpyvV1O9tdxSSR6PLl51F" +
-  "nIK3uQ4JJQME4sCxCIRxQbMwPNSjqaobsfskm9l4Ky6jvCzWEnDKU1ayQPe5BbN64vYJ2vwO7CIeLIi3" +
-  "ciYAoby0M4oNYBrXgdgAbC/MhGCRhyhCZwrcEz1Ib3KKO7f+2I4iFvoVmIxHigGiZHhPIb0bL1bQApFS" +
-  "9U/AC0ulSXrrhMotka/lQy0Ic08FDeIiAmDvA2HX01W05TopS2j2/H4T6FBVbj4YgV5+AecyLk+Ctvms" +
-  "QWK8WZZ+Hdf7QGu7fobMuZHyq1DoJLvUqQrfM966EU/qYGwAAAAASUVORK5CYII=";
-
-const images = [
-  {
-    base64,
-    mimeType: "image/png",
-    x: "200px",
-    y: "20px",
-    width: "100px",
-    height: "100px"
-  },
-  {
-    base64,
-    mimeType: "image/png",
-    x: "300px",
-    y: "20px",
-    width: "100px",
-    height: "100px"
-  }
-];
+import images from "./data/image-mario";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -46,18 +18,12 @@ export default class Workspace extends React.Component {
   }
 
   componentDidMount() {
-    // const imgUrl = getImageUrlFromBase64(base64, "image/png");
-    // console.log(imgUrl);
-    // console.log("Inserting an img...");
-    // var img = document.querySelector("#image0");
-    // img.src = imgUrl;
-
     const props = this.props;
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
-    // flag = "Recording";
+    // flag = "Transition";
+    flag = "Recording";
 
     // flag = "Grouped Static";
 
@@ -153,11 +119,26 @@ export default class Workspace extends React.Component {
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
 
-    // const factory = new SmallDataLineFactory();
+    // const factory = new LargeDataLineFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
     // const renderTransition = factory.renderTransition();
     // renderTransition(this.node, [...props.charts]);
+
+    // // line
+    // // const factory = new LineChartFactory();
+
+    // // grouped bar
+    // // props.charts.forEach(chart => parseGroupedBar(chart));
+    // // const factory = new GroupedBarFactory();
+    // // const renderer = factory.renderChart();
+    // // renderer(this.node, props.charts[0]);
+
+    // // const factory = new SmallDataLineFactory();
+    // // const renderer = factory.renderChart();
+    // // renderer(this.node, props.charts[0]);
+    // // const renderTransition = factory.renderTransition();
+    // // renderTransition(this.node, [...props.charts]);
   }
 
   render() {

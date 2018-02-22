@@ -75,7 +75,7 @@ const fontstyle_reference = "";
 title, subtitle, reference, caption
  */
 
-export const hCht0 = {
+export const hcht0 = {
   type: "horizontal bar",
   rawData: arr0,
   duration: 0,
@@ -88,7 +88,7 @@ export const hCht0 = {
   madeBy: "강선미 기자"
 };
 
-export const hCht1 = {
+export const hcht1 = {
   type: "horizontal bar",
   rawData: arr1,
   duration: 1500,
@@ -101,7 +101,7 @@ export const hCht1 = {
   madeBy: "강선미 기자"
 };
 
-export const hCht2 = {
+export const hcht2 = {
   type,
   rawData: arr2,
   width_svg,

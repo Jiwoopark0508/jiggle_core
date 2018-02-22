@@ -9,7 +9,6 @@ import identity from './utils/identity';
 import getLabelTransform from './utils/labelTransform';
 import ORIENT from './constants/orientation';
 import { divideArray } from './utils/divide'
-import * as d3 from 'd3'
 
 const propTypes = {
   axisClassName: PropTypes.string,
@@ -82,12 +81,11 @@ export default function Axis({
   tickValues,
   top = 0,
 }) {
-  
   let values = scale.domain();
-
-  divideArray.call(values, 4)
-  console.log(values)
+  
+  // divideArray.call(values, 4)
   if (tickValues) values = tickValues;
+  console.log(values)
   let format = scale.tickFormat ? scale.tickFormat() : identity;
   if (tickFormat) format = tickFormat;
 

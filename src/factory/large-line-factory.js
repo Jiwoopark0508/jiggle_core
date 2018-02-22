@@ -5,12 +5,18 @@ import JiggleLineStatic from '../linechart/jiggle_line_static'
 import JiggleLineTransition from '../linechart/jiggle_line_transition';
 import _ from "lodash"
 
-const SMALL = "SMALL" // This template is for small data line
+const LARGE = "LARGE"
 
-export default class SmallDataLineFactory {
+export default class LargeDataLineFactory {
   constructor() {
     this.lineInstance = null
+    this.modifiedState = null
   }
+
+  modifiedState() {
+    return this.lineInstance.modifiedState;
+  }
+
   renderChartStatic() {
     const renderer = (svgElement, chartConfig) => {
       this._drawStaticChart(svgElement, chartConfig)
@@ -20,6 +26,8 @@ export default class SmallDataLineFactory {
   
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
+      // const allElements = g.selectAll("*");
+      // Stop all transition, and re draw
       this._drawTransitionChart(svgElement, chartConfigList)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
@@ -31,10 +39,10 @@ export default class SmallDataLineFactory {
     d3.select(svgElement)
         .attr("width", chartConfigList[0].width_svg)
         .attr("height", chartConfigList[0].height_svg)
-    let line_transition_instance = new JiggleLineTransition(chartConfigList, SMALL);
+    let line_transition_instance = new JiggleLineTransition(chartConfigList, LARGE);
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
-    ReactDOM.render(jiggle_line_transition, svgElement)
+    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
 
     return jiggle_line_transition
   }
@@ -84,6 +92,7 @@ export default class SmallDataLineFactory {
 
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
+      console.log(totalDuration)
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
         promises.push(
@@ -166,7 +175,7 @@ export default class SmallDataLineFactory {
     let line_static_instance = new JiggleLineStatic();
     let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
 
-    ReactDOM.render(jiggle_line, svgElement)
+    ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
   }
 
 }

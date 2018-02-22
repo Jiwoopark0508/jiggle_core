@@ -148,7 +148,7 @@ const fontstyle_title = "";
 const fontstyle_unit = "";
 const fontstyle_reference = "";
 
-export const gChart0 = {
+export const gcht0 = {
   type,
   rawData: arr0,
   width_svg,
@@ -170,7 +170,7 @@ export const gChart0 = {
   // opacityToHide
 };
 
-export const gChart1 = {
+export const gcht1 = {
   type,
   rawData: arr1,
   width_svg,
