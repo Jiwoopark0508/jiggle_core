@@ -1,5 +1,24 @@
 import * as d3 from "d3";
 
+export function getImageUrlFromBase64(base64, mimeType) {
+  const binary = fixBinary(atob(base64));
+  const blob = new Blob([binary], { type: mimeType });
+  // const blob = new Blob([binary], { type: "image/png" });
+  const url = URL.createObjectURL(blob);
+
+  return url;
+
+  function fixBinary(bin) {
+    var length = bin.length;
+    var buf = new ArrayBuffer(length);
+    var arr = new Uint8Array(buf);
+    for (var i = 0; i < length; i++) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return buf;
+  }
+}
+
 export function ParseData(chart) {
   // let chart = {};
   chart.data = d3.csvParse(chart.rawData); // array of objects

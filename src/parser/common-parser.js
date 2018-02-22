@@ -41,9 +41,10 @@ export function setSkeleton(chart) {
   chart.fontsize_graphText =
     chart.fontsize_graphText || chart.height_g_total * factor_tertiary_fontsize;
 
+  // chart.y_g_titleBox = chart.
   chart.y_g_title = chart.fontsize_title;
-  chart.y_g_subtitle =
-    chart.y_g_title * factor_space_between_lines + chart.fontsize_subtitle;
+  chart.y_g_subtitle = chart.fontsize_subtitle * factor_space_between_lines;
+  // chart.y_g_title * factor_space_between_lines + chart.fontsize_subtitle;
 
   chart.height_g_header = chart.y_g_subtitle + chart.fontsize_subtitle * 2;
   chart.height_g_footer = chart.height_g_total / 7;
@@ -85,14 +86,16 @@ export function setSkeleton(chart) {
   chart.numOfYAxisTicks = chart.numOfYAxisTicks || 5;
 
   chart.easingType = chart.easingType || "easeBackOut";
-  chart.delayType = chart.delayType || "delayInOrder";
+  // chart.delayType = chart.delayType || "delayInOrder";
+  chart.delayType = chart.delayType || "accumedDelay";
   chart.paddingBtwRects = chart.paddingBtwRects || 0.4;
   chart.opacity = chart.opacity || 1;
-  chart.opacityToHide = chart.opacityToHide || 0.25;
+  chart.opacityToHide = chart.opacityToHide || 0.55;
 
   chart.duration = chart.duration || 0;
   chart.delay = chart.delay || 1000;
   chart.accumedDelay = chart.accumedDelay || 0;
   chart.lastFor = chart.lastFor || 2000;
-  chart.backgroundColor = chart.backgroundColor || "white";
+  chart.backgroundColor = chart.backgroundColor || "#F4F4F4";
+  chart.fontFamily = "Spoqa Hans";
 }

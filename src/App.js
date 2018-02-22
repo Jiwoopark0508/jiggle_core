@@ -58,29 +58,39 @@ import { dummie } from "./data/line_dummy4";
 
 class App extends Component {
   render() {
-    // horizontal
-    // return (
-    //   <div>
-    //     <Workspace charts={[hCht0, hCht1]} />
-    //     <div id="gif" />
-    //   </div>
-    // );
+    let flag;
+    // flag = "horizontal";
+    // flag = "group";
+    flag = "single";
 
+    // horizontal
+    if (flag === "horizontal") {
+      return (
+        <div>
+          <Workspace charts={[hCht0, hCht1]} />
+          <div id="gif" />
+        </div>
+      );
+    }
     // group bar
-    // return (
-    //   <div>
-    //     <Workspace charts={[gChart1]} />
-    //     <div id="gif" />
-    //   </div>
-    // );
+    if (flag === "group") {
+      return (
+        <div>
+          <Workspace charts={[gChart1]} />
+          <div id="gif" />
+        </div>
+      );
+    }
 
     // single bar
-    return (
-      <div>
-        <Workspace charts={[cht0, cht1]} />
-        <div id="gif" />
-      </div>
-    );
+    if (flag === "single") {
+      return (
+        <div>
+          <Workspace charts={[cht0, cht1]} />
+          <div id="gif" />
+        </div>
+      );
+    }
 
     // return (
     //   <div>

@@ -69,11 +69,13 @@ export function drawYLine(g, chart) {
 export function drawSkeleton(svgElement, chart) {
   let svg = d3.select(svgElement);
   svg.selectAll("*").remove();
+  // svg.selectAll("*:not(#images)").remove();
   svg
     .attr("width", chart.width_svg)
     .attr("height", chart.height_svg)
     .style("background-color", chart.backgroundColor)
-    .style("user-select", "none");
+    .style("user-select", "none")
+    .style("font-family", chart.fontFamily);
   let gTotal = svg
     .append("g")
     .attr("class", "total")
@@ -96,17 +98,17 @@ export function drawSkeleton(svgElement, chart) {
     .style("text-anchor", "end");
 
   let gBackground = gBody.append("g").attr("class", "background");
-  let gImage = gBackground.append("g").attr("class", "imageG");
+  let gImage = gBody.append("g").attr("class", "imageG");
+  let gYAxis = gBody.insert("g", ".imageG").attr("class", "y axis");
   let gGraph = gBody.append("g").attr("class", "graph");
-  let gYAxis = gGraph.append("g").attr("class", "y axis");
-  let gXAxis = gGraph
+  let gXAxis = gBody
     .append("g")
     .attr("class", "x axis")
     .attr("transform", `translate(0, ${chart.y_g_xAxis})`);
-  if (chart.type && chart.type.includes("horizontal")) {
-    gYAxis.remove();
-    gYAxis = gGraph.append("g").attr("class", "y axis");
-  }
+  // if (chart.type && chart.type.includes("horizontal")) {
+  //   gYAxis.remove();
+  //   gYAxis = gGraph.append("g").attr("class", "y axis");
+  // }
 
   let gReferenceBox = gFooter
     .append("g")
@@ -116,7 +118,8 @@ export function drawSkeleton(svgElement, chart) {
   let gTitle = gTitleBox
     .append("g")
     .attr("class", "titleG")
-    .attr("transform", `translate(0, ${chart.fontsize_title})`);
+    // .attr("transform", `translate(0, ${chart.fontsize_title})`)
+    .style("font-weight", 700);
   let gSubtitle = gTitleBox
     .append("g")
     .attr("class", "subtitleG")
