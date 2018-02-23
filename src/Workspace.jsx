@@ -22,12 +22,12 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    // flag = "Transition";
+    flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
 
-    flag = "Horizontal Static";
+    // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
@@ -119,27 +119,13 @@ export default class Workspace extends React.Component {
     // const factory = new GroupedBarFactory();
     // const renderer = factory.renderChart();
     // renderer(this.node, props.charts[0]);
-
     // const factory = new LargeDataLineFactory();
     // const renderer = factory.renderChart();
-    // renderer(this.node, props.charts[0]);
+    // renderer(this.node, [...props.charts]);
     // const renderTransition = factory.renderTransition();
     // renderTransition(this.node, [...props.charts]);
 
-    // // line
-    // // const factory = new LineChartFactory();
-
-    // // grouped bar
-    // // props.charts.forEach(chart => parseGroupedBar(chart));
-    // // const factory = new GroupedBarFactory();
-    // // const renderer = factory.renderChart();
-    // // renderer(this.node, props.charts[0]);
-
-    // // const factory = new SmallDataLineFactory();
-    // // const renderer = factory.renderChart();
-    // // renderer(this.node, props.charts[0]);
-    // // const renderTransition = factory.renderTransition();
-    // // renderTransition(this.node, [...props.charts]);
+    // factory.recordTransition(this.node, [...props.charts]);
   }
 
   render() {

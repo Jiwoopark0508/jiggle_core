@@ -1,20 +1,23 @@
 import React from 'react'
-import Group from './meta-components/Group'
 import { LinePath } from '@vx/shape'
-import { skeleton } from '../common/constant'
+import { skeleton, GRAPH_COLOR } from '../common/constant'
 import StripeRows from './meta-components/stripe_rows'
 import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
 import LargeTransitionLine from './transition_line_large'
-import AxisLeft from './meta-components/AxisLeft'
 import AxisBottom from './meta-components/AxisBottom'
 import JiggleLabel from './jiggle_label';
+import Group from './meta-components/Group'
+import AxisLeft from './meta-components/AxisLeft'
 import Header from './meta-components/Header'
 import Legend from './meta-components/Legend'
 import Footer from './meta-components/Footer'
+import Image from './meta-components/Image'
+import Mario from '../data/image-mario'
 import * as util from '../common/utils'
 import _ from 'lodash'
 import numeral from 'numeral'
+import moment from 'moment'
 import * as d3 from 'd3'
 import { lineParser, access_gen } from '../parser/line-parser'
 
@@ -22,7 +25,12 @@ const LARGE = "LARGE"
 const SMALL = "SMALL"
 const PARTIAL = true
 
-export default class JiggleLineTransition {
+function formatDate(date, idx) {
+    date = moment(date).format(`YYYY년 M월DD일`)
+    return date.split(' ')
+}
+
+export default class JiggleLine {
     constructor(charts, type) {
         this.transition = ""
         this.node = null
@@ -87,7 +95,7 @@ export default class JiggleLineTransition {
         return chartList[0]
     }
     // Header
-    _header(chartConfigs, scales) {
+    _header(chartConfig) {
         return (
             <Group
                 top={20}
@@ -96,32 +104,33 @@ export default class JiggleLineTransition {
                 innerRef={(node) => {this.header = node}}
             >
                 <Header
-                    configs={chartConfigs}
+                    configs={chartConfig}
                     >
                 </Header>
                 <Legend
                     className="legend"
                     left={800}
-                    configs={chartConfigs}
-                    headers={scales.header}
+                    configs={chartConfig}
+                    headers={chartConfig.header}
                 >
                 </Legend>
             </Group>
         )
     }
     // Body
-    _body(chartConfig, scale, processedData, labels) {
+    _body(chartConfig, processedData, labels) {
         let axis = this._axis(
-            chartConfig, scale
+            chartConfig
         )
         let background = this._background(
-            chartConfig, scale
+            chartConfig
         )
         let graph = this._graph(
-            chartConfig, scale,
+            chartConfig,
             processedData,
             labels
         )
+        let image = this._image()
         return (
             <Group
                 className={"body"}
@@ -131,26 +140,39 @@ export default class JiggleLineTransition {
             >
                 {axis}
                 {background}
+                {image}
                 {graph}
             </Group>
         )
     }
-    _graph(chartConfigs, scale, processedData, labels) {
+    _image(imageList) {
+        return (
+            <Group
+                top={-155}
+                left={-220}
+                className={"image"}
+            >
+                <Image 
+                    imageList={Mario}
+                />
+            </Group>
+        )
+    }
+    _graph(chartConfig, processedData, labels) {
         let lines = processedData.map((d, i) => {
-
             return (
                 React.cloneElement(this.lineType,
                     {
                         key : i,
                         ref : (node) => {this.transPathLines.push(node)},
-                        chartList : scale.chartList,
+                        chartList : chartConfig.chartList,
                         dataList : d,
-                        x : scale.x,
-                        y : scale.accessors[i + 1],
-                        xScale : scale.xScale,
-                        yScale : scale.yScale,
-                        config : chartConfigs,
-                        color : chartConfigs.graph_colors[i]
+                        x : chartConfig.x,
+                        y : chartConfig.accessors[i + 1],
+                        xScale : chartConfig.xScale,
+                        yScale : chartConfig.yScale,
+                        config : chartConfig,
+                        color : chartConfig.graph_colors[i]
                     }
                 )
             )
@@ -160,12 +182,13 @@ export default class JiggleLineTransition {
                 <JiggleLabel
                     key={`annotation-${i}`}
                     innerRef={(node) => this.annotationList.push(node)}
-                    cx={scale.xScale(d.x)}
-                    cy={scale.yScale(d.y)}
+                    cx={chartConfig.xScale(d.x)}
+                    cy={chartConfig.yScale(d.y)}
                     dx={d.dx}
                     dy={d.dy}
-                    note={{title:d.y, comment:d.comment}}
-                    />
+                    // stroke={chartConfigs.graph_colors[i]}
+                    note={{title:d.y, comment:d.value}}
+                />
             )
         })
         return (
@@ -177,57 +200,59 @@ export default class JiggleLineTransition {
             </Group>
         )
     }
-    _background(chartConfigs, scale) {
+    _background(chartConfig) {
         return (
             <Group
                 className={"background"}
             >
                 <StripeRows
-                    scale={scale.yScale}
-                    width={scale.xMax}
-                    fill={chartConfigs.backgroundColor}
-                    tickValues={scale.yTickValues}
+                    scale={chartConfig.yScale}
+                    width={chartConfig.xMax}
+                    fill={chartConfig.backgroundColor}
+                    tickValues={chartConfig.yTickValues}
                 />
             </Group>
         )
     }
-    _axis(chartConfigs, scale) {
+    _axis(chartConfig) {
         return (
             <Group
                 className={"axis"}
             >
                 <AxisBottom
-                    scale={scale.xScale}
-                    top={scale.yMax}
-                    stroke={chartConfigs.colorSecondary}
+                    scale={chartConfig.xScale}
+                    top={chartConfig.yMax}
+                    stroke={chartConfig.colorSecondary}
                     hideTicks={true}
                     numTicks={100}
                     tickLabelProps = {(tickValue, index) => ({
-                        textAnchor: 'middle',
-                        fontFamily: 'Spoqa Hans Regular',
+                        textAnchor: 'start',
+                        fontFamily: 'Spoqa Hans',
+                        fontWeight: 400,
                         fontSize: 14,
                         fill: '#7F7F7F',
                         dx: '2.2em',
                         dy: '0'
                     })}
-                    tickValues={scale.xTickValues}
+                    tickValues={chartConfig.xTickValues}
+                    tickFormat={formatDate}
                 />
                 <AxisLeft
-                    scale={scale.yScale}
+                    scale={chartConfig.yScale}
                     top={0}
                     left={0}
-                    stroke={chartConfigs.colorSecondary}
+                    stroke={chartConfig.colorSecondary}
                     hideTicks={true}
                     numTicks={4}
                     tickLabelProps = {(tickValue, index) => ({
                         textAnchor: 'middle',
-                        fontFamily: 'Spoqa Hans Regular',
+                        fontFamily: 'Spoqa Hans',
                         fontSize: 14,
                         fill: '#7F7F7F',
                         dx: '-1em',
                         dy: '-0.25em'
                     })}
-                    tickValues={scale.yTickValues}
+                    tickValues={chartConfig.yTickValues}
                 />
             </Group>
         )
@@ -261,9 +286,9 @@ export default class JiggleLineTransition {
         let header = parsedResult.header
         let annotations = parsedResult.annotations
         
-        if (this.modifiedState.annotations) annotations = this.modifiedState.annotations;
         // TODO --> Refactoring (set skeleton)
         const chartConfigs = this.getChartConfigs(chartList)
+        chartConfigs.graph_colors = GRAPH_COLOR
         const margin = skeleton.global_margin
         const width_g_total = chartConfigs.width_svg - margin.left - margin.right
         const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
@@ -288,7 +313,7 @@ export default class JiggleLineTransition {
         const xScale = d3.scaleTime()
             .range([0, xMax])
             .domain(xScaleDomain)
-        
+            
         const yScale = d3.scaleLinear()
             .range([yMax, 0])
             .domain(yScaleDomain)
@@ -306,9 +331,10 @@ export default class JiggleLineTransition {
             x,
             chartList,
             yTickValues,
-            xTickValues
+            xTickValues,
+            annotations
         }
-        
+        const chartConfig = Object.assign({}, chartConfigs, scales)
         return (
             <Group
                 className="total"
@@ -320,9 +346,9 @@ export default class JiggleLineTransition {
                     width={chartConfigs.width_svg}
                     height={chartConfigs.height_svg}
                     fill={chartConfigs.backgroundColor}/>        
-                {this._header(chartConfigs, scales)}
-                {this._body(chartConfigs, scales, processedData, annotations)}
-                {this._footer(chartConfigs)}
+                {this._header(chartConfig)}
+                {this._body(chartConfig, processedData, annotations)}
+                {this._footer(chartConfig)}
             </Group>
         )
     }

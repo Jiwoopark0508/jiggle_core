@@ -85,10 +85,8 @@ export default function Axis({
   
   // divideArray.call(values, 4)
   if (tickValues) values = tickValues;
-  console.log(values)
   let format = scale.tickFormat ? scale.tickFormat() : identity;
   if (tickFormat) format = tickFormat;
-
   const range = scale.range();
   const range0 = range[0] + 0.5 - rangePadding;
   const range1 = range[range.length - 1] + 0.5 + rangePadding;
@@ -112,47 +110,7 @@ export default function Axis({
     y: horizontal ? 0 : range1,
   });
 
-  let tickLabelFontSize = 10; // track the max tick label size to compute label offset
-
-  if (!!children) {
-    return (
-      <Group
-        className={cx('vx-axis', axisClassName)}
-        top={top}
-        left={left}
-      >
-        {children({
-          axisFromPoint,
-          axisToPoint,
-          horizontal,
-          tickSign,
-          numTicks,
-          label,
-          rangePadding,
-          tickLength,
-          tickFormat: format,
-          tickPosition: position,
-          ticks: values.map((value, index) => {
-            const from = new Point({
-              x: horizontal ? position(value) : 0,
-              y: horizontal ? 0 : position(value),
-            });
-            const to = new Point({
-              x: horizontal ? position(value) : tickSign * tickLength,
-              y: horizontal ? tickLength * tickSign : position(value),
-            });
-            return {
-              value,
-              index,
-              from,
-              to,
-              formattedValue: format(value, index),
-            };
-          }),
-        })}
-      </Group>
-    );
-  }
+  let tickLabelFontSize = 10;
 
   return (
     <Group
@@ -198,9 +156,26 @@ export default function Axis({
                 (horizontal && !isTop ? tickLabelFontSize : 0)
 
               }
+              textAnchor={"start"}
               {...tickLabelPropsObj}
             >
-              {format(val, index)}
+              {format(val, index) instanceof Array ? 
+                format(val, index).map((d, i) => {
+                  return (
+                    <tspan
+                      key={`newLine-${i}`}
+                      dy={19 * i}
+                      dx={-50 * i}
+                    >
+                      {d}
+                    </tspan>
+                  )
+                })
+              : 
+                <tspan>
+                  {format(val, index)}
+                </tspan>
+              }
             </text>
           </Group>
         );

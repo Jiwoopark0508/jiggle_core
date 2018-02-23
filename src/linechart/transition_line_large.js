@@ -87,7 +87,7 @@ export default class LargeTransitionLinePath extends React.Component {
                                 cx={props.xScale(props.x(d))}
                                 cy={props.yScale(props.y(d))}
                                 r={3}
-                                stroke={"steelblue"}
+                                stroke={props.color}
                                 strokeWidth={2}
                                 fill={"white"}
                                 config={props.config}

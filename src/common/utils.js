@@ -122,3 +122,7 @@ export function refineYAxis(arr, numTick = 4) {
   let interval = (lastElem - firstElem) / numTick;
   return _.range(firstElem, lastElem + 1, interval);
 }
+
+export function formatDate(date, format) {
+  return moment(date).format(format).split(' ')
+}

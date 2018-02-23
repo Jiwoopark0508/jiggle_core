@@ -6,12 +6,14 @@ export default function Text({
     fill,
     x,
     y,
-    children
+    children,
+    ...restProps
 }) {
     return (
         <text
             fontFamily={fontFamily}
             fontSize={fontSize}
+            fontWeight={restProps.fontWeight}
             fill={fill}
             x={x}
             y={y}

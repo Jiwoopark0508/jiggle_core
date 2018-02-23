@@ -21,8 +21,8 @@ const images = [
   // },
   {
     href,
-    x: 50,
-    y: 50,
+    x: 20,
+    y: 20,
     width: "100px",
     height: "100px"
   }

@@ -52,7 +52,7 @@ export default function JiggleLabel({
           dx={dx}
           dy={dy}
           color={"black"}
-          note={{"title":String(note.title), "label":note.comment}}
+          note={{"title":String(note.title), "label":note.value}}
         />
       </Group>
   );

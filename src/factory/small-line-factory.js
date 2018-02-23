@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import * as d3 from "d3";
-import JiggleLineStatic from '../linechart/jiggle_line_static'
-import JiggleLineTransition from '../linechart/jiggle_line_transition';
+import JiggleLine from '../linechart/jiggle_line';
 
 const SMALL = "SMALL" // This template is for small data line
 
@@ -10,13 +9,25 @@ export default class SmallDataLineFactory {
   constructor() {
     this.lineInstance = null
   }
-  renderChartStatic() {
-    const renderer = (svgElement, chartConfig) => {
-      this._drawStaticChart(svgElement, chartConfig)
+  renderChart() {
+    const renderer = (svgElement, chartConfigList) => {
+      this._drawStaticChart(svgElement, chartConfigList)
     }
     return renderer;
   }
-  
+
+  _drawStaticChart(svgElement, chartConfigList) {
+    // this function draw transition between two chart configs
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_transition_instance = new JiggleLine(chartConfigList, SMALL);
+    this.lineInstance = line_transition_instance;
+    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
+    ReactDOM.render(jiggle_line_transition, svgElement)
+
+    return jiggle_line_transition
+  }
   renderTransition() {
     const renderer = (svgElement, chartConfigList) => {
       this._drawTransitionChart(svgElement, chartConfigList)
@@ -30,7 +41,7 @@ export default class SmallDataLineFactory {
     d3.select(svgElement)
         .attr("width", chartConfigList[0].width_svg)
         .attr("height", chartConfigList[0].height_svg)
-    let line_transition_instance = new JiggleLineTransition(chartConfigList, SMALL);
+    let line_transition_instance = new JiggleLine(chartConfigList, SMALL);
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
     ReactDOM.render(jiggle_line_transition, svgElement)
@@ -68,7 +79,7 @@ export default class SmallDataLineFactory {
   
   _recordSingleTransition(gif, svgElement, chtList, idx) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, chtList)
+      let g = this._drawChart(svgElement, chtList)
       let component = g._self
       g = d3.select(g._self.domNode)
 
@@ -161,12 +172,4 @@ export default class SmallDataLineFactory {
     });
     return tweeners;
   }
-
-  _drawStaticChart(svgElement, chartConfig) {
-    let line_static_instance = new JiggleLineStatic();
-    let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
-
-    ReactDOM.render(jiggle_line, svgElement)
-  }
-
 }
