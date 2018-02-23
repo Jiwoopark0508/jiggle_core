@@ -149,21 +149,13 @@ const fontstyle_unit = "";
 const fontstyle_reference = "";
 
 export const gcht0 = {
-  type,
   rawData: arr0,
-  width_svg,
-  height_svg,
-  // margins,
-
-  // focusType,
-  duration,
-  delay,
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  paddingBtwRects
+  unit: "백만원"
+  // paddingBtwRects
   // color,
   // colorToFocus,
   // opacity,
@@ -171,21 +163,12 @@ export const gcht0 = {
 };
 
 export const gcht1 = {
-  type,
-  rawData: arr1,
-  width_svg,
-  height_svg,
-  // margins,
-
-  // focusType,
-  duration,
-  delay,
+  rawData: arr0,
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  paddingBtwRects
+  unit: "백만원"
   // color,
   // colorToFocus,
   // opacity,

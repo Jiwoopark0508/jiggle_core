@@ -33,9 +33,9 @@ const chart1 = {
 class App extends Component {
   render() {
     let flag;
-    // flag = "horizontal";
+    flag = "horizontal";
     // flag = "group";
-    flag = "single";
+    // flag = "single";
 
     // horizontal
     if (flag === "horizontal") {

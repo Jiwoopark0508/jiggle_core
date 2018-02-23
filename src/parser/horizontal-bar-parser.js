@@ -67,16 +67,20 @@ export default function parseHorizontalBar(chart) {
     chart.paddingBtwRects += 0.01;
     chart.yScale.padding(chart.paddingBtwRects);
   }
-  chart.xScale = d3
+  chart.x0 = d3
     .scaleLinear()
     .domain([0, d3.max(chart.data, chart.xAccessor)])
     .nice()
     .rangeRound([0, chart.width_g_body]);
-  chart.tickArr = chart.xScale.ticks(chart.numOfXAxisTicks);
+  chart.tickArr = chart.x0.ticks(chart.numOfXAxisTicks);
   chart.arrLen = chart.tickArr.length;
   chart.tickDistance =
-    chart.xScale(chart.tickArr[chart.arrLen - 1]) -
-    chart.xScale(chart.tickArr[chart.arrLen - 2]);
+    chart.x0(chart.tickArr[chart.arrLen - 1]) -
+    chart.x0(chart.tickArr[chart.arrLen - 2]);
+
+  chart.graph_colors = ["#499fc9"];
+  chart.z = d3.scaleOrdinal().range(chart.graph_colors);
+  chart.colorToFocus = chart.colorToFocus || "#e0862d";
 
   chart.BILine = function(g) {
     g.selectAll("path.BI").remove();
@@ -115,59 +119,59 @@ export default function parseHorizontalBar(chart) {
       .attr("stroke-dashoffset", 0);
   };
 
-  chart.customYAxis = function(g) {
-    g
-      .call(d3.axisLeft(chart.yScale))
-      .selectAll(".domain,line")
-      .style("display", "none");
-    g
-      .selectAll(".tick text")
-      .attr("font-size", chart.fontsize_yAxis + "px")
-      .attr("fill", chart.fontcolor_tickText);
-  };
+  // chart.customYAxis = function(g) {
+  //   g
+  //     .call(d3.axisLeft(chart.yScale))
+  //     .selectAll(".domain,line")
+  //     .style("display", "none");
+  //   g
+  //     .selectAll(".tick text")
+  //     .attr("font-size", chart.fontsize_yAxis + "px")
+  //     .attr("fill", chart.fontcolor_tickText);
+  // };
 
-  chart.customXAxis = function(g) {
-    const xAxis = d3
-      .axisBottom(chart.xScale)
-      .ticks(chart.numOfXAxisTicks)
-      .tickSize(-chart.height_g_body)
-      .tickFormat(d => d);
-    g
-      .call(xAxis)
-      .selectAll(".domain")
-      .style("display", "none");
-    g
-      .selectAll(".tick text")
-      .attr("font-size", chart.fontsize_xAxis + "px")
-      .attr("fill", chart.fontcolor_tickText)
-      .attr("dy", 11);
-    g
-      .selectAll(".tick line")
-      .attr("stroke-width", `${chart.tickDistance}`)
-      .attr(
-        "stroke",
-        (d, i) =>
-          i !== 0 && i % 2 === 1 ? chart.colorStripe1 : chart.colorStripe2
-      )
-      .attr("transform", `translate(${chart.tickDistance / 2},0)`);
-  };
+  // chart.customXAxis = function(g) {
+  //   const xAxis = d3
+  //     .axisBottom(chart.x0)
+  //     .ticks(chart.numOfXAxisTicks)
+  //     .tickSize(-chart.height_g_body)
+  //     .tickFormat(d => d);
+  //   g
+  //     .call(xAxis)
+  //     .selectAll(".domain")
+  //     .style("display", "none");
+  //   g
+  //     .selectAll(".tick text")
+  //     .attr("font-size", chart.fontsize_xAxis + "px")
+  //     .attr("fill", chart.fontcolor_tickText)
+  //     .attr("dy", 11);
+  //   g
+  //     .selectAll(".tick line")
+  //     .attr("stroke-width", `${chart.tickDistance}`)
+  //     .attr(
+  //       "stroke",
+  //       (d, i) =>
+  //         i !== 0 && i % 2 === 1 ? chart.colorStripe1 : chart.colorStripe2
+  //     )
+  //     .attr("transform", `translate(${chart.tickDistance / 2},0)`);
+  // };
 
-  chart.drawTitle = function(g) {
-    let s = g.selection ? g.selection() : g;
-    s
-      .append("text")
-      .attr("class", "titleText")
-      .attr("font-size", chart.fontsize_title + "px")
-      .attr("font-style", chart.fontstyle_title)
-      .attr("fill", chart.fontcolor_title)
-      .text(chart.title);
-  };
+  // chart.drawTitle = function(g) {
+  //   let s = g.selection ? g.selection() : g;
+  //   s
+  //     .append("text")
+  //     .attr("class", "titleText")
+  //     .attr("font-size", chart.fontsize_title + "px")
+  //     .attr("font-style", chart.fontstyle_title)
+  //     .attr("fill", chart.fontcolor_title)
+  //     .text(chart.title);
+  // };
 
   // chart.colorScale = d3
   //   .scaleOrdinal()
   //   .domain()
   //   .range(["#316095", "#4ca8f8", "#512cdb", "#3a84f7"]);
-  // chart.xAxis = d3.axisBottom(chart.xScale);
+  // chart.xAxis = d3.axisBottom(chart.x0);
 }
 
 // function setSkeleton(chart) {

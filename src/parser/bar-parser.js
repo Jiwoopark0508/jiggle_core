@@ -23,6 +23,7 @@ export default function parseBar(chart) {
     chart.xLabel = secondSeries[0];
     chart.yLabel = firstSeries[0];
   }
+  chart.keys = [chart.yLabel];
   chart.dataKey = d => d[chart.xLabel];
   chart.xAccessor = d => d[chart.xLabel];
   chart.yAccessor = d => +d[chart.yLabel];
@@ -57,14 +58,14 @@ export default function parseBar(chart) {
     return eachDelay;
   };
 
-  chart.xScale = d3
+  chart.x0 = d3
     .scaleBand()
     .domain(chart.data.map(chart.xAccessor))
     .rangeRound([0, chart.width_g_body])
     .padding(chart.paddingBtwRects);
-  while (chart.xScale.bandwidth() > 50) {
+  while (chart.x0.bandwidth() > 50) {
     chart.paddingBtwRects += 0.01;
-    chart.xScale.padding(chart.paddingBtwRects);
+    chart.x0.padding(chart.paddingBtwRects);
   }
   chart.yScale = d3
     .scaleLinear()
@@ -77,119 +78,141 @@ export default function parseBar(chart) {
     chart.yScale(chart.tickArr[chart.arrLen - 2]) -
     chart.yScale(chart.tickArr[chart.arrLen - 1]);
 
-  chart.BILine = function(g) {
-    g.selectAll("path.BI").remove();
-    let path = g.append("path").attr("class", "BI");
-    const data = d3.range(2);
-    const lineXScale = d3
-      .scaleLinear()
-      .domain(data)
-      .range([0, chart.width_g_body]);
-    const lineYScale = d3
-      .scaleLinear()
-      .domain(data)
-      .range([0, 0]);
-    let line = d3
-      .line()
-      .curve(d3.curveLinear)
-      .x(function(d, i) {
-        return lineXScale(i);
-      })
-      .y(function(d) {
-        return lineYScale(d);
-      });
-    path
-      .attr("d", line(data))
-      .attr("stroke", "#3182bd")
-      .attr("stroke-width", "2")
-      .attr("fill", "none");
-    const totalLength = path.node().getTotalLength();
-    path
-      .attr("stroke-dasharray", totalLength + " " + totalLength)
-      .attr("stroke-dashoffset", totalLength)
-      .transition()
-      .duration(700)
-      .delay(500)
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0);
-  };
+  if (chart.id === 1) {
+    chart.graph_colors = chart.graph_colors || ["#ADADAD"];
+  }
+  if (chart.id === 2) {
+    chart.graph_colors = chart.graph_colors || [
+      "#499fc9",
+      "#4a67c6",
+      "#af4390",
+      "e0862d",
+      "#43acaf",
+      "#594ac6",
+      "#8544aa",
+      "#4ac6ae"
+    ];
+  }
+  // const re = /\((.*)\)/g;
+  // const result = re.exec(chart.yLabel);
+  // chart.unit = result[1];
 
-  chart.drawBackground = function(g) {
-    // g.selectAll("*").remove();
-    const yAxis = d3
-      .axisLeft(chart.yScale)
-      .ticks(chart.numOfYAxisTicks)
-      .tickSize(-chart.width_g_body)
-      .tickFormat(d => d);
-    g
-      .call(yAxis)
-      .selectAll(".domain, .tick text")
-      .style("display", "none");
-    g
-      .selectAll(".tick line")
-      .attr("stroke-width", `${chart.tickDistance}`)
-      .attr("stroke", function(d, i) {
-        let colorStripe;
-        colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
-        // console.log(i, d, this, colorStripe);
-        return colorStripe;
-      })
-      .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
-  };
+  chart.z = d3.scaleOrdinal().range(chart.graph_colors);
+  chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
 
-  chart.customYAxis = function(g) {
-    // g.selectAll("*").remove();
-    const yAxis = d3
-      .axisLeft(chart.yScale)
-      .ticks(chart.numOfYAxisTicks)
-      .tickSize(-chart.width_g_body)
-      .tickFormat(d => d);
-    g
-      .call(yAxis)
-      .selectAll(".domain, .tick line")
-      .style("display", "none");
-    g
-      .selectAll(".tick text")
-      .attr("font-size", chart.fontsize_yAxis + "px")
-      .attr("fill", chart.fontcolor_tickText)
-      .attr("dx", -2);
-    // g
-    //   .selectAll(".tick line")
-    //   .attr("stroke-width", `${chart.tickDistance}`)
-    //   .attr("stroke", function(d, i) {
-    //     let colorStripe;
-    //     colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
-    //     // console.log(i, d, this, colorStripe);
-    //     return colorStripe;
-    //   })
-    //   .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
-  };
+  // chart.BILine = function(g) {
+  //   g.selectAll("path.BI").remove();
+  //   let path = g.append("path").attr("class", "BI");
+  //   const data = d3.range(2);
+  //   const lineXScale = d3
+  //     .scaleLinear()
+  //     .domain(data)
+  //     .range([0, chart.width_g_body]);
+  //   const lineYScale = d3
+  //     .scaleLinear()
+  //     .domain(data)
+  //     .range([0, 0]);
+  //   let line = d3
+  //     .line()
+  //     .curve(d3.curveLinear)
+  //     .x(function(d, i) {
+  //       return lineXScale(i);
+  //     })
+  //     .y(function(d) {
+  //       return lineYScale(d);
+  //     });
+  //   path
+  //     .attr("d", line(data))
+  //     .attr("stroke", "#3182bd")
+  //     .attr("stroke-width", "2")
+  //     .attr("fill", "none");
+  //   const totalLength = path.node().getTotalLength();
+  //   path
+  //     .attr("stroke-dasharray", totalLength + " " + totalLength)
+  //     .attr("stroke-dashoffset", totalLength)
+  //     .transition()
+  //     .duration(700)
+  //     .delay(500)
+  //     .ease(d3.easeLinear)
+  //     .attr("stroke-dashoffset", 0);
+  // };
 
-  chart.customXAxis = function(g) {
-    g
-      .call(d3.axisBottom(chart.xScale))
-      .selectAll(".domain,line")
-      .style("display", "none");
-    g
-      .selectAll(".tick text")
-      .attr("font-size", chart.fontsize_xAxis + "px")
-      .attr("fill", chart.fontcolor_tickText);
-  };
+  // chart.drawBackground = function(g) {
+  //   // g.selectAll("*").remove();
+  //   const yAxis = d3
+  //     .axisLeft(chart.yScale)
+  //     .ticks(chart.numOfYAxisTicks)
+  //     .tickSize(-chart.width_g_body)
+  //     .tickFormat(d => d);
+  //   g
+  //     .call(yAxis)
+  //     .selectAll(".domain, .tick text")
+  //     .style("display", "none");
+  //   g
+  //     .selectAll(".tick line")
+  //     .attr("stroke-width", `${chart.tickDistance}`)
+  //     .attr("stroke", function(d, i) {
+  //       if (i === chart.arrLen - 1) return null;
+  //       let colorStripe;
+  //       colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
+  //       // console.log(i, d, this, colorStripe);
+  //       return colorStripe;
+  //     })
+  //     .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
+  // };
 
-  chart.drawTitle = function(g) {
-    let s = g.selection ? g.selection() : g;
-    s
-      .append("text")
-      .attr("class", "titleText")
-      .attr("font-size", chart.fontsize_title + "px")
-      .attr("font-style", chart.fontstyle_title)
-      .attr("fill", chart.fontcolor_title)
-      .text(chart.title);
-  };
+  // chart.customYAxis = function(g) {
+  //   const yAxis = d3
+  //     .axisLeft(chart.yScale)
+  //     .ticks(chart.numOfYAxisTicks)
+  //     .tickSize(-chart.width_g_body)
+  //     .tickFormat(d => d);
+  //   g
+  //     .call(yAxis)
+  //     .selectAll(".domain, .tick line")
+  //     .style("display", "none");
+  //   g
+  //     .selectAll(".tick text")
+  //     .attr("font-size", chart.fontsize_yAxis + "px")
+  //     .attr("fill", chart.fontcolor_tickText)
+  //     .attr("dx", -2);
+  //   // g
+  //   //   .selectAll(".tick line")
+  //   //   .attr("stroke-width", `${chart.tickDistance}`)
+  //   //   .attr("stroke", function(d, i) {
+  //   //     let colorStripe;
+  //   //     colorStripe = i % 2 === 0 ? chart.colorStripe2 : chart.colorStripe1;
+  //   //     // console.log(i, d, this, colorStripe);
+  //   //     return colorStripe;
+  //   //   })
+  //   //   .attr("transform", `translate(0,${-chart.tickDistance / 2})`);
+  // };
+
+  // chart.customXAxis = function(g) {
+  //   g
+  //     .call(d3.axisBottom(chart.x0))
+  //     .selectAll(".domain,line")
+  //     .style("display", "none");
+  //   g
+  //     .selectAll(".tick text")
+  //     .attr("font-size", chart.fontsize_xAxis + "px")
+  //     .attr("fill", chart.fontcolor_tickText);
+  // };
+
+  // chart.drawTitle = function(g) {
+  //   let s = g.selection ? g.selection() : g;
+  //   s
+  //     .append("text")
+  //     .attr("class", "titleText")
+  //     .attr("font-size", chart.fontsize_title + "px")
+  //     .attr("font-style", chart.fontstyle_title)
+  //     .attr("fill", chart.fontcolor_title)
+  //     .text(chart.title);
+  // };
 
   // chart.colorScale = d3
   //   .scaleOrdinal()
   //   .domain()
   //   .range(["#316095", "#4ca8f8", "#512cdb", "#3a84f7"]);
-  // chart.xAxis = d3.axisBottom(chart.xScale);
+  // chart.xAxis = d3.axisBottom(chart.x0);
 }

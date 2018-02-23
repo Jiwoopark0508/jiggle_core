@@ -2,6 +2,38 @@ import * as d3 from "d3";
 import moment from "moment";
 import _ from "lodash";
 
+export function getChildG(gParent) {
+  const layers = [
+    "total",
+    "body",
+    "footer",
+    "title",
+    "legend",
+    "background",
+    "image",
+    "axis",
+    "graph",
+    "legend",
+    "reference"
+  ];
+  const childNodes = gParent.selectAll("g").nodes();
+  const result = childNodes.reduce((acc, child) => {
+    const childSelection = d3.select(child);
+    const className = childSelection.attr("class");
+    layers.forEach((l, i) => {
+      if (className.includes(l)) {
+        if (!acc[l]) acc[l] = child;
+        else {
+          acc[l] = [child].concat(acc[l]);
+        }
+      }
+    });
+    return acc;
+  }, {});
+
+  return result;
+}
+
 export function getImageUrlFromBase64(base64, mimeType) {
   const binary = fixBinary(atob(base64));
   const blob = new Blob([binary], { type: mimeType });

@@ -22,12 +22,12 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
+    // flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
 
-    // flag = "Horizontal Static";
+    flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
@@ -36,12 +36,12 @@ export default class Workspace extends React.Component {
     if (flag === "Horizontal Static") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderChart();
-      renderer(this.node, props.charts[0]);
+      renderer(this.node, props.charts[0], images);
     }
     if (flag === "Horizontal Transition") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderTransition();
-      renderer(this.node, [...props.charts]);
+      renderer(this.node, [...props.charts], images);
     }
     if (flag === "Horizontal Recording") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
@@ -59,7 +59,8 @@ export default class Workspace extends React.Component {
         this.node,
         [...props.charts],
         onProcess,
-        onFinished
+        onFinished,
+        images
       );
     }
 
@@ -69,7 +70,7 @@ export default class Workspace extends React.Component {
     if (flag === "Grouped Static") {
       props.charts.forEach(chart => parseGroupedBar(chart));
       const renderer = groupBar.renderChart();
-      renderer(this.node, props.charts[0]);
+      renderer(this.node, props.charts[0], images);
     }
 
     // single bar
