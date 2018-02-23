@@ -19,7 +19,7 @@ export function getChildG(gParent) {
   const childNodes = gParent.selectAll("g").nodes();
   const result = childNodes.reduce((acc, child) => {
     const childSelection = d3.select(child);
-    const className = childSelection.attr("class");
+    const className = childSelection.attr("class") || "";
     layers.forEach((l, i) => {
       if (className.includes(l)) {
         if (!acc[l]) acc[l] = child;
@@ -124,5 +124,7 @@ export function refineYAxis(arr, numTick = 4) {
 }
 
 export function formatDate(date, format) {
-  return moment(date).format(format).split(' ')
+  return moment(date)
+    .format(format)
+    .split(" ");
 }
