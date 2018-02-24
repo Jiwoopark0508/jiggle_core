@@ -190,6 +190,7 @@ export function processChartConfig(chartList) {
   const xTickValues = refineXAxis(xScaleDomain.slice());
 
   const scales = {
+    ...skeleton,
     xScale,
     yScale,
     yMax,
@@ -201,7 +202,6 @@ export function processChartConfig(chartList) {
     yTickValues,
     xTickValues,
     annotations,
-    ...skeleton,
     processedData,
     graph_colors: GRAPH_COLOR
   };
