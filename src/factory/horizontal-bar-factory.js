@@ -172,9 +172,9 @@ export default class HorizontalBarFactory extends CommonFactory {
         }
         return label;
       });
-    // .text(d => +d[chart.xLabel]);
   }
   _drawLegend(g, chart) {
+    if (!chart.unit) return;
     let legend = g
       .attr("font-family", "sans-serif")
       .attr("font-size", 15)

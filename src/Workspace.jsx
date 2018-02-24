@@ -30,10 +30,10 @@ export default class Workspace extends React.Component {
     // flag = "Transition";
     // flag = "Recording";
 
-    flag = "Grouped Static";
+    // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
-    // flag = "Horizontal Transition";
+    flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
     // flag = "jiwoo";
