@@ -67,7 +67,9 @@ export function setSkeleton(chart) {
     backgroundColor: "#F9F9F9",
     colorPrimary: "#000000",
     colorSecondary: "#4B4949",
-    colorTernary: "#7F7F7F"
+    colorTernary: "#7F7F7F",
+    colorStripe1: "#e6e7e8",
+    colorStripe2: "#f3f4f5"
   };
   chart.backgroundColor = chart.backgroundColor || chart.theme.backgroundColor;
   chart.fontFamily = "Spoqa Hans";
@@ -87,8 +89,10 @@ export function setSkeleton(chart) {
   chart.fontcolor_tickText =
     chart.fontcolor_tickText || chart.theme.colorTernary;
 
-  chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
-  chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
+  // chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
+  // chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
+  chart.colorStripe1 = chart.colorStripe1 || chart.theme.colorStripe1;
+  chart.colorStripe2 = chart.colorStripe2 || chart.theme.colorStripe2;
   chart.colorBI = chart.colorBI || "#3182bd";
   // chart.color = chart.color || "#ADADAD";
   // chart.colorToFocus = chart.colorToFocus || "#4AC6AE";

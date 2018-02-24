@@ -42,12 +42,35 @@ const label = [
   }
 ];
 const colorToFocus = "#000";
+const theme = {
+  backgroundColor: "#F9F9F9",
+  colorPrimary: "#000000",
+  colorSecondary: "#4B4949",
+  colorTernary: "#7F7F7F"
+};
+const DARK = {
+  colorPrimary: "#ffffff",
+  colorSecondary: "#d9dadb",
+  colorTernary: "#ffffff",
+  backgroundColor: "#2c2d2e",
+  colorStripe1: "#333435",
+  colorStripe2: "#2c2d2e"
+};
+const LIGHT = {
+  colorPrimary: "#000000",
+  colorSecondary: "#4B4949",
+  colorTernary: "#7f7f7f",
+  backgroundColor: "#f3f4f5",
+  colorStripe1: "#e6e7e8",
+  colorStripe2: "#f3f4f5"
+};
 export const cht0 = {
   id,
   // graph_colors,
   // indexToFocus: [2],
   // colorToFocus,
-  // label,
+  label,
+  theme: DARK,
   rawData: arr0,
   duration: 0,
   delay: 0,
@@ -71,18 +94,18 @@ export const cht1 = {
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
-  numOfYAxisTicks: 7
+  numOfYAxisTicks: 5
 };
 
 export const cht2 = {
   id,
   rawData: arr2,
-  duration: 3000,
-  delay: 2000,
+  duration: 2000,
+  delay: 1000,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
-  madeBy: "강선미 기자"
-  // numOfYAxisTicks,
+  madeBy: "강선미 기자",
+  numOfYAxisTicks: 5
 };

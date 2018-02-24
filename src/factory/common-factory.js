@@ -157,9 +157,9 @@ export default class CommonFactory {
     path
       .attr("d", line(data))
       // .attr("stroke", chart.colorBI)
-      .attr("stroke", "black")
-      .attr("stroke-width", "1")
-      .attr("fill", "none");
+      .attr("stroke", chart.theme.colorSecondary)
+      .attr("stroke-width", "1");
+    // .attr("fill", chart.theme.colorSecondary);
     const totalLength = path.node().getTotalLength();
     path
       .attr("stroke-dasharray", totalLength + " " + totalLength)
@@ -190,9 +190,9 @@ export default class CommonFactory {
     path
       .attr("d", line(data))
       // .attr("stroke", chart.colorBI)
-      .attr("stroke", "black")
-      .attr("stroke-width", "1")
-      .attr("fill", "none");
+      .attr("stroke", chart.theme.colorSecondary)
+      .attr("stroke-width", "1");
+    // .attr("fill", "none");
     const totalLength = path.node().getTotalLength();
     path
       .attr("stroke-dasharray", totalLength + " " + totalLength)

@@ -24,6 +24,7 @@ export default class BarFactory extends CommonFactory {
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     gYAxis.call(that._drawVerticalYAxis, chart);
+    gYAxis.call(that._drawYLine, chart);
     gBackground.call(that._drawBackground, chart);
     gXAxis.call(that._drawVerticalXAxis, chart);
     gXAxis.call(that._drawXLine, chart);
@@ -56,19 +57,13 @@ export default class BarFactory extends CommonFactory {
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
       .text((d, i) => {
-        console.log(i);
-        let label = "";
-        // if (chart.label && chart.label.row === i + 1) {
-        console.log(chart.label);
         if (chart.label) {
-          // console.log(chart.label[0].row);
-          // console.log(chart.label.comment);
           chart.label.forEach(l => {
-            if (l.row === i + 1) label += l.comment + "\n";
+            console.log(i, l.row, l.comment);
+            if (l.row === i + 1) return l.comment;
           });
         }
-        label += +d[chart.yLabel];
-        return label;
+        return +d[chart.yLabel];
       });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
@@ -218,6 +213,7 @@ export default class BarFactory extends CommonFactory {
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")
+      .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;
         // return d;

@@ -112,6 +112,7 @@ class App extends Component {
     // flag = "horizontal";
     // flag = "group";
     flag = "single";
+    // flag = "jiwoo";
 
     // horizontal
     if (flag === "horizontal") {
@@ -137,7 +138,7 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
-          <Workspace charts={[cht0, cht1]} />
+          <Workspace charts={[cht0, cht1, cht2]} />
           <div id="gif" />
         </div>
       );
@@ -163,26 +164,24 @@ class App extends Component {
     // Jiwoo's
     // return (
     //   <div>
-    //     <Workspace width="1024" height="768"
-    //         charts={[
-    //           chart1, chart2
-    //         ]
-    //         } />
-    //       <div id="gif" />
-    //   </div>
-    //   );
-
-    // Jiwoo's
-    // return (
-    //   <div>
-    //     <Workspace width="1024" height="768"
-    //         charts={[
-    //           chart1, chart2, chart4
-    //         ]
-    //         } />
-    //       <div id="gif" />
+    //     <Workspace width="1024" height="768" charts={[chart1, chart2]} />
+    //     <div id="gif" />
     //   </div>
     // );
+
+    // Jiwoo's
+    if (flag === "jiwoo") {
+      return (
+        <div>
+          <Workspace
+            width="1024"
+            height="768"
+            charts={[chart1, chart2, chart4]}
+          />
+          <div id="gif" />
+        </div>
+      );
+    }
   }
 }
 

@@ -169,6 +169,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")
+      .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;
       });

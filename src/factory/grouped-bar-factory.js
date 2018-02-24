@@ -54,7 +54,6 @@ export default class GroupedBarFactory extends CommonFactory {
       })
       .attr("width", chart.x1.bandwidth())
       .attr("height", function(d) {
-        const hi = chart.height_g_body - chart.yScale(d.value);
         return chart.height_g_body - chart.yScale(d.value);
       })
       .attr("fill", function(d) {
@@ -144,6 +143,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .append("text")
       .attr("dx", 18)
       .attr("dy", 12)
+      .attr("fill", chart.theme.colorPrimary)
       .style("font-weight", 700)
       .text(`단위: ${chart.unit}`);
 
@@ -171,6 +171,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")
+      .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return d;
       });
