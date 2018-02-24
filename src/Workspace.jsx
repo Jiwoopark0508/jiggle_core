@@ -9,9 +9,8 @@ import parseGroupedBar from "./parser/grouped-bar-parser";
 import SmallDataLineFactory from "./factory/small-line-factory";
 import LargeDataLineFactory from "./factory/large-line-factory";
 import { getImageUrlFromBase64 } from "./common/utils";
-// import images from './data/image-kai'
 
-import images from "./data/image-mario";
+import mario from "./data/image-mario";
 import kai from "./data/image-kai";
 import { getChildG } from "./common/utils";
 
@@ -22,11 +21,11 @@ export default class Workspace extends React.Component {
 
   componentDidMount() {
     const props = this.props;
-    const imgs = kai;
+    const imgs = mario;
 
     let flag;
     // flag = "Static";
-    // flag = "Transition";
+    flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
@@ -114,20 +113,19 @@ export default class Workspace extends React.Component {
         imgs
       );
     }
-    const factory = new LargeDataLineFactory();
-    const gifDiv = document.getElementById("gif");
-      const onProcess = function(progress) {
-        gifDiv.textContent = progress * 100 + "% 됐다";
-      };
-      const onFinished = function(blob) {
-        const imgElement = document.createElement("img");
-        imgElement.src = URL.createObjectURL(blob);
-        gifDiv.appendChild(imgElement);
-      };
-    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);  
-    
+
+    // const factory = new LargeDataLineFactory();
+    // const gifDiv = document.getElementById("gif");
+    //   const onProcess = function(progress) {
+    //     gifDiv.textContent = progress * 100 + "% 됐다";
+    //   };
+    //   const onFinished = function(blob) {
+    //     const imgElement = document.createElement("img");
+    //     imgElement.src = URL.createObjectURL(blob);
+    //     gifDiv.appendChild(imgElement);
+    //   };
+    // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);
   }
-  
 
   render() {
     return (
