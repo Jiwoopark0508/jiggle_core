@@ -96,6 +96,7 @@ export default function parseBar(chart) {
   }
 
   chart.z = d3.scaleOrdinal().range(chart.graph_colors);
+  // console.log(chart.colorToFocus);
   chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
 
   // chart.BILine = function(g) {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { GRAPH_COLOR } from "./common/constant";
 import Workspace from "./Workspace";
-import { cht0, cht1 } from "./data/bar-data";
+import { cht0, cht1, cht2 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
 import { dummie } from "./data/line_dummy2";
@@ -55,8 +55,8 @@ class App extends Component {
   render() {
     let flag;
     // flag = "horizontal";
-    flag = "group";
-    // flag = "single";
+    // flag = "group";
+    flag = "single";
 
     // horizontal
     if (flag === "horizontal") {
@@ -82,6 +82,11 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
+          <svg>
+            <text fontFamily="Spoqa Hans" fontSize="35" x="30" y="30">
+              주요 금융그룹 충당금
+            </text>
+          </svg>
           <Workspace charts={[cht0, cht1]} />
           <div id="gif" />
         </div>

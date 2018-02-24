@@ -10,7 +10,8 @@ import SmallDataLineFactory from "./factory/small-line-factory";
 import LargeDataLineFactory from "./factory/large-line-factory";
 import { getImageUrlFromBase64 } from "./common/utils";
 
-import images from "./data/image-mario";
+import mario from "./data/image-mario";
+import kai from "./data/image-kai";
 import { getChildG } from "./common/utils";
 
 export default class Workspace extends React.Component {
@@ -20,13 +21,14 @@ export default class Workspace extends React.Component {
 
   componentDidMount() {
     const props = this.props;
+    const imgs = kai;
 
     let flag;
     // flag = "Static";
     // flag = "Transition";
-    // flag = "Recording";
+    flag = "Recording";
 
-    flag = "Grouped Static";
+    // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
@@ -37,12 +39,12 @@ export default class Workspace extends React.Component {
     if (flag === "Horizontal Static") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderChart();
-      renderer(this.node, props.charts[0], images);
+      renderer(this.node, props.charts[0], imgs);
     }
     if (flag === "Horizontal Transition") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderTransition();
-      renderer(this.node, [...props.charts], images);
+      renderer(this.node, [...props.charts], imgs);
     }
     if (flag === "Horizontal Recording") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
@@ -61,7 +63,7 @@ export default class Workspace extends React.Component {
         [...props.charts],
         onProcess,
         onFinished,
-        images
+        imgs
       );
     }
 
@@ -71,7 +73,7 @@ export default class Workspace extends React.Component {
     if (flag === "Grouped Static") {
       props.charts.forEach(chart => parseGroupedBar(chart));
       const renderer = groupBar.renderChart();
-      renderer(this.node, props.charts[0], images);
+      renderer(this.node, props.charts[0], imgs);
     }
 
     // single bar
@@ -80,7 +82,7 @@ export default class Workspace extends React.Component {
     if (flag === "Static") {
       props.charts.forEach(chart => parseBar(chart));
       const renderer = bar.renderChart();
-      const gTotal = renderer(this.node, props.charts[0], images);
+      const gTotal = renderer(this.node, props.charts[0], imgs);
       // const gList = getChildG(gTotal);
       // console.log(gList);
     }
@@ -88,7 +90,7 @@ export default class Workspace extends React.Component {
     if (flag === "Transition") {
       props.charts.forEach(chart => parseBar(chart));
       const renderTransition = bar.renderTransition();
-      renderTransition(this.node, props.charts, images);
+      renderTransition(this.node, props.charts, imgs);
     }
 
     if (flag === "Recording") {
@@ -108,7 +110,7 @@ export default class Workspace extends React.Component {
         [...props.charts],
         onProcess,
         onFinished,
-        images
+        imgs
       );
     }
     // const gTotal = renderer(this.node, props.charts[0]);

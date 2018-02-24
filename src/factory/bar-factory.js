@@ -29,6 +29,7 @@ export default class BarFactory extends CommonFactory {
     gXAxis.call(that._drawXLine, chart);
     gTitle.call(that._drawTitle, chart);
     gSubtitle.call(that._drawSubtitle, chart);
+    // console.log(chart.colorToFocus);
     gGraph
       .selectAll("rect")
       .data(chart.data, chart.dataKey)
@@ -56,7 +57,18 @@ export default class BarFactory extends CommonFactory {
       .attr("text-anchor", "middle")
       .text((d, i) => {
         console.log(i);
-        return +d[chart.yLabel];
+        let label = "";
+        // if (chart.label && chart.label.row === i + 1) {
+        console.log(chart.label);
+        if (chart.label) {
+          // console.log(chart.label[0].row);
+          // console.log(chart.label.comment);
+          chart.label.forEach(l => {
+            if (l.row === i + 1) label += l.comment + "\n";
+          });
+        }
+        label += +d[chart.yLabel];
+        return label;
       });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);

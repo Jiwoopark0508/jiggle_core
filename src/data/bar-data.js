@@ -23,7 +23,7 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
-const id = 2;
+const id = 1;
 const graph_colors = [
   "#499fc9",
   "#4a67c6",
@@ -34,10 +34,20 @@ const graph_colors = [
   "#8544aa",
   "#4ac6ae"
 ];
+const label = [
+  {
+    row: 1,
+    col: 1,
+    comment: "hi"
+  }
+];
+const colorToFocus = "#000";
 export const cht0 = {
   id,
   // graph_colors,
   // indexToFocus: [2],
+  // colorToFocus,
+  // label,
   rawData: arr0,
   duration: 0,
   delay: 0,
@@ -52,9 +62,10 @@ export const cht0 = {
 export const cht1 = {
   id,
   // graph_colors,
+  // colorToFocus,
   rawData: arr1,
-  duration: 1500,
-  delay: 2000,
+  duration: 2000,
+  delay: 1000,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
@@ -66,7 +77,7 @@ export const cht1 = {
 export const cht2 = {
   id,
   rawData: arr2,
-  duration: 1500,
+  duration: 3000,
   delay: 2000,
   unit: "%",
   title: "주요 금융그룹 충당금",
