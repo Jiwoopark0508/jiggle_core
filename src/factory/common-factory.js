@@ -317,7 +317,9 @@ export default class CommonFactory {
         .attr(
           "fill",
           (d, i) =>
-            chart.indexToFocus.includes(i) ? chart.colorToFocus : chart.color
+            chart.indexToFocus.includes(i)
+              ? chart.colorToFocus
+              : chart.z(d[chart.xLabel])
         )
         .style(
           "opacity",

@@ -78,6 +78,7 @@ export default function parseBar(chart) {
     chart.yScale(chart.tickArr[chart.arrLen - 2]) -
     chart.yScale(chart.tickArr[chart.arrLen - 1]);
 
+  // For default color purpose.
   if (chart.id === 1) {
     chart.graph_colors = chart.graph_colors || ["#ADADAD"];
   }
@@ -86,16 +87,13 @@ export default function parseBar(chart) {
       "#499fc9",
       "#4a67c6",
       "#af4390",
-      "e0862d",
+      "#5d9ec6",
       "#43acaf",
       "#594ac6",
       "#8544aa",
       "#4ac6ae"
     ];
   }
-  // const re = /\((.*)\)/g;
-  // const result = re.exec(chart.yLabel);
-  // chart.unit = result[1];
 
   chart.z = d3.scaleOrdinal().range(chart.graph_colors);
   chart.colorToFocus = chart.colorToFocus || "#4AC6AE";

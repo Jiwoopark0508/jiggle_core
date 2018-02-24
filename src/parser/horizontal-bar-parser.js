@@ -78,7 +78,23 @@ export default function parseHorizontalBar(chart) {
     chart.x0(chart.tickArr[chart.arrLen - 1]) -
     chart.x0(chart.tickArr[chart.arrLen - 2]);
 
-  chart.graph_colors = ["#499fc9"];
+  // For default color purpose.
+  if (chart.id === 3) {
+    chart.graph_colors = chart.graph_colors || ["#499fc9"];
+  }
+  if (chart.id === 4) {
+    chart.graph_colors = chart.graph_colors || [
+      "#499fc9",
+      "#4a67c6",
+      "#af4390",
+      "#5d9ec6",
+      "#43acaf",
+      "#594ac6",
+      "#8544aa",
+      "#4ac6ae"
+    ];
+  }
+
   chart.z = d3.scaleOrdinal().range(chart.graph_colors);
   chart.colorToFocus = chart.colorToFocus || "#e0862d";
 

@@ -35,7 +35,6 @@ export default class BarFactory extends CommonFactory {
       .enter()
       .append("rect")
       .attr("class", "graphRect")
-      // .attr("fill", chart.color)
       .attr("fill", d => chart.z(d[chart.xLabel]))
       .call(this._applyFocus, chart)
       .attr("x", d => chart.x0(d[chart.xLabel]))
@@ -55,7 +54,10 @@ export default class BarFactory extends CommonFactory {
       .attr("dx", chart.x0.bandwidth() / 2)
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
-      .text(d => +d[chart.yLabel]);
+      .text((d, i) => {
+        console.log(i);
+        return +d[chart.yLabel];
+      });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
     gMadeBy.call(that._drawMadeBy, chart);
@@ -113,7 +115,8 @@ export default class BarFactory extends CommonFactory {
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
       .data(chart.data, chart.dataKey)
-      .attr("fill", chart.color);
+      // .attr("fill", chart.color);
+      .attr("fill", d => chart.z(d[chart.xLabel]));
     rect
       .exit() // Exit selection
       .transition()

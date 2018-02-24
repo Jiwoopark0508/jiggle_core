@@ -31,7 +31,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .enter()
       .append("rect")
       .attr("class", "graphRect")
-      .attr("fill", chart.color)
+      .attr("fill", d => chart.z(d[chart.xLabel]))
       .call(this._applyFocus, chart)
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", d => chart.x0(d[chart.xLabel]))
@@ -50,6 +50,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("dy", chart.yScale.bandwidth() / 2)
       .attr("alignment-baseline", "middle")
       .text(d => +d[chart.xLabel]);
+    gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
     gMadeBy.call(that._drawMadeBy, chart);
     if (images) {
@@ -94,7 +95,7 @@ export default class HorizontalBarFactory extends CommonFactory {
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
       .data(chart.data, chart.dataKey)
-      .attr("fill", chart.color);
+      .attr("fill", d => chart.z(d[chart.xLabel]));
     rect
       .exit() // Exit selection
       .transition()
@@ -156,5 +157,20 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("alignment-baseline", "middle")
       .attr("opacity", 1)
       .text(d => +d[chart.xLabel]);
+  }
+  _drawLegend(g, chart) {
+    let legend = g
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 15)
+      .attr("text-anchor", "end")
+      .append("g");
+    legend
+      .append("text")
+      .attr("y", 9.5)
+      .attr("dx", -5)
+      .attr("dy", "0.32em")
+      .text(function(d) {
+        return `단위: ${chart.unit}`;
+      });
   }
 }

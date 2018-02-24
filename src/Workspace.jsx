@@ -11,6 +11,7 @@ import LargeDataLineFactory from "./factory/large-line-factory";
 import { getImageUrlFromBase64 } from "./common/utils";
 
 import images from "./data/image-mario";
+import { getChildG } from "./common/utils";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -22,10 +23,10 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
+    // flag = "Transition";
     // flag = "Recording";
 
-    // flag = "Grouped Static";
+    flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
@@ -79,7 +80,9 @@ export default class Workspace extends React.Component {
     if (flag === "Static") {
       props.charts.forEach(chart => parseBar(chart));
       const renderer = bar.renderChart();
-      renderer(this.node, props.charts[0], images);
+      const gTotal = renderer(this.node, props.charts[0], images);
+      // const gList = getChildG(gTotal);
+      // console.log(gList);
     }
 
     if (flag === "Transition") {

@@ -64,7 +64,7 @@ export function setSkeleton(chart) {
   chart.y_g_madeBy = chart.fontsize_madeBy * factor_space_between_lines;
 
   chart.theme = chart.theme || {
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "#F9F9F9",
     colorPrimary: "#000000",
     colorSecondary: "#4B4949",
     colorTernary: "#7F7F7F"
@@ -90,7 +90,7 @@ export function setSkeleton(chart) {
   chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
   chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
   chart.colorBI = chart.colorBI || "#3182bd";
-  chart.color = chart.color || "#ADADAD";
+  // chart.color = chart.color || "#ADADAD";
   // chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
 
   chart.fontstyle_title = chart.fontstyle_title || "bold";

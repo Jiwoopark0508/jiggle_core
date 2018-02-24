@@ -143,7 +143,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("text-anchor", "end")
       .append("text")
       .attr("dx", 18)
-      .attr("dy", 10)
+      .attr("dy", 12)
       .style("font-weight", 700)
       .text(`단위: ${chart.unit}`);
 

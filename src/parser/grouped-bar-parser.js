@@ -51,7 +51,13 @@ export default function parseGroupedBar(chart) {
     chart.yScale(chart.tickArr[chart.arrLen - 2]) -
     chart.yScale(chart.tickArr[chart.arrLen - 1]);
 
-  chart.graph_colors = ["#dd6b4b", "#4299bc"];
+  chart.graph_colors = chart.graph_colors || [
+    "#dd6b4b",
+    "#4299bc",
+    "#af4390",
+    "#8544aa",
+    "#4ac6ae"
+  ];
   chart.z = d3.scaleOrdinal().range(chart.graph_colors);
 
   // "#4180B0",
