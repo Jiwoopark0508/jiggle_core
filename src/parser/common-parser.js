@@ -112,8 +112,9 @@ export function setSkeleton(chart) {
   chart.opacity = chart.opacity || 1;
   chart.opacityToHide = chart.opacityToHide || 0.55;
 
-  chart.duration = chart.duration || 2000;
-  chart.delay = chart.delay || 1000;
-  chart.accumedDelay = chart.accumedDelay || 0;
-  chart.lastFor = chart.lastFor || 2000;
+  chart.duration = chart.duration === undefined ? 2000 : chart.duration;
+  chart.delay = chart.delay === undefined ? 1000 : chart.delay;
+  chart.accumedDelay =
+    chart.accumedDelay === undefined ? 0 : chart.accumedDelay;
+  chart.lastFor = chart.lastFor === undefined ? 2000 : chart.lastFor;
 }

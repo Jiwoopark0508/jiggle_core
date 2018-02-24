@@ -22,18 +22,18 @@ export default class Workspace extends React.Component {
   componentDidMount() {
     const props = this.props;
     // const imgs = null;
-    const imgs = mario;
-    // const imgs = kai;
+    // const imgs = mario;
+    const imgs = kai;
 
     let flag;
     // flag = "Static";
     // flag = "Transition";
-    // flag = "Recording";
+    flag = "Recording";
 
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
-    flag = "Horizontal Transition";
+    // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
     // flag = "jiwoo";

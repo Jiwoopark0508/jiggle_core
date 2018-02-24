@@ -199,7 +199,7 @@ export default class BarFactory extends CommonFactory {
   _drawLegend(g, chart) {
     if (!chart.unit) return;
     let legend = g
-      .attr("font-family", "sans-serif")
+      // .attr("font-family", "sans-serif")
       .attr("font-size", 15)
       .attr("text-anchor", "end")
       // .selectAll("g")
