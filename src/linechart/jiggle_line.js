@@ -1,18 +1,18 @@
 import React from 'react'
 import { LinePath } from '@vx/shape'
 import { skeleton, GRAPH_COLOR } from '../common/constant'
-import StripeRows from './meta-components/stripe_rows'
-import TransitionLinePath from './transition_line_path'
 import SmallTransitionLine from './transition_line_small'
 import LargeTransitionLine from './transition_line_large'
-import AxisBottom from './meta-components/AxisBottom'
 import JiggleLabel from './jiggle_label';
+import StripeRows from './meta-components/stripe_rows'
 import Group from './meta-components/Group'
+import AxisBottom from './meta-components/AxisBottom'
 import AxisLeft from './meta-components/AxisLeft'
 import Header from './meta-components/Header'
 import Legend from './meta-components/Legend'
 import Footer from './meta-components/Footer'
 import Image from './meta-components/Image'
+import ProgressBar from './meta-components/ProgressBar'
 import Mario from '../data/image-mario'
 import * as util from '../common/utils'
 import _ from 'lodash'
@@ -31,13 +31,14 @@ function formatDate(date, idx) {
 }
 
 export default class JiggleLine {
-    constructor(charts, type) {
+    constructor(charts, images, type) {
         this.transition = ""
         this.node = null
         this.transPathLines = []
         this.dataSeries = null
         this.chartList = charts
         this.lineType = this.setLineType(type)
+        this.images = images
         this.modifiedState = {}
         this.annotationList = [null]
     }
@@ -65,6 +66,7 @@ export default class JiggleLine {
                 l.playTransition(idx, partial)
             })
             this.labelTransition(idx, PARTIAL)
+            this.progressBarTransition(idx, PARTIAL)
         }
         else { // Preview Transition
             process.nextTick(() => {
@@ -72,8 +74,15 @@ export default class JiggleLine {
                     l.playTransition(idx, partial)
                 })
                 this.labelTransition(1, !PARTIAL)
+                this.progressBarTransition(1, !PARTIAL)
             })
         }
+    }
+    progressBarTransition(idx, partial) {
+        if(!this.chartList[idx]) return;
+        let delay = this.chartList[idx].delay
+        let duration = this.chartList[idx].duration
+
     }
     labelTransition(idx, partial) {
         if(!this.chartList[idx]) return;
@@ -130,7 +139,7 @@ export default class JiggleLine {
             processedData,
             labels
         )
-        let image = this._image()
+        let image = this._image(this.images)
         return (
             <Group
                 className={"body"}
@@ -153,7 +162,7 @@ export default class JiggleLine {
                 className={"image"}
             >
                 <Image 
-                    imageList={Mario}
+                    imageList={imageList}
                 />
             </Group>
         )
@@ -186,8 +195,8 @@ export default class JiggleLine {
                     cy={chartConfig.yScale(d.y)}
                     dx={d.dx}
                     dy={d.dy}
-                    // stroke={chartConfigs.graph_colors[i]}
-                    note={{title:d.y, comment:d.value}}
+                    stroke={chartConfig.colorSecondary}
+                    note={{title:d.x, comment:d.comment}}
                 />
             )
         })
@@ -267,87 +276,52 @@ export default class JiggleLine {
                 <Footer 
                     configs={chartConfig}
                 />
+                <ProgressBar
+
+                />
             </Group>)
     }
-
-    renderTransitionLine(chartList) {
-        /**
-         * Data preprocessing
-         */
-        let parsedResult = lineParser(chartList)
-        let processedData = parsedResult.result
-
-        let flatten_data = processedData.reduce((rec, d) => {
-            return rec.concat(d)
-        }, []).reduce((rec, d) => {
-            return rec.concat(d)
-        }, [])
-        let accessors = parsedResult.accessors
-        let header = parsedResult.header
-        let annotations = parsedResult.annotations
-        
-        // TODO --> Refactoring (set skeleton)
-        const chartConfigs = this.getChartConfigs(chartList)
-        chartConfigs.graph_colors = GRAPH_COLOR
-        const margin = skeleton.global_margin
-        const width_g_total = chartConfigs.width_svg - margin.left - margin.right
-        const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
-
-        const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
-        const yMax = skeleton.height_body
-        // By This line -- //
-
-        const x = accessors[0]
-        let flattenY = []
-        accessors.reduce((rec, d) => {
-            return rec.concat(d)
-        }, [])
-        accessors.forEach((f, i) => {
-            if (i < 1) return;
-            flattenY = flattenY.concat(d3.extent(flatten_data, f))
-        })
-
-        let xScaleDomain = d3.extent(flatten_data, x)
-        let yScaleDomain = d3.extent(util.refineYAxis(flattenY.slice()))
-
-        const xScale = d3.scaleTime()
-            .range([0, xMax])
-            .domain(xScaleDomain)
-            
-        const yScale = d3.scaleLinear()
-            .range([yMax, 0])
-            .domain(yScaleDomain)
-        
-        const yTickValues = util.refineYAxis(flattenY.slice())
-        const xTickValues = util.refineXAxis(xScaleDomain.slice())
-        
-        const scales = {
-            xScale,
-            yScale,
-            yMax,
-            xMax,
-            header,
-            accessors,
-            x,
-            chartList,
-            yTickValues,
-            xTickValues,
-            annotations
+    renderLine(chart) {
+        let chartConfig = null;
+        if (chart instanceof Array) {
+            chartConfig = util.processChartConfig(chart)
+        } else {
+            chart = [chart]
+            chartConfig = util.processChartConfig(chart)
         }
-        const chartConfig = Object.assign({}, chartConfigs, scales)
         return (
             <Group
                 className="total"
-                top={skeleton.global_margin.top}
-                left={skeleton.global_margin.left} 
+                top={chartConfig.global_margin.top}
+                left={chartConfig.global_margin.left} 
                 innerRef={(node) => this.domNode = node}>
                 <rect
-                    x={-skeleton.global_margin.left} y = {-skeleton.global_margin.top} 
-                    width={chartConfigs.width_svg}
-                    height={chartConfigs.height_svg}
-                    fill={chartConfigs.backgroundColor}/>        
+                    x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
+                    width={chartConfig.width_svg}
+                    height={chartConfig.height_svg}
+                    fill={chartConfig.backgroundColor}/>        
                 {this._header(chartConfig)}
-                {this._body(chartConfig, processedData, annotations)}
+                {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
+                {this._footer(chartConfig)}
+            </Group>
+        )
+    }
+
+    renderTransitionLine(chartList) {
+        const chartConfig = util.processChartConfig(chartList)
+        return (
+            <Group
+                className="total"
+                top={chartConfig.global_margin.top}
+                left={chartConfig.global_margin.left} 
+                innerRef={(node) => this.domNode = node}>
+                <rect
+                    x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
+                    width={chartConfig.width_svg}
+                    height={chartConfig.height_svg}
+                    fill={chartConfig.backgroundColor}/>        
+                {this._header(chartConfig)}
+                {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
                 {this._footer(chartConfig)}
             </Group>
         )

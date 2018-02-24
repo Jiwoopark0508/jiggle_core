@@ -23,7 +23,7 @@ function label_generator(labels, data) {
         obj = {
             y : numeral(data[d.row][d.col]).value(),
             x : moment(data[d.row][0]),
-            comment : d.value,
+            comment : d.comment,
             dx : 30,
             dy : -30
         }

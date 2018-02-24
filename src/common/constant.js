@@ -13,7 +13,7 @@ const LIGHT = {
 }
 
 const GRAPH_COLOR = [
-    "blue",
+    "#4b66af",
     "red",
     "blue",
     "red",

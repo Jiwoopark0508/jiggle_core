@@ -2,77 +2,84 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import * as d3 from "d3";
 import JiggleLine from '../linechart/jiggle_line';
-import _ from "lodash"
 
 const LARGE = "LARGE"
 
 export default class LargeDataLineFactory {
   constructor() {
     this.lineInstance = null
-    this.modifiedState = null
   }
 
   renderChart() {
-    const renderer = (svgElement, chartConfig, images) => {
-      this._drawChart(svgElement, chartConfig, images)
+    const renderer = (svgElement, chart, images) => {
+      this._drawStaticChart(svgElement, chart, images)
     }
     return renderer;
   }
   
-  renderTransition() {
-    const renderer = (svgElement, chartConfigList) => {
-      // const allElements = g.selectAll("*");
-      // Stop all transition, and re draw
-      this._drawChart(svgElement, chartConfigList)
-      this.lineInstance.playWholeLineTransition(undefined, undefined, false)
-    }
-    return renderer;
-  }
-  
-  _drawChart(svgElement, chartConfigList, images) {
+  _drawStaticChart(svgElement, chart, images) {
     // this function draw transition between two chart configs
     d3.select(svgElement)
-        .attr("width", chartConfigList[0].width_svg)
-        .attr("height", chartConfigList[0].height_svg)
-    let line_transition_instance = new JiggleLine(chartConfigList, LARGE);
-    this.lineInstance = line_transition_instance;
-    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
+        .attr("width", chart.width_svg)
+        .attr("height", chart.height_svg)
+    let line_instance = new JiggleLine(chart, images, LARGE);
+    this.lineInstance = line_instance;
+    let jiggle_line_transition = line_instance.renderLine(chart)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
 
     return jiggle_line_transition
   }
+  renderTransition() {
+    const renderer = (svgElement, chartConfigList, images) => {
+      this._drawTransitionChart(svgElement, chartConfigList, images)
+      this.lineInstance.playWholeLineTransition(undefined, undefined, false)
+    }
+    return renderer;
+  }
+
+  _drawTransitionChart(svgElement, chartConfigList, images) {
+    // this function draw transition between two chart configs
+    d3.select(svgElement)
+        .attr("width", chartConfigList[0].width_svg)
+        .attr("height", chartConfigList[0].height_svg)
+    let line_instance = new JiggleLine(chartConfigList, images, LARGE);
+    this.lineInstance = line_instance;
+    let jiggle_line_transition = line_instance.renderLine(chartConfigList)
+    ReactDOM.render(jiggle_line_transition, svgElement)
+
+    return jiggle_line_transition
+  }
   
-  recordTransition(svgElement, charts) {
+  
+  recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,
-      quality: 10,
+      quality: 8,
       repeat: 0
     })
-    const gifToPresent = d3.select("#gif");
     gif.on("progress", function(p) {
-      gifToPresent.text(d3.format("%")(p) + " rendered")
+      onProcess(p);
     })
 
     gif.on("finished", function(blob) {
-      gifToPresent
-        .text("")
-        .append("img")
-        .attr("src", URL.createObjectURL(blob));
+      onFinished(blob);
     })
     let chain = Promise.resolve()
+    charts[charts.length - 1].isLastfor = true
+    console.log(charts)
     charts.forEach((cht, i) => {
       if (i < 1) return;
       chain = chain.then(() => 
-        this._recordSingleTransition(gif, svgElement, charts, i)
+        this._recordSingleTransition(gif, svgElement, charts, i, images)
       )
     })
     chain.then(() => gif.render())
   }
   
-  _recordSingleTransition(gif, svgElement, chtList, idx) {
+  _recordSingleTransition(gif, svgElement, chtList, idx, images) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawChart(svgElement, chtList)
+      let g = this._drawTransitionChart(svgElement, chtList, images)
       let component = g._self
       g = d3.select(g._self.domNode)
 
@@ -86,15 +93,29 @@ export default class LargeDataLineFactory {
       totalDuration = cht.duration + cht.delay
 
       allElements.interrupt();
-      const frames = 20 * totalDuration / 1000;
-      console.log(totalDuration)
+      const frames = 30 * totalDuration / 1000;
+      
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
         promises.push(
           new Promise(function(resolve1, reject) {
-            addFrame((f + 1) / frames * totalDuration, resolve1);
+            addFrame(f / frames * totalDuration, resolve1);
         }))
       })
+      console.log(cht)
+      if (cht.isLastChart) {
+        console.log("!")
+        const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
+        d3.range(lastSceneFrames).forEach(function(f, i) {
+          promises.push(
+            new Promise(function(resolve1, reject) {
+              addFrame(totalDuration, resolve1);
+            })
+          );
+        });
+      }
+
+
       Promise.all(promises).then(function(results) {
         d3
           .select(svgElement)

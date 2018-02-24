@@ -1,4 +1,6 @@
 import * as d3 from "d3";
+import { skeleton, GRAPH_COLOR } from '../common/constant'
+import { lineParser, access_gen } from '../parser/line-parser'
 import moment from "moment";
 import _ from "lodash";
 
@@ -91,6 +93,84 @@ export function refineYAxis(arr, numTick = 4) {
   return _.range(firstElem, lastElem + 1, interval);
 }
 
-export function formatDate(date, format) {
-  return moment(date).format(format).split(' ')
+function getFormat(arr) {
+  let firstElem = arr[0]
+  let lastElem = arr[arr.length - 1]
+  lastElem.diff(firstElem)
+}
+
+export function formatDate(arr) {
+  let format = getFormat(arr)
+  return (date) => {
+    return moment(date).format(format).split(' ')
+  }
+}
+
+function getChartConfigs(chartList) {
+  return chartList[0]
+}
+
+export function processChartConfig(chartList) {
+  let parsedResult = lineParser(chartList)
+  let processedData = parsedResult.result
+
+  let flatten_data = processedData.reduce((rec, d) => {
+      return rec.concat(d)
+  }, []).reduce((rec, d) => {
+      return rec.concat(d)
+  }, [])
+  let accessors = parsedResult.accessors
+  let header = parsedResult.header
+  let annotations = parsedResult.annotations
+  
+  const chartConfigs = getChartConfigs(chartList)
+  const margin = skeleton.global_margin
+  const width_g_total = chartConfigs.width_svg - margin.left - margin.right
+  const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
+
+  const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
+  const yMax = skeleton.height_body
+
+  const x = accessors[0]
+  let flattenY = []
+  accessors.reduce((rec, d) => {
+      return rec.concat(d)
+  }, [])
+  accessors.forEach((f, i) => {
+      if (i < 1) return;
+      flattenY = flattenY.concat(d3.extent(flatten_data, f))
+  })
+
+  let xScaleDomain = d3.extent(flatten_data, x)
+  let yScaleDomain = d3.extent(refineYAxis(flattenY.slice()))
+
+  const xScale = d3.scaleTime()
+      .range([0, xMax])
+      .domain(xScaleDomain)
+      
+  const yScale = d3.scaleLinear()
+      .range([yMax, 0])
+      .domain(yScaleDomain)
+  
+  const yTickValues = refineYAxis(flattenY.slice())
+  const xTickValues = refineXAxis(xScaleDomain.slice())
+  
+  const scales = {
+      xScale,
+      yScale,
+      yMax,
+      xMax,
+      header,
+      accessors,
+      x,
+      chartList,
+      yTickValues,
+      xTickValues,
+      annotations,
+      ...skeleton,
+      processedData,
+      graph_colors : GRAPH_COLOR
+  }
+  const chartConfig = Object.assign({}, chartConfigs, scales)
+  return chartConfig
 }

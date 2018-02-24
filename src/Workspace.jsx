@@ -121,12 +121,19 @@ export default class Workspace extends React.Component {
     // renderer(this.node, props.charts[0]);
     const factory = new LargeDataLineFactory();
     // const renderer = factory.renderChart();
-    // renderer(this.node, [...props.charts]);
-    const renderTransition = factory.renderTransition();
-    renderTransition(this.node, [...props.charts]);
-
-    // factory.recordTransition(this.node, [...props.charts]);
-
+    // renderer(this.node, props.charts[props.charts.length-1]);
+    // const renderTransition = factory.renderTransition();
+    // renderTransition(this.node, [...props.charts], images);
+    const gifDiv = document.getElementById("gif");
+      const onProcess = function(progress) {
+        gifDiv.textContent = progress * 100 + "% 됐다";
+      };
+      const onFinished = function(blob) {
+        const imgElement = document.createElement("img");
+        imgElement.src = URL.createObjectURL(blob);
+        gifDiv.appendChild(imgElement);
+      };
+    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);
   }
 
   render() {

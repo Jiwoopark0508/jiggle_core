@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Group from './meta-components/Group'
 import { AnnotationCallout } from 'react-annotation'
+import moment from 'moment'
 
 export default function JiggleLabel({
   top = 0,
@@ -51,8 +52,8 @@ export default function JiggleLabel({
           y={cy}
           dx={dx}
           dy={dy}
-          color={"black"}
-          note={{"title":String(note.title), "label":note.value}}
+          color={stroke}
+          note={{"title":moment(note.title).format("YYYY년MM월DD일"), "label":note.comment}}
         />
       </Group>
   );

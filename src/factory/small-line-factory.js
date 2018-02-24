@@ -10,62 +10,58 @@ export default class SmallDataLineFactory {
     this.lineInstance = null
   }
   renderChart() {
-    const renderer = (svgElement, chartConfigList) => {
-      this._drawStaticChart(svgElement, chartConfigList)
+    const renderer = (svgElement, chart, images) => {
+      this._drawStaticChart(svgElement, chart, images)
     }
     return renderer;
   }
 
-  _drawStaticChart(svgElement, chartConfigList) {
+  _drawStaticChart(svgElement, chart, images) {
     // this function draw transition between two chart configs
     d3.select(svgElement)
-        .attr("width", chartConfigList[0].width_svg)
-        .attr("height", chartConfigList[0].height_svg)
-    let line_transition_instance = new JiggleLine(chartConfigList, SMALL);
-    this.lineInstance = line_transition_instance;
-    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
-    ReactDOM.render(jiggle_line_transition, svgElement)
+        .attr("width", chart.width_svg)
+        .attr("height", chart.height_svg)
+    let line_instance = new JiggleLine(chart, images, SMALL);
+    this.lineInstance = line_instance;
+    let jiggle_line = line_instance.renderLine(chart)
+    ReactDOM.render(jiggle_line, svgElement)
 
-    return jiggle_line_transition
+    return jiggle_line
   }
   renderTransition() {
-    const renderer = (svgElement, chartConfigList) => {
-      this._drawTransitionChart(svgElement, chartConfigList)
+    const renderer = (svgElement, chartConfigList, images) => {
+      this._drawTransitionChart(svgElement, chartConfigList, images)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
     return renderer;
   }
   
-  _drawTransitionChart(svgElement, chartConfigList) {
+  _drawTransitionChart(svgElement, chartConfigList, images) {
     // this function draw transition between two chart configs
     d3.select(svgElement)
         .attr("width", chartConfigList[0].width_svg)
         .attr("height", chartConfigList[0].height_svg)
-    let line_transition_instance = new JiggleLine(chartConfigList, SMALL);
-    this.lineInstance = line_transition_instance;
-    let jiggle_line_transition = line_transition_instance.renderTransitionLine(chartConfigList)
+    let line_instance = new JiggleLine(chartConfigList, images, SMALL);
+    this.lineInstance = line_instance;
+    let jiggle_line_transition = line_instance.renderLine(chartConfigList)
     ReactDOM.render(jiggle_line_transition, svgElement)
 
     return jiggle_line_transition
   }
   
-  recordTransition(svgElement, charts) {
+  recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,
       quality: 10,
       repeat: 0
     })
-    const gifToPresent = d3.select("#gif");
     gif.on("progress", function(p) {
-      gifToPresent.text(d3.format("%")(p) + " rendered")
+      onProcess(p);
     })
 
     gif.on("finished", function(blob) {
-      gifToPresent
-        .text("")
-        .append("img")
-        .attr("src", URL.createObjectURL(blob));
+      onFinished(blob);
     })
     let chain = Promise.resolve()
     charts.forEach((cht, i) => {
@@ -79,7 +75,7 @@ export default class SmallDataLineFactory {
   
   _recordSingleTransition(gif, svgElement, chtList, idx) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawChart(svgElement, chtList)
+      let g = this._drawTransitionChart(svgElement, chtList)
       let component = g._self
       g = d3.select(g._self.domNode)
 
