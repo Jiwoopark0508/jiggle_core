@@ -1,0 +1,19 @@
+@font-face {
+	font-family: "Spoqa Hans";
+	src: url("./assets/fonts/Spoqa_Han_Sans_Regular.ttf");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "Spoqa Hans";
+	src: url("./assets/fonts/Spoqa_Han_Sans_Light.ttf");
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Spoqa Hans";
+	src: url("./assets/fonts/Spoqa_Han_Sans_Bold.ttf");
+	font-weight: 700;
+}
+body {
+	font-family: "Spoqa Hans";
+	font-weight: 400;
+}
