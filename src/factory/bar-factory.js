@@ -195,6 +195,7 @@ export default class BarFactory extends CommonFactory {
       .text(d => +d[chart.yLabel]);
   }
   _drawLegend(g, chart) {
+    if (!chart.unit) return;
     let legend = g
       .attr("font-family", "sans-serif")
       .attr("font-size", 15)

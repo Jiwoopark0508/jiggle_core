@@ -284,6 +284,7 @@ export default class CommonFactory {
   }
 
   _drawReference(g, chart) {
+    if (!chart.reference) return;
     g
       .append("text")
       .attr("class", "referenceText")
@@ -293,6 +294,7 @@ export default class CommonFactory {
   }
 
   _drawMadeBy(g, chart) {
+    if (!chart.madeBy) return;
     g
       .append("text")
       .attr("class", "madeByText")
