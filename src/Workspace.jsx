@@ -124,7 +124,7 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
-    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);  
+    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished);  
     
   }
   

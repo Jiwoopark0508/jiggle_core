@@ -55,7 +55,7 @@ export default class LargeDataLineFactory {
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,
-      quality: 8,
+      quality: 10,
       repeat: 0
     })
     gif.on("progress", function(p) {
@@ -67,7 +67,6 @@ export default class LargeDataLineFactory {
     })
     let chain = Promise.resolve()
     charts[charts.length - 1].isLastfor = true
-    console.log(charts)
     charts.forEach((cht, i) => {
       if (i < 1) return;
       chain = chain.then(() => 
@@ -79,11 +78,11 @@ export default class LargeDataLineFactory {
   
   _recordSingleTransition(gif, svgElement, chtList, idx, images) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, chtList, images)
+      let g = this._drawTransitionChart(svgElement, chtList)
       let component = g._self
       g = d3.select(g._self.domNode)
 
-      g.call(this._applyTransition, component, idx, true)
+      this._applyTransition(g, component, idx, true)
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
@@ -99,10 +98,9 @@ export default class LargeDataLineFactory {
       d3.range(frames).forEach(function(f, i) {
         promises.push(
           new Promise(function(resolve1, reject) {
-            addFrame(f / frames * totalDuration, resolve1);
+            addFrame((f+10) / frames * totalDuration, resolve1);
         }))
       })
-      console.log(cht)
       if (cht.isLastChart) {
         console.log("!")
         const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
@@ -117,10 +115,6 @@ export default class LargeDataLineFactory {
 
 
       Promise.all(promises).then(function(results) {
-        d3
-          .select(svgElement)
-          .selectAll("*")
-
         resolve0();
       })
       function jumpToTime(t) {
