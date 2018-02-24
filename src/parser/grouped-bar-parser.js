@@ -2,21 +2,10 @@ import * as d3 from "d3";
 import { setSkeleton } from "./common-parser";
 
 export default function parseGroupedBar(chart) {
-  // chart.shouldTransposed = true;
-  // if (chart.shouldTransposed) {
-  //   chart.rawData = transposeDsv(chart.rawData, ",");
-  // }
   const columns = chart.rawData[0];
   chart.data = chart.rawData.slice(1).map((arr, i) => {
     return columns.reduce((acc, col, j) => {
       acc[col] = j === 0 ? arr[j] : +arr[j];
-      // if (chart.label) {
-      //   chart.label.forEach(l => {
-      //     if (l.row === i + 1 && l.col === j + 1) {
-      //       acc["_label"] = l.comment;
-      //     }
-      //   });
-      // }
       return acc;
     }, {});
   });
