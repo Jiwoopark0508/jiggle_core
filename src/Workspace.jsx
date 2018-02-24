@@ -26,11 +26,11 @@ export default class Workspace extends React.Component {
     // const imgs = kai;
 
     let flag;
-    flag = "Static";
+    // flag = "Static";
     // flag = "Transition";
     // flag = "Recording";
 
-    // flag = "Grouped Static";
+    flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";

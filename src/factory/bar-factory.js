@@ -57,13 +57,15 @@ export default class BarFactory extends CommonFactory {
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
       .text((d, i) => {
+        let label = +d[chart.yLabel];
         if (chart.label) {
           chart.label.forEach(l => {
-            console.log(i, l.row, l.comment);
-            if (l.row === i + 1) return l.comment;
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
           });
         }
-        return +d[chart.yLabel];
+        return label;
       });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
@@ -92,12 +94,6 @@ export default class BarFactory extends CommonFactory {
       gReference,
       gMadeBy
     };
-  }
-
-  _drawBI(that, svgElement, chart) {
-    const canvas = this._drawSkeleton(svgElement, chart);
-    canvas.gXAxis.call(chart.BILine);
-    return canvas;
   }
 
   _applyTransition(that, canvas, chart) {
@@ -187,7 +183,18 @@ export default class BarFactory extends CommonFactory {
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
       .attr("opacity", 1)
-      .text(d => +d[chart.yLabel]);
+      .text((d, i) => {
+        let label = +d[chart.yLabel];
+        if (chart.label) {
+          chart.label.forEach(l => {
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
+          });
+        }
+        return label;
+      });
+    // .text(d => +d[chart.yLabel]);
   }
   _drawLegend(g, chart) {
     if (!chart.unit) return;

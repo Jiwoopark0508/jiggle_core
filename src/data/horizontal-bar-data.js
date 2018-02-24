@@ -23,9 +23,17 @@ const arr2 = [
 ];
 
 const id = 3;
+const label = [
+  {
+    row: 1,
+    col: 1,
+    comment: "hi"
+  }
+];
 
 export const hcht0 = {
   id,
+  label,
   rawData: arr0,
   duration: 0,
   delay: 0,
@@ -39,6 +47,7 @@ export const hcht0 = {
 
 export const hcht1 = {
   id,
+  label,
   rawData: arr1,
   duration: 1500,
   delay: 2000,

@@ -10,6 +10,13 @@ export default function parseGroupedBar(chart) {
   chart.data = chart.rawData.slice(1).map((arr, i) => {
     return columns.reduce((acc, col, j) => {
       acc[col] = j === 0 ? arr[j] : +arr[j];
+      // if (chart.label) {
+      //   chart.label.forEach(l => {
+      //     if (l.row === i + 1 && l.col === j + 1) {
+      //       acc["_label"] = l.comment;
+      //     }
+      //   });
+      // }
       return acc;
     }, {});
   });

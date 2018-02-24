@@ -49,7 +49,18 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("dx", "0.4em")
       .attr("dy", chart.yScale.bandwidth() / 2)
       .attr("alignment-baseline", "middle")
-      .text(d => +d[chart.xLabel]);
+      .text((d, i) => {
+        let label = +d[chart.xLabel];
+        if (chart.label) {
+          chart.label.forEach(l => {
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
+          });
+        }
+        return label;
+      });
+    // .text(d => +d[chart.xLabel]);
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
     gMadeBy.call(that._drawMadeBy, chart);
@@ -77,12 +88,6 @@ export default class HorizontalBarFactory extends CommonFactory {
       gReference,
       gMadeBy
     };
-  }
-
-  _drawBI(that, svgElement, chart) {
-    const canvas = that._drawSkeleton(svgElement, chart);
-    canvas.gXAxis.call(chart.BILine);
-    return canvas;
   }
 
   _applyTransition(that, canvas, chart) {
@@ -156,7 +161,18 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("dy", chart.yScale.bandwidth() / 2)
       .attr("alignment-baseline", "middle")
       .attr("opacity", 1)
-      .text(d => +d[chart.xLabel]);
+      .text((d, i) => {
+        let label = +d[chart.xLabel];
+        if (chart.label) {
+          chart.label.forEach(l => {
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
+          });
+        }
+        return label;
+      });
+    // .text(d => +d[chart.xLabel]);
   }
   _drawLegend(g, chart) {
     let legend = g
