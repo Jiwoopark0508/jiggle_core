@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { skeleton, GRAPH_COLOR } from "../common/constant";
+import { skeleton, GRAPH_COLOR } from "./constant";
 import { lineParser, access_gen } from "../parser/line-parser";
 import moment from "moment";
 import _ from "lodash";
