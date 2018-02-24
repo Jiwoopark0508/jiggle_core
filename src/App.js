@@ -33,13 +33,13 @@ const chart1 = {
 }
 const chart2 = {
   rawData : dummie.slice(0, 100),
-  duration : 750,
+  duration : 1000,
   title : "주요 금융그룹 충당금 주요 금융그룹",
   subtitle : "이것은 1부제입니다",
   reference : "이것은 1레퍼런스입니다",
   caption : "이것은 1캡처입니다",
   madeBy : "강선미 기자",
-  delay : 750,
+  delay : 1000,
   width_svg : 1080,
   height_svg : 600,
   margins : {
@@ -52,7 +52,7 @@ const chart2 = {
 }
 const chart3 = {
   rawData : dummie.slice(0, 250),
-  duration : 750,
+  duration : 1000,
   title : "주요 금융그룹 충당금 주요 금융그룹",
   subtitle : "이것은 1부제입니다",
   reference : "이것은 1레퍼런스입니다",

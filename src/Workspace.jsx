@@ -114,17 +114,25 @@ export default class Workspace extends React.Component {
         imgs
       );
     }
-    const factory = new LargeDataLineFactory();
+    const factory = new SmallDataLineFactory();
     const gifDiv = document.getElementById("gif");
-      const onProcess = function(progress) {
-        gifDiv.textContent = progress * 100 + "% 됐다";
-      };
-      const onFinished = function(blob) {
-        const imgElement = document.createElement("img");
-        imgElement.src = URL.createObjectURL(blob);
-        gifDiv.appendChild(imgElement);
-      };
-    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished);  
+    const onProcess = function(progress) {
+      gifDiv.textContent = progress * 100 + "% 됐다";
+    };
+    const onFinished = function(blob) {
+      const imgElement = document.createElement("img");
+      imgElement.src = URL.createObjectURL(blob);
+      gifDiv.appendChild(imgElement);
+    };
+    const renderer = factory.renderChart();
+    const chart = renderer(this.node, [...props.charts], kai)
+    console.log(chart)
+    chart.then((a) => {
+      console.log(a.gParent)
+    })
+    // const renderer = factory.renderTransition()
+    // renderer(this.node, [...props.charts], kai)
+    // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);  
     
   }
   

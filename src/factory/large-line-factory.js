@@ -11,7 +11,7 @@ export default class LargeDataLineFactory {
   }
 
   renderChart() {
-    const renderer = (svgElement, chart, images) => {
+    const renderer = async (svgElement, chart, images) => {
       this._drawStaticChart(svgElement, chart, images)
     }
     return renderer;
@@ -25,9 +25,9 @@ export default class LargeDataLineFactory {
     let line_instance = new JiggleLine(chart, images, LARGE);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chart)
-    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
+    ReactDOM.render(jiggle_line_transition, svgElement)
 
-    return jiggle_line_transition
+    return svgElement
   }
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {
@@ -54,7 +54,7 @@ export default class LargeDataLineFactory {
   recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
-      workers: 1,
+      workers: 30,
       quality: 10,
       repeat: 0
     })
@@ -78,17 +78,18 @@ export default class LargeDataLineFactory {
   
   _recordSingleTransition(gif, svgElement, chtList, idx, images) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, chtList)
+      let g = this._drawTransitionChart(svgElement, chtList, images)
       let component = g._self
       g = d3.select(g._self.domNode)
-
+      
       this._applyTransition(g, component, idx, true)
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
-    
+      
       let totalDuration = 0
       let cht = chtList[idx]
+      console.log(cht)
       totalDuration = cht.duration + cht.delay
 
       allElements.interrupt();
@@ -98,10 +99,11 @@ export default class LargeDataLineFactory {
       d3.range(frames).forEach(function(f, i) {
         promises.push(
           new Promise(function(resolve1, reject) {
-            addFrame((f+10) / frames * totalDuration, resolve1);
+            addFrame((f) / frames * totalDuration, resolve1);
         }))
       })
-      if (cht.isLastChart) {
+      console.log(cht)
+      if (cht.isLastFor) {
         console.log("!")
         const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
         d3.range(lastSceneFrames).forEach(function(f, i) {
