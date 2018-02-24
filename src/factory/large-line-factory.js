@@ -11,7 +11,7 @@ export default class LargeDataLineFactory {
   }
 
   renderChart() {
-    const renderer = (svgElement, chart, images) => {
+    const renderer = async (svgElement, chart, images) => {
       this._drawStaticChart(svgElement, chart, images)
     }
     return renderer;
@@ -25,9 +25,9 @@ export default class LargeDataLineFactory {
     let line_instance = new JiggleLine(chart, images, LARGE);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chart)
-    ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
+    ReactDOM.render(jiggle_line_transition, svgElement)
 
-    return jiggle_line_transition
+    return svgElement
   }
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {
@@ -54,8 +54,8 @@ export default class LargeDataLineFactory {
   recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
-      workers: 1,
-      quality: 8,
+      workers: 30,
+      quality: 10,
       repeat: 0
     })
     gif.on("progress", function(p) {
@@ -67,7 +67,6 @@ export default class LargeDataLineFactory {
     })
     let chain = Promise.resolve()
     charts[charts.length - 1].isLastfor = true
-    console.log(charts)
     charts.forEach((cht, i) => {
       if (i < 1) return;
       chain = chain.then(() => 
@@ -82,14 +81,15 @@ export default class LargeDataLineFactory {
       let g = this._drawTransitionChart(svgElement, chtList, images)
       let component = g._self
       g = d3.select(g._self.domNode)
-
-      g.call(this._applyTransition, component, idx, true)
+      
+      this._applyTransition(g, component, idx, true)
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
-    
+      
       let totalDuration = 0
       let cht = chtList[idx]
+      console.log(cht)
       totalDuration = cht.duration + cht.delay
 
       allElements.interrupt();
@@ -99,11 +99,11 @@ export default class LargeDataLineFactory {
       d3.range(frames).forEach(function(f, i) {
         promises.push(
           new Promise(function(resolve1, reject) {
-            addFrame(f / frames * totalDuration, resolve1);
+            addFrame((f) / frames * totalDuration, resolve1);
         }))
       })
       console.log(cht)
-      if (cht.isLastChart) {
+      if (cht.isLastFor) {
         console.log("!")
         const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
         d3.range(lastSceneFrames).forEach(function(f, i) {
@@ -117,10 +117,6 @@ export default class LargeDataLineFactory {
 
 
       Promise.all(promises).then(function(results) {
-        d3
-          .select(svgElement)
-          .selectAll("*")
-
         resolve0();
       })
       function jumpToTime(t) {

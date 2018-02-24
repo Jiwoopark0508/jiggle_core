@@ -8,7 +8,6 @@ import { hcht0, hcht1 } from "./data/horizontal-bar-data";
 import { dummie } from "./data/line_dummy10";
 import { DARK, LIGHT } from "./common/constant";
 
-let partition = [50, 100, 200];
 const chart1 = {
   rawData: dummie.slice(0, 2),
   duration: 750,
@@ -28,21 +27,22 @@ const chart1 = {
   },
   label: [
     {
-      row: partition[0],
+      row: 20,
       col: 1,
       comment: "감사원, 원가부풀리기 감사결과 발표"
     },
     {
-      row: partition[1],
+      row: 50,
       col: 1,
       comment: "서울중앙지검, 본사, 서울사무소 압수수색"
     },
-    { row: partition[2], col: 1, comment: "분식회계 의혹 수사" }
+    { row: 100, col: 1, comment: "분식회계 의혹 수사" }
   ],
   ...LIGHT,
   graph_colors: GRAPH_COLOR
 };
 const chart2 = {
+
   rawData: dummie.slice(0, 100),
   duration: 750,
   title: "주요 금융그룹 충당금 주요 금융그룹",
@@ -64,21 +64,18 @@ const chart2 = {
   graph_colors: GRAPH_COLOR
 };
 const chart3 = {
-  rawData: dummie.slice(0, 250),
-  duration: 750,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 750,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
+  rawData : dummie.slice(0, 250),
+  duration : 1000,
+  title : "주요 금융그룹 충당금 주요 금융그룹",
+  subtitle : "이것은 1부제입니다",
+  reference : "이것은 1레퍼런스입니다",
+  caption : "이것은 1캡처입니다",
+  madeBy : "강선미 기자",
+  delay : 750,
+  width_svg : 1080,
+  height_svg : 600,
+  margins : {
+    top : 40, bottom : 40, left: 60, right : 60
   },
   label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,

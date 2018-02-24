@@ -39,7 +39,6 @@ export default class JiggleLine {
         this.chartList = charts
         this.lineType = this.setLineType(type)
         this.images = images
-        this.modifiedState = {}
         this.annotationList = [null]
     }
 
@@ -281,7 +280,7 @@ export default class JiggleLine {
                 />
             </Group>)
     }
-    renderLine(chart) {
+    renderLine(chart, innerRef) {
         let chartConfig = null;
         if (chart instanceof Array) {
             chartConfig = util.processChartConfig(chart)
@@ -290,11 +289,11 @@ export default class JiggleLine {
             chartConfig = util.processChartConfig(chart)
         }
         return (
-            <Group
+            <g
                 className="total"
-                top={chartConfig.global_margin.top}
-                left={chartConfig.global_margin.left} 
-                innerRef={(node) => this.domNode = node}>
+                y={chartConfig.global_margin.top}
+                x={chartConfig.global_margin.left} 
+                ref={(node) => {this.gParent = node}}>
                 <rect
                     x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
                     width={chartConfig.width_svg}
@@ -303,7 +302,7 @@ export default class JiggleLine {
                 {this._header(chartConfig)}
                 {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
                 {this._footer(chartConfig)}
-            </Group>
+            </g>
         )
     }
 

@@ -121,7 +121,7 @@ export default class Workspace extends React.Component {
     }
 
     if (flag === "jiwoo") {
-      const factory = new LargeDataLineFactory();
+      const factory = new SmallDataLineFactory();
       const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -131,13 +131,15 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
-      factory.recordTransition(
-        this.node,
-        [...props.charts],
-        onProcess,
-        onFinished,
-        imgs
-      );
+      const renderer = factory.renderChart();
+      const chart = renderer(this.node, [...props.charts], kai);
+      console.log(chart);
+      chart.then(a => {
+        console.log(a.gParent);
+      });
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
+      // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);
     }
   }
 

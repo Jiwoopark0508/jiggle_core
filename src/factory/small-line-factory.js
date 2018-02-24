@@ -10,8 +10,9 @@ export default class SmallDataLineFactory {
     this.lineInstance = null
   }
   renderChart() {
-    const renderer = (svgElement, chart, images) => {
-      this._drawStaticChart(svgElement, chart, images)
+    const renderer = async (svgElement, chart, images) => {
+      let line = this._drawStaticChart(svgElement, chart, images)
+      return line._self
     }
     return renderer;
   }
@@ -23,13 +24,13 @@ export default class SmallDataLineFactory {
         .attr("height", chart.height_svg)
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
-    let jiggle_line = line_instance.renderLine(chart)
+    let jiggle_line = line_instance.renderLine(chart, (node) => {this.domNode = node})
     ReactDOM.render(jiggle_line, svgElement)
-
     return jiggle_line
+
   }
   renderTransition() {
-    const renderer = (svgElement, chartConfigList, images) => {
+    const renderer = async (svgElement, chartConfigList, images) => {
       this._drawTransitionChart(svgElement, chartConfigList, images)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
