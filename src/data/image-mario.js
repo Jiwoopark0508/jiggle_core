@@ -2,7 +2,7 @@ const base64 = `iVBORw0KGgoAAAANSUhEUgAAAcMAAAEaCAYAAABttzw5AAAACXBIWXMAABYlAAAW
 
 const href = `data:image/png;base64,${base64}`;
 
-const images = [
+const mario = [
   // {
   //   href,
   //   x: 200,
@@ -12,11 +12,12 @@ const images = [
   // },
   {
     href,
-    x: 750,
-    y: 160,
+
+    x: 320,
+    y: 10,
     width: "100px",
     height: "100px"
   }
 ];
 
-export default images;
+export default mario;

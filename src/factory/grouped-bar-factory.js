@@ -1,28 +1,8 @@
 import * as d3 from "d3";
-import { drawSkeleton, getAllTweeners, drawXLine } from "./common-factory";
+import CommonFactory from "./common-factory";
 
-export default class GroupedBarFactory {
-  renderChart() {
-    const renderer = (svgElement, chart) => {
-      this._drawChart(this, svgElement, chart);
-    };
-    return renderer;
-  }
-
-  renderTransition() {
-    const renderer = (svgElement, charts) => {
-      const g = this._drawChart(svgElement, charts[0]);
-      charts.forEach((cht, i) => {
-        if (i !== 0) {
-          cht.delay += charts[i - 1].duration + charts[i - 1].delay;
-          g.call(this._applyTransition, this, cht);
-        }
-      });
-    };
-    return renderer;
-  }
-
-  _drawChart(that, svgElement, chart) {
+export default class GroupedBarFactory extends CommonFactory {
+  _drawChart(that, svgElement, chart, images) {
     let {
       svg,
       gTotal,
@@ -41,17 +21,13 @@ export default class GroupedBarFactory {
       gSubtitle,
       gReference,
       gMadeBy
-    } = drawSkeleton(svgElement, chart);
-    gXAxis.call(chart.customXAxis);
-    gYAxis.call(chart.customYAxis);
-    gTitle.call(chart.drawTitle);
-    gXAxis.call(drawXLine, chart);
-    gSubtitle
-      .append("text")
-      .attr("class", "subtitleText")
-      .attr("font-size", chart.fontsize_subtitle + "px")
-      .attr("fill", chart.fontcolor_subtitle)
-      .text(chart.subtitle);
+    } = that._drawSkeleton(svgElement, chart);
+    gXAxis.call(that._drawVerticalXAxis, chart);
+    gBackground.call(that._drawBackground, chart);
+    gYAxis.call(that._drawVerticalYAxis, chart);
+    gTitle.call(that._drawTitle, chart);
+    gXAxis.call(that._drawXLine, chart);
+    gSubtitle.call(that._drawSubtitle, chart);
     const graphRect = gGraph
       .selectAll("g.graphRect")
       .data(chart.data)
@@ -82,7 +58,12 @@ export default class GroupedBarFactory {
         return chart.height_g_body - chart.yScale(d.value);
       })
       .attr("fill", function(d) {
-        return chart.z(d.key);
+        // console.log(d.key);
+        const color = chart.z(d.key);
+        // console.log(color);
+        // console.log(chart.z.domain());
+        return color;
+        // return chart.z(d.key);
       });
     graphRect
       .selectAll("text.graphText")
@@ -122,21 +103,76 @@ export default class GroupedBarFactory {
     //   .attr("text-anchor", "start")
     //   // .text("Population");
     //   .text(chart.yLabel);
-    gLegend.call(chart.drawLegend);
+    gLegend.call(that._drawLegend, chart);
+    gReference.call(that._drawReference, chart);
+    gMadeBy.call(that._drawMadeBy, chart);
+    if (images) {
+      images.forEach(image => {
+        that._drawImage(gImage, image, chart);
+      });
+    }
+    return {
+      svg,
+      gTotal,
+      gHeader,
+      gBody,
+      gFooter,
+      gTitleBox,
+      gLegend,
+      gBackground,
+      gImage,
+      gXAxis,
+      gYAxis,
+      gGraph,
+      gReferenceBox,
+      gTitle,
+      gSubtitle,
+      gReference,
+      gMadeBy
+    };
+  }
 
-    gReference
+  _drawLegend(g, chart) {
+    // let unit = g
+    //   .append("text")
+    //   .attr("");
+
+    // g.append("text").text(chart.unit);
+    g
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
       .append("text")
-      .attr("class", "referenceText")
-      .attr("font-size", chart.fontsize_reference + "px")
-      .attr("font-style", chart.fontstyle_reference)
-      .attr("fill", chart.fontcolor_reference)
-      .text(`자료 출처: ${chart.reference}`);
-    gMadeBy
+      .attr("dx", 18)
+      .attr("dy", 12)
+      .style("font-weight", 700)
+      .text(`단위: ${chart.unit}`);
+
+    let legend = g
+      // .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+      .selectAll("g")
+      .data(chart.keys)
+      // .data(chart.keys.slice().reverse())
+      .enter()
+      .append("g")
+      .attr("transform", function(d, i) {
+        return "translate(0," + (i + 1) * 20 + ")";
+      });
+    legend
+      .append("rect")
+      // .attr("x", chart.width_g_body - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", chart.z);
+    legend
       .append("text")
-      .attr("class", "madeByText")
-      .attr("font-size", chart.fontsize_madeBy + "px")
-      .attr("font-style", chart.fontstyle_madeBy)
-      .attr("fill", chart.fontcolor_madeBy)
-      .text(`만든이: ${chart.madeBy}`);
+      // .attr("x", chart.width_g_body - 24)
+      .attr("y", 9.5)
+      .attr("dx", -5)
+      .attr("dy", "0.32em")
+      .text(function(d) {
+        return d;
+      });
   }
 }

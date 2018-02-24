@@ -63,19 +63,35 @@ export function setSkeleton(chart) {
   chart.y_g_referenceBox = chart.fontsize_reference * 3.5;
   chart.y_g_madeBy = chart.fontsize_madeBy * factor_space_between_lines;
 
-  chart.fontcolor_title = chart.fontcolor_title || "#000000";
-  chart.fontcolor_subtitle = chart.fontcolor_subtitle || "#4B4949";
-  chart.fontcolor_unit = chart.fontcolor_unit || "#4B4949";
-  chart.fontcolor_legend = chart.fontcolor_legend || "#4B4949";
-  chart.fontcolor_reference = chart.fontcolor_reference || "#7F7F7F";
-  chart.fontcolor_madeBy = chart.fontcolor_madeBy || "#7F7F7F";
-  chart.fontcolor_graphText = chart.fontcolor_graphText || "#000000";
-  chart.fontcolor_tickText = chart.fontcolor_tickText || "#A0A0A0";
+  chart.theme = chart.theme || {
+    backgroundColor: "#F9F9F9",
+    colorPrimary: "#000000",
+    colorSecondary: "#4B4949",
+    colorTernary: "#7F7F7F"
+  };
+  chart.backgroundColor = chart.backgroundColor || chart.theme.backgroundColor;
+  chart.fontFamily = "Spoqa Hans";
+
+  chart.fontcolor_title = chart.fontcolor_title || chart.theme.colorPrimary;
+  chart.fontcolor_graphText =
+    chart.fontcolor_graphText || chart.theme.colorPrimary;
+
+  chart.fontcolor_subtitle =
+    chart.fontcolor_subtitle || chart.theme.colorSecondary;
+  chart.fontcolor_unit = chart.fontcolor_unit || chart.theme.colorSecondary;
+  chart.fontcolor_legend = chart.fontcolor_legend || chart.theme.colorSecondary;
+
+  chart.fontcolor_reference =
+    chart.fontcolor_reference || chart.theme.colorTernary;
+  chart.fontcolor_madeBy = chart.fontcolor_madeBy || chart.theme.colorTernary;
+  chart.fontcolor_tickText =
+    chart.fontcolor_tickText || chart.theme.colorTernary;
+
   chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
   chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
   chart.colorBI = chart.colorBI || "#3182bd";
-  chart.color = chart.color || "#ADADAD";
-  chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
+  // chart.color = chart.color || "#ADADAD";
+  // chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
 
   chart.fontstyle_title = chart.fontstyle_title || "bold";
   chart.fontstyle_unit = chart.fontstyle_unit || "bold";
@@ -92,10 +108,8 @@ export function setSkeleton(chart) {
   chart.opacity = chart.opacity || 1;
   chart.opacityToHide = chart.opacityToHide || 0.55;
 
-  chart.duration = chart.duration || 0;
+  chart.duration = chart.duration || 2000;
   chart.delay = chart.delay || 1000;
   chart.accumedDelay = chart.accumedDelay || 0;
   chart.lastFor = chart.lastFor || 2000;
-  chart.backgroundColor = chart.backgroundColor || "#F4F4F4";
-  chart.fontFamily = "Spoqa Hans";
 }

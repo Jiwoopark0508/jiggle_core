@@ -4,6 +4,38 @@ import { lineParser, access_gen } from '../parser/line-parser'
 import moment from "moment";
 import _ from "lodash";
 
+export function getChildG(gParent) {
+  const layers = [
+    "total",
+    "body",
+    "footer",
+    "title",
+    "legend",
+    "background",
+    "image",
+    "axis",
+    "graph",
+    "legend",
+    "reference"
+  ];
+  const childNodes = gParent.selectAll("g").nodes();
+  const result = childNodes.reduce((acc, child) => {
+    const childSelection = d3.select(child);
+    const className = childSelection.attr("class") || "";
+    layers.forEach((l, i) => {
+      if (className.includes(l)) {
+        if (!acc[l]) acc[l] = child;
+        else {
+          acc[l] = [child].concat(acc[l]);
+        }
+      }
+    });
+    return acc;
+  }, {});
+
+  return result;
+}
+
 export function getImageUrlFromBase64(base64, mimeType) {
   const binary = fixBinary(atob(base64));
   const blob = new Blob([binary], { type: mimeType });
@@ -99,12 +131,6 @@ function getFormat(arr) {
   lastElem.diff(firstElem)
 }
 
-export function formatDate(arr) {
-  let format = getFormat(arr)
-  return (date) => {
-    return moment(date).format(format).split(' ')
-  }
-}
 
 function getChartConfigs(chartList) {
   return chartList[0]
@@ -174,3 +200,10 @@ export function processChartConfig(chartList) {
   const chartConfig = Object.assign({}, chartConfigs, scales)
   return chartConfig
 }
+
+export function formatDate(date, format) {
+  return moment(date)
+    .format(format)
+    .split(" ");
+}
+

@@ -9,8 +9,11 @@ import parseGroupedBar from "./parser/grouped-bar-parser";
 import SmallDataLineFactory from "./factory/small-line-factory";
 import LargeDataLineFactory from "./factory/large-line-factory";
 import { getImageUrlFromBase64 } from "./common/utils";
+// import images from './data/image-kai'
 
 import images from "./data/image-mario";
+import kai from "./data/image-kai";
+import { getChildG } from "./common/utils";
 
 export default class Workspace extends React.Component {
   constructor(props) {
@@ -19,11 +22,11 @@ export default class Workspace extends React.Component {
 
   componentDidMount() {
     const props = this.props;
+    const imgs = kai;
 
     let flag;
     // flag = "Static";
     // flag = "Transition";
-
     // flag = "Recording";
 
     // flag = "Grouped Static";
@@ -37,12 +40,12 @@ export default class Workspace extends React.Component {
     if (flag === "Horizontal Static") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderChart();
-      renderer(this.node, props.charts[0]);
+      renderer(this.node, props.charts[0], imgs);
     }
     if (flag === "Horizontal Transition") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
       const renderer = horizontalBar.renderTransition();
-      renderer(this.node, [...props.charts]);
+      renderer(this.node, [...props.charts], imgs);
     }
     if (flag === "Horizontal Recording") {
       props.charts.forEach(chart => parseHorizontalBar(chart));
@@ -60,7 +63,8 @@ export default class Workspace extends React.Component {
         this.node,
         [...props.charts],
         onProcess,
-        onFinished
+        onFinished,
+        imgs
       );
     }
 
@@ -70,7 +74,7 @@ export default class Workspace extends React.Component {
     if (flag === "Grouped Static") {
       props.charts.forEach(chart => parseGroupedBar(chart));
       const renderer = groupBar.renderChart();
-      renderer(this.node, props.charts[0]);
+      renderer(this.node, props.charts[0], imgs);
     }
 
     // single bar
@@ -79,13 +83,15 @@ export default class Workspace extends React.Component {
     if (flag === "Static") {
       props.charts.forEach(chart => parseBar(chart));
       const renderer = bar.renderChart();
-      renderer(this.node, props.charts[0], images);
+      const gTotal = renderer(this.node, props.charts[0], imgs);
+      // const gList = getChildG(gTotal);
+      // console.log(gList);
     }
 
     if (flag === "Transition") {
       props.charts.forEach(chart => parseBar(chart));
       const renderTransition = bar.renderTransition();
-      renderTransition(this.node, props.charts, images);
+      renderTransition(this.node, props.charts, imgs);
     }
 
     if (flag === "Recording") {
@@ -105,25 +111,10 @@ export default class Workspace extends React.Component {
         [...props.charts],
         onProcess,
         onFinished,
-        images
+        imgs
       );
     }
-    // const gTotal = renderer(this.node, props.charts[0]);
-    // console.log(bar.getChildG(renderer(this.node, props.charts[0])));
-
-    // line
-    // const factory = new LineChartFactory();
-
-    // grouped bar
-    // props.charts.forEach(chart => parseGroupedBar(chart));
-    // const factory = new GroupedBarFactory();
-    // const renderer = factory.renderChart();
-    // renderer(this.node, props.charts[0]);
     const factory = new LargeDataLineFactory();
-    // const renderer = factory.renderChart();
-    // renderer(this.node, props.charts[props.charts.length-1]);
-    // const renderTransition = factory.renderTransition();
-    // renderTransition(this.node, [...props.charts], images);
     const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -133,8 +124,10 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
-    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);
+    factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, images);  
+    
   }
+  
 
   render() {
     return (

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { GRAPH_COLOR } from "./common/constant";
 import Workspace from "./Workspace";
-import { cht0, cht1 } from "./data/bar-data";
+import { cht0, cht1, cht2 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
 import { dummie } from './data/line_dummy10'
@@ -44,10 +44,9 @@ const chart2 = {
   height_svg : 600,
   margins : {
     top : 40, bottom : 40, left: 60, right : 60
+
   },
-  label : [
-    {row: 5, col:1, comment: "asf"},
-  ],
+  label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
   graph_colors : GRAPH_COLOR
 }
@@ -85,12 +84,10 @@ const chart4 = {
   margins : {
     top : 40, bottom : 40, left: 60, right : 60
   },
-  label : [
-    {row: 5, col:1, comment: "asf"},
-  ],
+  label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
-  graph_colors : GRAPH_COLOR
-}
+  graph_colors: GRAPH_COLOR
+};
 
 class App extends Component {
   render() {
@@ -100,50 +97,63 @@ class App extends Component {
     // flag = "single";
 
     // horizontal
-    // if (flag === "horizontal") {
-    //   return (
-    //     <div>
-    //       <Workspace charts={[hcht0, hcht1]} />
+    if (flag === "horizontal") {
+      return (
+        <div>
+          <Workspace charts={[hcht0, hcht1]} />
 
-    //       <div id="gif" />
-    //     </div>
-    //   );
-    // }
+          <div id="gif" />
+        </div>
+      );
+    }
     // // group bar
-    // if (flag === "group") {
-    //   return (
-    //     <div>
-    //       <Workspace charts={[gcht1]} />
-    //       <div id="gif" />
-    //     </div>
-    //   );
-    // }
+    if (flag === "group") {
+      return (
+        <div>
+          <Workspace charts={[gcht1]} />
+          <div id="gif" />
+        </div>
+      );
+    }
 
     // // single bar
-    // if (flag === "single") {
-    //   return (
-    //     <div>
-    //       <Workspace charts={[cht0, cht1]} />
-    //       <div id="gif" />
-    //     </div>
-    //   );
-    // }
+    if (flag === "single") {
+      return (
+        <div>
+          <svg>
+            <text fontFamily="Spoqa Hans" fontSize="35" x="30" y="30">
+              주요 금융그룹 충당금
+            </text>
+          </svg>
+          <Workspace charts={[cht0, cht1]} />
+          <div id="gif" />
+        </div>
+      );
+    }
 
     // return (
     //   <div>
-    //     <Workspace width="1024" height="768"
-    //         charts={[
-    //           chart1, chart2, chart3, chart4
-    //         ]
-    //         } />
-    //       <div id="gif" />
+    //     <Workspace
+    //       width="1024"
+    //       height="768"
+    //       charts={[chart1, chart2, chart3, chart4]}
+    //     />
+    //     <div id="gif" />
     //   </div>
     // );
     // return (
     //   <div>
-    //     <Workspace width="700" height="450"
+    //     <Workspace width="700" height="450" charts={[chart1, chart2, chart3]} />
+    //     <div id="gif" />
+    //   </div>
+    // );
+
+    // Jiwoo's
+    // return (
+    //   <div>
+    //     <Workspace width="1024" height="768"
     //         charts={[
-    //           chart1, chart2, chart3
+    //           chart1, chart2
     //         ]
     //         } />
     //       <div id="gif" />
@@ -161,6 +171,7 @@ class App extends Component {
           <div id="gif" />
       </div>
     );
+
   }
 }
 

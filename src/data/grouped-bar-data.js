@@ -108,86 +108,36 @@ const csv2 = `단지명,전용면적,상승가격,상승률
 롯데아파트,73.5,1억원,104.3
 `;
 
-const type = "grouped-bar";
-const width_svg = 750;
-const height_svg = 433;
-// const margins = { top: 40, bottom: 40, left: 30, right: 30 };
-const focusType = "";
-const color = "steelblue";
-const colorToFocus = "gold";
-const opacity = 1;
-const opacityToHide = 0.15;
-const duration = 0;
-const delay = 0;
-const numOfYAxisTicks = 5;
-const paddingBtwRects = 0.4;
-const colorStripe1 = "";
-const colorStripe2 = "";
-
-const fontFamily = "sans-serif";
-const title = "Title";
-const subtitle = "Subtitle";
-const unit = "unit";
-const legend = "legend";
-const reference = "reference";
-const madeBy = "anonymous";
-
-const fontsize_title = "";
-const fontsize_subtitle = "";
-const fontsize_unit = "";
-const fontsize_legend = "";
-const fontsize_reference = "";
-
-const fontcolor_title = "";
-const fontcolor_subtitle = "";
-const fontcolor_unit = "";
-const fontcolor_legend = "";
-const fontcolor_reference = "";
-
-const fontstyle_title = "";
-const fontstyle_unit = "";
-const fontstyle_reference = "";
+const id = 5;
+const graph_colors = [
+  "#499fc9",
+  "#4a67c6",
+  "#af4390",
+  "#5d9ec6",
+  "#43acaf",
+  "#594ac6",
+  "#8544aa",
+  "#4ac6ae"
+];
 
 export const gcht0 = {
-  type,
+  id,
+  // graph_colors,
   rawData: arr0,
-  width_svg,
-  height_svg,
-  // margins,
-
-  // focusType,
-  duration,
-  delay,
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  paddingBtwRects
-  // color,
-  // colorToFocus,
-  // opacity,
-  // opacityToHide
+  unit: "백만원"
 };
 
 export const gcht1 = {
-  type,
+  id,
+  // graph_colors,
   rawData: arr1,
-  width_svg,
-  height_svg,
-  // margins,
-
-  // focusType,
-  duration,
-  delay,
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",
   madeBy: "강선미 기자",
-  numOfYAxisTicks,
-  paddingBtwRects
-  // color,
-  // colorToFocus,
-  // opacity,
-  // opacityToHide
+  unit: "백만원"
 };
