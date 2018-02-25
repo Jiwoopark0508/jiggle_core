@@ -48,7 +48,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
-    ReactDOM.unmountComponentAtNode(svgElement);
+    // ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line_transition, svgElement);
 
     return jiggle_line_transition;
