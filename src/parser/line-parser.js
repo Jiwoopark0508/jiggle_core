@@ -6,7 +6,8 @@ import moment from 'moment'
 import numeral from 'numeral'
 
 function keyParse(time) {
-    return moment(time)
+    if (moment(time).isValid()) return moment(time)
+    return time
 }
 
 function accessor_generator(header) {

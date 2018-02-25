@@ -105,14 +105,19 @@ export function floor(num, digit = 1) {
 
 export function refineXAxis(arr, numTick = 4) {
   let ret = [];
-  let firstDate = arr[0];
-  let lastDate = arr[arr.length - 1];
-  let interval = lastDate.diff(firstDate) / numTick;
-  for (let i = 0; i <= numTick; i++) {
-    let date = moment(firstDate).add(interval * i);
-    ret.push(date);
+  try {
+    let firstDate = arr[0];
+    let lastDate = arr[arr.length - 1];
+    let interval = lastDate.diff(firstDate) / numTick;
+    for (let i = 0; i <= numTick; i++) {
+      let date = moment(firstDate).add(interval * i);
+      ret.push(date);
+    }
+    return {ret, valid:true};
+  } catch (e) { // it is not time data
+    let interval = arr.length / numTick
+    return {ret, valid:false};
   }
-  return ret;
 }
 
 export function refineYAxis(arr, numTick = 4) {
@@ -136,9 +141,9 @@ function getChartConfigs(chartList) {
 }
 
 export function processChartConfig(chartList) {
+  console.log(chartList[chartList.length - 1].rawData)
   let parsedResult = lineParser(chartList);
   let processedData = parsedResult.result;
-
   let flatten_data = processedData
     .reduce((rec, d) => {
       return rec.concat(d);
@@ -163,7 +168,7 @@ export function processChartConfig(chartList) {
     skeleton.graph_margin.right;
   const yMax = skeleton.height_body;
 
-  const x = accessors[0];
+  const x = accessors[0]; // key 
   let flattenY = [];
   accessors.reduce((rec, d) => {
     return rec.concat(d);
@@ -176,19 +181,29 @@ export function processChartConfig(chartList) {
   let xScaleDomain = d3.extent(flatten_data, x);
   let yScaleDomain = d3.extent(refineYAxis(flattenY.slice()));
 
-  const xScale = d3
-    .scaleTime()
-    .range([0, xMax])
-    .domain(xScaleDomain);
+  let xTickValues = refineXAxis(xScaleDomain.slice());
+  let yTickValues = refineYAxis(flattenY.slice());
+  
+  let xScale = d3.scaleTime().range([0, xMax]).domain(xScaleDomain) 
+
+  if (!xTickValues.valid) {
+    xScaleDomain = _.map(
+      chartList[chartList.length - 1].rawData.slice(1),
+      (d, i) => {
+        return d[0]
+      }
+    )
+    let y = _.range(0, xMax + 1, xMax / (xScaleDomain.length - 1))
+    let x = xScaleDomain
+    xTickValues = xScaleDomain
+    xScale = d3.scaleOrdinal().range(y).domain(x)
+  }
 
   const yScale = d3
     .scaleLinear()
     .range([yMax, 0])
     .domain(yScaleDomain);
-
-  const yTickValues = refineYAxis(flattenY.slice());
-  const xTickValues = refineXAxis(xScaleDomain.slice());
-
+  console.log(xTickValues.ret)
   const scales = {
     xScale,
     yScale,
@@ -199,22 +214,21 @@ export function processChartConfig(chartList) {
     x,
     chartList,
     yTickValues,
-    xTickValues,
+    xTickValues : xTickValues.ret,
     annotations,
-    ...skeleton,
-    // global_margin: {
-    //   top: 40,
-    //   left: 60,
-    //   right: 60,
-    //   bottom: 40
-    // },
-    // height_header: 115,
-    // height_body: 320,
-    // height_footer: 60,
-    // graph_margin: {
-    //   left: 160,
-    //   right: 160
-    // },
+    global_margin: {
+      top: 40,
+      left: 60,
+      right: 60,
+      bottom: 40
+    },
+    height_header: 115,
+    height_body: 320,
+    height_footer: 60,
+    graph_margin: {
+      left: 160,
+      right: 160
+    },
     processedData,
     graph_colors: chartConfigs.graph_colors
   };

@@ -156,7 +156,7 @@ export default function Axis({
                 (horizontal && !isTop ? tickLabelFontSize : 0)
 
               }
-              textAnchor={"start"}
+              textAnchor={"middle"}
               {...tickLabelPropsObj}
             >
               {format(val, index) instanceof Array ? 
