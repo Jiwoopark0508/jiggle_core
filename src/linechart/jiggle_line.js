@@ -26,8 +26,12 @@ const SMALL = "SMALL";
 const PARTIAL = true;
 
 function formatDate(date, idx) {
-    date = moment(date).format(`YYYY년 M월DD일`);
-    return date.split(" ");
+    let momentDate = moment(date)
+    if (momentDate.isValid()) {
+        date = moment(date).format(`YYYY년 M월DD일`)
+        return date.split(' ')
+    }
+    return date
 }
 
 export default class JiggleLine {

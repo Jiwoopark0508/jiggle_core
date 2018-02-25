@@ -70,7 +70,7 @@ const DARK = {
 export const cht0 = {
   id,
   // graph_colors,
-  // indexToFocus: [2],
+  indexToFocus: [2],
   // colorToFocus,
   label,
   theme: DARK,

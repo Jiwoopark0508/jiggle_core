@@ -28,7 +28,7 @@ export default class Workspace extends React.Component {
     const imgs = bonobono;
 
     let flag;
-    // flag = "Static";
+    flag = "Static";
     // flag = "Transition";
     // flag = "Recodring";
 
@@ -140,6 +140,14 @@ export default class Workspace extends React.Component {
       };
       // const renderer = factory.renderChart();
       // renderer(this.node, [...props.charts][2], kai);
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
+      // factory.recordTransition(
+      //   this.node,
+      //   [...props.charts],
+      //   onProcess, 
+      //   onFinished
+      // );
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
       factory.recordTransition(

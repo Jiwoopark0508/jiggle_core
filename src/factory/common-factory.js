@@ -433,19 +433,18 @@ export default class CommonFactory {
 
   _applyFocus(rect, chart) {
     if (chart.indexToFocus) {
-      rect
-        .attr(
-          "fill",
-          (d, i) =>
-            chart.indexToFocus.includes(i)
-              ? chart.colorToFocus
-              : chart.z(d[chart.xLabel])
-        )
-        .style(
-          "opacity",
-          (d, i) =>
-            chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
-        );
+      rect.attr(
+        "fill",
+        (d, i) =>
+          chart.indexToFocus.includes(i)
+            ? chart.colorToFocus
+            : chart.z(d[chart.xLabel])
+      );
+      // .style(
+      //   "opacity",
+      //   (d, i) =>
+      //     chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
+      // );
     }
   }
 

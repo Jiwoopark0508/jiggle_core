@@ -5,7 +5,7 @@ import Workspace from "./Workspace";
 import { cht0, cht1, cht2 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
-import { dummie } from "./data/line_dummy";
+import { dummie } from "./data/line_dummy13";
 import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
@@ -74,9 +74,9 @@ const chart3 = {
 class App extends Component {
   render() {
     let flag;
-    flag = "horizontal";
+    // flag = "horizontal";
     // flag = "group";
-    // flag = "single";
+    flag = "single";
     // flag = "jiwoo"
 
     // horizontal
