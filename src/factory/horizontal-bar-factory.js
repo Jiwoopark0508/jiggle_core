@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 
 export default class HorizontalBarFactory extends CommonFactory {
@@ -177,11 +177,11 @@ export default class HorizontalBarFactory extends CommonFactory {
     if (!chart.unit) return;
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("font-size", 15)
       .attr("text-anchor", "end")
       .append("g");
     legend
       .append("text")
+      .attr("font-size", 15)
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")

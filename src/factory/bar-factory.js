@@ -1,6 +1,6 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
-import { getImageUrlFromBase64 } from "../common/utils";
+// import { getImageUrlFromBase64 } from "../common/utils";
 
 export default class BarFactory extends CommonFactory {
   _drawChart(that, svgElement, chart, images) {
@@ -200,7 +200,6 @@ export default class BarFactory extends CommonFactory {
     if (!chart.unit) return;
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("font-size", 15)
       .attr("text-anchor", "end")
       // .selectAll("g")
       // .data(chart.keys)
@@ -216,6 +215,7 @@ export default class BarFactory extends CommonFactory {
     //   .attr("fill", chart.z);
     legend
       .append("text")
+      .attr("font-size", 15)
       // .attr("x", chart.width_g_body - 24)
       .attr("y", 9.5)
       .attr("dx", -5)

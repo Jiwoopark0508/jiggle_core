@@ -1,4 +1,6 @@
 import * as d3 from "d3";
+import { axisLeft, axisBottom } from "../common/d3-axis";
+// import { createGIF } from "gifshot";
 
 export default class CommonFactory {
   renderChart() {
@@ -14,7 +16,10 @@ export default class CommonFactory {
       // let canvas = this._drawBI(this, svgElement, charts[0]);
       const canvas = this._drawChart(this, svgElement, charts[0], images);
       charts.forEach((cht, i) => {
-        if (i === 0) return;
+        if (i === 0) {
+          cht.duration = 0;
+          return;
+        }
 
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
@@ -133,6 +138,120 @@ export default class CommonFactory {
     });
   }
 
+  // recordTransition(svgElement, charts, onProcess, onFinished, images) {
+  //   if (charts.length === 0) return;
+  //   const nodeList = [];
+
+  //   // gif.on("progress", function(p) {
+  //   //   onProcess(p);
+  //   // });
+  //   // gif.on("finished", function(blob) {
+  //   //   onFinished(blob);
+  //   // });
+  //   let chain = Promise.resolve();
+  //   charts.forEach((cht, i) => {
+  //     // let cht0, cht1;
+  //     // if (i === 0) {
+  //     //   cht0 = "BI";
+  //     //   cht1 = charts[i];
+  //     // } else {
+  //     //   cht0 = charts[i - 1];
+  //     //   cht1 = charts[i];
+  //     // }
+  //     if (i === 0) return;
+  //     const cht0 = charts[i - 1];
+  //     const cht1 = charts[i];
+  //     if (i === charts.length - 1) cht1.isLastChart = true;
+  //     chain = chain.then(() =>
+  //       this._recordSingleTransition(nodeList, svgElement, cht0, cht1, images)
+  //     );
+  //   });
+  //   const options = {
+  //     images: nodeList,
+  //     gifWidth: charts[0].width_svg,
+  //     gifHeight: charts[0].height_svg,
+  //     numWorkers: 1,
+  //     frameDuration: 0.05,
+  //     progressCallback: onProcess
+  //   };
+  //   chain.then(() => {
+  //     createGIF(options, function(obj) {
+  //       if (!obj.error) {
+  //         onFinished(obj.image);
+  //       }
+  //     });
+  //   });
+  //   // chain.then(() => gif.render());
+  // }
+
+  // _recordSingleTransition(nodeList, svgElement, cht0, cht1, images) {
+  //   return new Promise((resolve0, reject) => {
+  //     let canvas;
+  //     if (cht0 === "BI") {
+  //       canvas = this._drawBI(this, svgElement, cht1);
+  //     } else {
+  //       canvas = this._drawChart(this, svgElement, cht0, images);
+  //       // g = canvas.gTotal;
+  //     }
+  //     const g = canvas.gTotal;
+  //     cht1.accumedDelay = cht1.delay;
+  //     this._applyTransition(this, canvas, cht1);
+
+  //     const allElements = g.selectAll("*");
+  //     const tweeners = this._getAllTweeners(g);
+  //     const totalDuration = cht1.accumedDelay + cht1.duration;
+  //     allElements.interrupt();
+  //     const frames = 30 * totalDuration / 1000;
+
+  //     let promises = [];
+  //     d3.range(frames).forEach(function(f, i) {
+  //       promises.push(
+  //         new Promise(function(resolve1, reject) {
+  //           addFrame((f + 1) / frames * totalDuration, resolve1);
+  //         })
+  //       );
+  //     });
+
+  //     if (cht1.isLastChart) {
+  //       const lastSceneFrames = (cht1.lastFor || 2000) / 1000 * 30;
+  //       d3.range(lastSceneFrames).forEach(function(f, i) {
+  //         promises.push(
+  //           new Promise(function(resolve1, reject) {
+  //             addFrame(totalDuration, resolve1);
+  //           })
+  //         );
+  //       });
+  //     }
+
+  //     Promise.all(promises).then(function(results) {
+  //       resolve0();
+  //     });
+
+  //     function jumpToTime(t) {
+  //       tweeners.forEach(function(tween) {
+  //         tween(t);
+  //       });
+  //     }
+
+  //     function addFrame(t, resolve1) {
+  //       jumpToTime(t);
+  //       let img = new Image(),
+  //         serialized = new XMLSerializer().serializeToString(svgElement),
+  //         blob = new Blob([serialized], { type: "image/svg+xml" }),
+  //         url = URL.createObjectURL(blob);
+  //       img.onload = function() {
+  //         nodeList.push(img);
+  //         // gif.addFrame(img, {
+  //         //   delay: totalDuration / frames,
+  //         //   copy: true
+  //         // });
+  //         resolve1();
+  //       };
+  //       img.src = url;
+  //     }
+  //   });
+  // }
+
   _drawXLine(g, chart) {
     g.selectAll("path.BI").remove();
     let path = g.append("path").attr("class", "BI");
@@ -217,7 +336,7 @@ export default class CommonFactory {
   }
 
   _drawVerticalXAxis(g, chart) {
-    const xAxis = d3.axisBottom(chart.x0);
+    const xAxis = axisBottom(chart.x0);
     g
       .call(xAxis)
       .selectAll(".domain, line")
@@ -230,7 +349,7 @@ export default class CommonFactory {
 
   _drawHorizontalYAxis(g, chart) {
     g
-      .call(d3.axisLeft(chart.yScale))
+      .call(axisLeft(chart.yScale))
       .selectAll(".domain,line")
       .style("display", "none");
     g
@@ -242,8 +361,7 @@ export default class CommonFactory {
   _drawHorizontalXAxis(g, chart) {}
 
   _drawBackground(g, chart) {
-    const yAxis = d3
-      .axisLeft(chart.yScale)
+    const yAxis = axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
       .tickSize(-chart.width_g_body)
       .tickFormat(d => d);
@@ -315,19 +433,18 @@ export default class CommonFactory {
 
   _applyFocus(rect, chart) {
     if (chart.indexToFocus) {
-      rect
-        .attr(
-          "fill",
-          (d, i) =>
-            chart.indexToFocus.includes(i)
-              ? chart.colorToFocus
-              : chart.z(d[chart.xLabel])
-        )
-        .style(
-          "opacity",
-          (d, i) =>
-            chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
-        );
+      rect.attr(
+        "fill",
+        (d, i) =>
+          chart.indexToFocus.includes(i)
+            ? chart.colorToFocus
+            : chart.z(d[chart.xLabel])
+      );
+      // .style(
+      //   "opacity",
+      //   (d, i) =>
+      //     chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
+      // );
     }
   }
 

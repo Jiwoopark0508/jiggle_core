@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 
 export default class GroupedBarFactory extends CommonFactory {
@@ -152,19 +152,20 @@ export default class GroupedBarFactory extends CommonFactory {
     //   .attr("");
 
     // g.append("text").text(chart.unit);
-    g
-      .attr("font-size", 10)
-      .attr("text-anchor", "end")
-      .append("text")
-      .attr("dx", 18)
-      .attr("dy", 12)
-      .attr("fill", chart.theme.colorPrimary)
-      .style("font-weight", 700)
-      .text(`단위: ${chart.unit}`);
+    if (chart.unit !== undefined) {
+      g
+        .attr("text-anchor", "end")
+        .append("text")
+        .style("font-size", 13)
+        .attr("dx", 18)
+        .attr("dy", 12)
+        .attr("fill", chart.theme.colorPrimary)
+        .style("font-weight", 700)
+        .text(`단위: ${chart.unit}`);
+    }
 
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
       .attr("text-anchor", "end")
       .selectAll("g")
       .data(chart.keys)
@@ -182,6 +183,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("fill", chart.z);
     legend
       .append("text")
+      .style("font-size", 13)
       // .attr("x", chart.width_g_body - 24)
       .attr("y", 9.5)
       .attr("dx", -5)

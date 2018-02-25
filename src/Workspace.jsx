@@ -12,6 +12,7 @@ import { getImageUrlFromBase64 } from "./common/utils";
 
 import mario from "./data/image-mario";
 import kai from "./data/image-kai";
+import bonobono from "./data/image-bonobono";
 import { getChildG } from "./common/utils";
 
 export default class Workspace extends React.Component {
@@ -23,18 +24,21 @@ export default class Workspace extends React.Component {
     const props = this.props;
     // const imgs = null;
     // const imgs = mario;
-    const imgs = kai;
+    // const imgs = kai;
+    const imgs = bonobono;
 
     let flag;
-    // flag = "Static";
+    flag = "Static";
     // flag = "Transition";
+    // flag = "Recodring";
+
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    flag = "jiwoo";
+    // flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -108,6 +112,11 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
+      // const onFinished = function(image) {
+      //   const imgElement = document.createElement("img");
+      //   imgElement.src = image;
+      //   gifDiv.appendChild(imgElement);
+      // };
 
       const record = bar.recordTransition(
         this.node,
@@ -117,7 +126,6 @@ export default class Workspace extends React.Component {
         imgs
       );
     }
-
 
     if (flag === "jiwoo") {
       const factory = new LargeDataLineFactory();
@@ -132,25 +140,34 @@ export default class Workspace extends React.Component {
       };
       // const renderer = factory.renderChart();
       // renderer(this.node, [...props.charts][2], kai);
-      const renderer = factory.renderTransition()
-      renderer(this.node, [...props.charts], kai)
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
       // factory.recordTransition(
       //   this.node,
       //   [...props.charts],
       //   onProcess, 
       //   onFinished
       // );
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess,
+        onFinished
+      );
     }
   }
 
   render() {
     return (
       <div>
-        <svg 
-          width = "1080"
-          height= "600"
+        <svg
+          width="1080"
+          height="600"
           // transform="translate(40, 60)"
-          ref={node => (this.node = node)} />
+          ref={node => (this.node = node)}
+        />
       </div>
     );
   }
