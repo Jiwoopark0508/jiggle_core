@@ -28,7 +28,7 @@ export default class LargeDataLineFactory {
     ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line_transition, svgElement)
 
-    return svgElement
+    return jiggle_line_transition
   }
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {
@@ -83,7 +83,7 @@ export default class LargeDataLineFactory {
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList, images)
       let component = g._self
-      g = d3.select(g._self.domNode)
+      g = d3.select(g._self.gParent)
       
       this._applyTransition(g, component, idx, true)
       

@@ -24,7 +24,7 @@ export default class SmallDataLineFactory {
         .attr("height", chart[0].height_svg)
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
-    let jiggle_line = line_instance.renderLine(chart, (node) => {this.domNode = node})
+    let jiggle_line = line_instance.renderLine(chart)
     ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line, svgElement)
     return jiggle_line
@@ -80,7 +80,7 @@ export default class SmallDataLineFactory {
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList)
       let component = g._self
-      g = d3.select(g._self.domNode)
+      g = d3.select(g._self.gParent)
 
       g.call(this._applyTransition, component, idx, true)
       
