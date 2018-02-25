@@ -25,7 +25,7 @@ const chart1 = {
     left: 60,
     right: 60
   },
-  theme: { ...LIGHT },
+  theme: { ...DARK },
   graph_colors: GRAPH_COLOR
 };
 const chart2 = {

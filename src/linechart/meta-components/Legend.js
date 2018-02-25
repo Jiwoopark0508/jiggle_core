@@ -16,6 +16,7 @@ export default function Legend({
             <Text
                 fontFamily="Spoqa Hans Bold"
                 fontWeight={700}
+                fill={configs.theme.colorPrimary}
             >
                 단위
             </Text>
@@ -35,6 +36,7 @@ export default function Legend({
                                 x={30}
                                 y={22 * (i + 1)}
                                 fontFamily="Spoqa Hans"
+                                fill={configs.theme.colorPrimary}
                             >
                                 {d}
                             </Text>
