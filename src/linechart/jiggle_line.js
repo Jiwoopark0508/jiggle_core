@@ -26,12 +26,17 @@ const SMALL = "SMALL";
 const PARTIAL = true;
 
 function formatDate(date, idx) {
-    date = moment(date).format(`YYYY년 M월DD일`);
-    return date.split(" ");
+    let momentDate = moment(date)
+    if (momentDate.isValid()) {
+        date = moment(date).format(`YYYY년 M월DD일`)
+        return date.split(' ')
+    }
+    return date
 }
 
 export default class JiggleLine {
     constructor(charts, images, type) {
+        console.log(charts)
         this.transition = "";
         this.node = null;
         this.transPathLines = [];
@@ -201,6 +206,7 @@ export default class JiggleLine {
         );
     }
     _graph(chartConfig, processedData, labels) {
+        
         let lines = processedData.map((d, i) => {
             return React.cloneElement(this.lineType, {
                 key: i,

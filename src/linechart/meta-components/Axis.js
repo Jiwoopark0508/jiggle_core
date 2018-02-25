@@ -141,8 +141,12 @@ export default function Axis({
             )}
             <text
               x={tickToPoint.x}
-              y={tickToPoint.y + (horizontal && !isTop ? tickLabelFontSize : 0)}
-              textAnchor={"start"}
+              y={
+                tickToPoint.y +
+                (horizontal && !isTop ? tickLabelFontSize : 0)
+
+              }
+              textAnchor={"middle"}
               {...tickLabelPropsObj}
             >
               {format(val, index) instanceof Array ? (

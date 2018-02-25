@@ -26,7 +26,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart);
-    line_instance.drawGlyphLabel();
+    // line_instance.drawGlyphLabel();
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line, svgElement);
     return jiggle_line;
