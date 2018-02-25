@@ -1,6 +1,6 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
-import { getImageUrlFromBase64 } from "../common/utils";
+// import { getImageUrlFromBase64 } from "../common/utils";
 
 export default class BarFactory extends CommonFactory {
   _drawChart(that, svgElement, chart, images) {
@@ -24,6 +24,7 @@ export default class BarFactory extends CommonFactory {
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     gYAxis.call(that._drawVerticalYAxis, chart);
+    gYAxis.call(that._drawYLine, chart);
     gBackground.call(that._drawBackground, chart);
     gXAxis.call(that._drawVerticalXAxis, chart);
     gXAxis.call(that._drawXLine, chart);
@@ -56,18 +57,14 @@ export default class BarFactory extends CommonFactory {
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
       .text((d, i) => {
-        console.log(i);
-        let label = "";
-        // if (chart.label && chart.label.row === i + 1) {
-        console.log(chart.label);
+        let label = +d[chart.yLabel];
         if (chart.label) {
-          // console.log(chart.label[0].row);
-          // console.log(chart.label.comment);
           chart.label.forEach(l => {
-            if (l.row === i + 1) label += l.comment + "\n";
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
           });
         }
-        label += +d[chart.yLabel];
         return label;
       });
     gLegend.call(that._drawLegend, chart);
@@ -97,12 +94,6 @@ export default class BarFactory extends CommonFactory {
       gReference,
       gMadeBy
     };
-  }
-
-  _drawBI(that, svgElement, chart) {
-    const canvas = this._drawSkeleton(svgElement, chart);
-    canvas.gXAxis.call(chart.BILine);
-    return canvas;
   }
 
   _applyTransition(that, canvas, chart) {
@@ -192,13 +183,23 @@ export default class BarFactory extends CommonFactory {
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
       .attr("opacity", 1)
-      .text(d => +d[chart.yLabel]);
+      .text((d, i) => {
+        let label = +d[chart.yLabel];
+        if (chart.label) {
+          chart.label.forEach(l => {
+            if (l.row === i + 1) {
+              label = l.comment;
+            }
+          });
+        }
+        return label;
+      });
+    // .text(d => +d[chart.yLabel]);
   }
   _drawLegend(g, chart) {
     if (!chart.unit) return;
     let legend = g
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 15)
+      // .attr("font-family", "sans-serif")
       .attr("text-anchor", "end")
       // .selectAll("g")
       // .data(chart.keys)
@@ -214,10 +215,12 @@ export default class BarFactory extends CommonFactory {
     //   .attr("fill", chart.z);
     legend
       .append("text")
+      .attr("font-size", 15)
       // .attr("x", chart.width_g_body - 24)
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")
+      .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;
         // return d;
