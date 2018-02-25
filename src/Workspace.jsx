@@ -12,6 +12,7 @@ import { getImageUrlFromBase64 } from "./common/utils";
 
 import mario from "./data/image-mario";
 import kai from "./data/image-kai";
+import bonobono from "./data/image-bonobono";
 import { getChildG } from "./common/utils";
 
 export default class Workspace extends React.Component {
@@ -23,7 +24,8 @@ export default class Workspace extends React.Component {
     const props = this.props;
     // const imgs = null;
     // const imgs = mario;
-    const imgs = kai;
+    // const imgs = kai;
+    const imgs = bonobono;
 
     let flag;
     // flag = "Static";
@@ -110,6 +112,11 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
+      // const onFinished = function(image) {
+      //   const imgElement = document.createElement("img");
+      //   imgElement.src = image;
+      //   gifDiv.appendChild(imgElement);
+      // };
 
       const record = bar.recordTransition(
         this.node,

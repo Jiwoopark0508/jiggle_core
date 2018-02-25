@@ -1,51 +1,54 @@
-/* Although its name is linechart_transition 
+/* Although its name is linechart_transition
  * Its role is to take two data input and make it transition.
  * Maybe it is proper to name it as *transition linepath*
  */
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Group } from '@vx/group'
-import LinePath from './meta-components/LinePath'
-import { AnnotationLabel } from 'react-annotation'
-import JiggleGlyph from './jiggle_glyph';
-import _ from 'lodash'
-import * as d3 from 'd3'
+import React from "react";
+import ReactDOM from "react-dom";
+import { Group } from "@vx/group";
+import LinePath from "./meta-components/LinePath";
+import { AnnotationLabel } from "react-annotation";
+import JiggleGlyph from "./jiggle_glyph";
+import _ from "lodash";
+import * as d3 from "d3";
 
 export default class LargeTransitionLinePath extends React.Component {
-    constructor(props){
-        super(props)
-        this.pathList = []
-        this.lengthList = []
-        this.glyphList = []
-        this.transPath = null
-        this._playLineTransition = this._playLineTransition.bind(this)
-        this.playTransition = this.playTransition.bind(this)
-        this.durationList = this.props.chartList.map((c) => {return c.duration})
-        this.delayList = this.props.chartList.map((c) => {return c.delay})
-        this.glyphCountList = _.map(this.props.dataList, (d, i) =>{
+    constructor(props) {
+        super(props);
+        this.pathList = [];
+        this.lengthList = [];
+        this.glyphList = [];
+        this.transPath = null;
+        this._playLineTransition = this._playLineTransition.bind(this);
+        this.playTransition = this.playTransition.bind(this);
+        this.durationList = this.props.chartList.map(c => {
+            return c.duration;
+        });
+        this.delayList = this.props.chartList.map(c => {
+            return c.delay;
+        });
+        this.glyphCountList = _.map(this.props.dataList, (d, i) => {
             return d.length;
-        })
+        });
     }
-    
+
     componentDidMount() {
         this.pathList.forEach((p, i) => {
-            this.lengthList.push(p.getTotalLength())
-        })
-        this.totalLength = this.lengthList[this.lengthList.length - 1]
-        
-        d3.select(this.transPath)
-            .attr("stroke-dasharray", this.totalLength)
+            this.lengthList.push(p.getTotalLength());
+        });
+        this.totalLength = this.lengthList[this.lengthList.length - 1];
+
+        d3.select(this.transPath).attr("stroke-dasharray", this.totalLength);
     }
 
     playTransition(idx, partial) {
         if (!idx) idx = 1;
-        let g = d3.select(this.transPath)
-        this._playLineTransition(g, this, idx, partial)
+        let g = d3.select(this.transPath);
+        this._playLineTransition(g, this, idx, partial);
     }
 
     _playLineTransition(g, that, idx, partial) {
-        let startsAt = this.lengthList[idx - 1]
-        let endsAt = this.lengthList[idx]
+        let startsAt = this.lengthList[idx - 1];
+        let endsAt = this.lengthList[idx];
         if (!endsAt) return;
         g
             .attr("stroke-dashoffset", this.totalLength - startsAt)
@@ -56,20 +59,20 @@ export default class LargeTransitionLinePath extends React.Component {
             .attr("stroke-dashoffset", this.totalLength - endsAt)
             .on("end", function() {
                 if (!partial) {
-                    g.call(that._playLineTransition, that, idx + 1)
-                } 
-            })
+                    g.call(that._playLineTransition, that, idx + 1);
+                }
+            });
     }
-    
+
     render() {
         const props = this.props;
-        const indexLastGlyph = props.dataList[props.dataList.length - 1].length
+        const indexLastGlyph = props.dataList[props.dataList.length - 1].length;
         let that = this;
         return (
             <Group>
-                <LinePath 
-                    innerRef={(node) => this.transPath = node}
-                    data = {this.props.dataList[this.props.dataList.length - 1]}
+                <LinePath
+                    innerRef={node => (this.transPath = node)}
+                    data={this.props.dataList[this.props.dataList.length - 1]}
                     xScale={props.xScale}
                     yScale={props.yScale}
                     annotations={props.annotations}
@@ -79,10 +82,10 @@ export default class LargeTransitionLinePath extends React.Component {
                     strokeWidth={5}
                     strokeLinecap={"round"}
                     glyph={(d, i) => {
-                        if (this.glyphCountList.indexOf(i+1) == -1) return;
-                        let dot = 
+                        if (this.glyphCountList.indexOf(i + 1) == -1) return;
+                        let dot = (
                             <JiggleGlyph // Refactoring 필요
-                                innerRef={(node) => this.glyphList.push(node)}
+                                innerRef={node => this.glyphList.push(node)}
                                 className={"glyph-dots"}
                                 cx={props.xScale(props.x(d))}
                                 cy={props.yScale(props.y(d))}
@@ -92,31 +95,32 @@ export default class LargeTransitionLinePath extends React.Component {
                                 fill={"white"}
                                 config={props.config}
                                 dx={3}
-                                style={{opacity:0}}
-                            />  
+                                style={{ opacity: 0 }}
+                            />
+                        );
                         return (
-                            <Group
-                                key={`line-dot-${i}`}>
+                            <Group key={`line-dot-${i}`}>
                                 {dot}
                                 {/* {label} */}
-                            </Group>);
+                            </Group>
+                        );
                     }}
                 />
                 {this.props.dataList.map((d, i) => {
                     return (
                         <LinePath
                             key={i}
-                            innerRef={(node) => this.pathList.push(node)}
-                            data = {d}
+                            innerRef={node => this.pathList.push(node)}
+                            data={d}
                             xScale={props.xScale}
                             yScale={props.yScale}
                             x={props.x}
-                            y={props.y}  
-                            style={{display: "none"}}
+                            y={props.y}
+                            style={{ display: "none" }}
                         />
-                    )
+                    );
                 })}
-            </Group> 
-        )  
-    } 
+            </Group>
+        );
+    }
 }

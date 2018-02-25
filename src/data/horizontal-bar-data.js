@@ -23,7 +23,7 @@ const arr2 = [
 ];
 
 const id = 4;
-const graph_colors = ["#fff", "#000"];
+// const graph_colors = ["#fff", "#000"];
 const label = [
   {
     row: 1,

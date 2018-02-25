@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
-import Axis from './Axis';
-import ORIENT from './constants/orientation';
+import React from "react";
+import PropTypes from "prop-types";
+import cx from "classnames";
+import Axis from "./Axis";
+import ORIENT from "./constants/orientation";
 
 const propTypes = {
   axisClassName: PropTypes.string,
@@ -29,7 +29,7 @@ const propTypes = {
   tickTransform: PropTypes.string,
   tickValues: PropTypes.array,
   top: PropTypes.number,
-  children: PropTypes.func,
+  children: PropTypes.func
 };
 
 export default function AxisBottom({
@@ -53,21 +53,21 @@ export default function AxisBottom({
   tickClassName,
   tickFormat,
   tickLabelProps = ({ tick, index }) => ({
-    dy: '0.25em',
-    fill: 'black',
-    fontFamily: 'Arial',
+    dy: "0.25em",
+    fill: "black",
+    fontFamily: "Arial",
     fontSize: 10,
-    textAnchor: 'middle',
+    textAnchor: "middle"
   }),
   tickLength = 8,
   tickStroke,
   tickTransform,
   tickValues,
-  top,
+  top
 }) {
   return (
     <Axis
-      axisClassName={cx('vx-axis-bottom', axisClassName)}
+      axisClassName={cx("vx-axis-bottom", axisClassName)}
       hideTicks={hideTicks}
       label={label}
       left={left}

@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 
 export default class HorizontalBarFactory extends CommonFactory {

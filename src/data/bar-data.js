@@ -19,21 +19,21 @@ const arr2 = [
   ["Q1", ".11"],
   ["Q2", ".22"],
   ["Q3", ".28"],
-  ["Q4", ".80"],
+  ["Q4", ".97"],
   ["Q5", ".50"]
 ];
 
 const id = 1;
-const graph_colors = [
-  "#499fc9",
-  "#4a67c6",
-  "#af4390",
-  "#5d9ec6",
-  "#43acaf",
-  "#594ac6",
-  "#8544aa",
-  "#4ac6ae"
-];
+// const graph_colors = [
+//   "#499fc9",
+//   "#4a67c6",
+//   "#af4390",
+//   "#5d9ec6",
+//   "#43acaf",
+//   "#594ac6",
+//   "#8544aa",
+//   "#4ac6ae"
+// ];
 const label = [
   {
     row: 1,
@@ -41,13 +41,13 @@ const label = [
     comment: "hi"
   }
 ];
-const colorToFocus = "#000";
-const theme = {
-  backgroundColor: "#F9F9F9",
-  colorPrimary: "#000000",
-  colorSecondary: "#4B4949",
-  colorTernary: "#7F7F7F"
-};
+// const colorToFocus = "#000";
+// const theme = {
+//   backgroundColor: "#F9F9F9",
+//   colorPrimary: "#000000",
+//   colorSecondary: "#4B4949",
+//   colorTernary: "#7F7F7F"
+// };
 const DARK = {
   colorPrimary: "#ffffff",
   colorSecondary: "#d9dadb",
@@ -56,14 +56,14 @@ const DARK = {
   colorStripe1: "#333435",
   colorStripe2: "#2c2d2e"
 };
-const LIGHT = {
-  colorPrimary: "#000000",
-  colorSecondary: "#4B4949",
-  colorTernary: "#7f7f7f",
-  backgroundColor: "#f3f4f5",
-  colorStripe1: "#e6e7e8",
-  colorStripe2: "#f3f4f5"
-};
+// const LIGHT = {
+//   colorPrimary: "#000000",
+//   colorSecondary: "#4B4949",
+//   colorTernary: "#7f7f7f",
+//   backgroundColor: "#f3f4f5",
+//   colorStripe1: "#e6e7e8",
+//   colorStripe2: "#f3f4f5"
+// };
 export const cht0 = {
   id,
   // graph_colors,
@@ -89,8 +89,8 @@ export const cht1 = {
   label,
   theme: DARK,
   rawData: arr1,
-  duration: 4000,
-  delay: 1000,
+  duration: 1000,
+  delay: 500,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
@@ -104,8 +104,8 @@ export const cht2 = {
   label,
   theme: DARK,
   rawData: arr2,
-  duration: 4000,
-  delay: 1000,
+  duration: 1000,
+  delay: 500,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",

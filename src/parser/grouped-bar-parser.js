@@ -147,26 +147,26 @@ export default function parseGroupedBar(chart) {
   // };
 }
 
-function transposeDsv(dsv, delimeter = ",") {
-  const rows = dsv.split("\n");
-  let newStrs = [];
-  rows.forEach((row, i) => {
-    const columns = row.split(delimeter);
-    if (i === 0) {
-      for (let k = 0; k < columns.length; k++) {
-        newStrs.push("");
-      }
-    }
-    columns.forEach((col, j) => {
-      newStrs[j] += col;
-      if (i !== rows.length - 1) {
-        newStrs[j] += delimeter;
-      }
-    });
-  });
-  const newDsv = newStrs.join("\n");
-  return newDsv;
-}
+// function transposeDsv(dsv, delimeter = ",") {
+//   const rows = dsv.split("\n");
+//   let newStrs = [];
+//   rows.forEach((row, i) => {
+//     const columns = row.split(delimeter);
+//     if (i === 0) {
+//       for (let k = 0; k < columns.length; k++) {
+//         newStrs.push("");
+//       }
+//     }
+//     columns.forEach((col, j) => {
+//       newStrs[j] += col;
+//       if (i !== rows.length - 1) {
+//         newStrs[j] += delimeter;
+//       }
+//     });
+//   });
+//   const newDsv = newStrs.join("\n");
+//   return newDsv;
+// }
 
 // function setSkeleton(chart) {
 //   const factor_primary_fontsize = 0.08;

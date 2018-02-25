@@ -1,6 +1,6 @@
-import * as d3 from "d3";
+// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
-import { getImageUrlFromBase64 } from "../common/utils";
+// import { getImageUrlFromBase64 } from "../common/utils";
 
 export default class BarFactory extends CommonFactory {
   _drawChart(that, svgElement, chart, images) {
