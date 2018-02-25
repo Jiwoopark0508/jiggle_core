@@ -140,7 +140,7 @@ class App extends Component {
           <Workspace
             width="1024"
             height="768"
-            charts={[chart1, chart2, chart3]}
+            charts={[chart1, chart3]}
           />
           <div id="gif" />
         </div>

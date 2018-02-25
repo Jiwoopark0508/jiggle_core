@@ -99,12 +99,17 @@ export default class LargeDataLineFactory {
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
       
-      let promises = [];
+      let chain = Promise.resolve();
+
       d3.range(frames).forEach(function(f, i) {
-        promises.push(
-          new Promise(function(resolve1, reject) {
+        chain = chain.then(() => {
+          return new Promise(function(resolve1, reject) {
             addFrame((f) / frames * totalDuration, resolve1);
-        }))
+          })
+        })
+      })
+      chain.then(() => {
+        resolve0();
       })
       // console.log(cht)
       // if (cht.isLastFor) {
@@ -119,10 +124,6 @@ export default class LargeDataLineFactory {
       //   });
       // }
 
-
-      Promise.all(promises).then(function(results) {
-        resolve0();
-      })
       function jumpToTime(t) {
         tweeners.forEach(function(tween) {
           tween(t);
