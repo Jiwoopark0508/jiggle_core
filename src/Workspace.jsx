@@ -24,21 +24,21 @@ export default class Workspace extends React.Component {
     const props = this.props;
     // const imgs = null;
     // const imgs = mario;
-    const imgs = kai;
-    // const imgs = bonobono;
+    // const imgs = kai;
+    const imgs = bonobono;
 
     let flag;
     // flag = "Static";
     // flag = "Transition";
-    flag = "Recording";
+    // flag = "Recording";
 
-    // flag = "Grouped Static";
+    flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    flag = "jiwoo";
+    // flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -140,12 +140,12 @@ export default class Workspace extends React.Component {
       };
       // const renderer = factory.renderChart();
       // renderer(this.node, [...props.charts][2], kai);
-      const renderer = factory.renderTransition()
-      renderer(this.node, [...props.charts], kai)
+      const renderer = factory.renderTransition();
+      renderer(this.node, [...props.charts], kai);
       // factory.recordTransition(
       //   this.node,
       //   [...props.charts],
-      //   onProcess, 
+      //   onProcess,
       //   onFinished
       // );
       // const renderer = factory.renderTransition()
@@ -163,8 +163,8 @@ export default class Workspace extends React.Component {
     return (
       <div>
         <svg
-          width="1080"
-          height="600"
+          width={600}
+          height={600 * 9 / 16}
           // transform="translate(40, 60)"
           ref={node => (this.node = node)}
         />

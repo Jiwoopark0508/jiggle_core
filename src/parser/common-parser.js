@@ -105,7 +105,7 @@ export function setSkeleton(chart) {
   chart.numOfXAxisTicks = chart.numOfXAxisTicks || 5;
   chart.numOfYAxisTicks = chart.numOfYAxisTicks || 5;
 
-  chart.easingType = chart.easingType || "easeLinear";
+  chart.easingType = chart.easingType || "easeBackOut";
   // chart.delayType = chart.delayType || "delayInOrder";
   chart.delayType = chart.delayType || "accumedDelay";
   chart.paddingBtwRects = chart.paddingBtwRects || 0.4;

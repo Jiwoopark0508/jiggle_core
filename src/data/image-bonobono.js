@@ -13,7 +13,6 @@ const bonobono = [
   // },
   {
     href,
-
     x: 320,
     y: 10,
     width: "100px",
