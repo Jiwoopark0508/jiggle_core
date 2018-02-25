@@ -28,7 +28,7 @@ export default class Workspace extends React.Component {
     const imgs = bonobono;
 
     let flag;
-    // flag = "Static";
+    flag = "Static";
     // flag = "Transition";
     // flag = "Recodring";
 

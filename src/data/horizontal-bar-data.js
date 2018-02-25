@@ -31,11 +31,14 @@ const label = [
     comment: "hi"
   }
 ];
+const indexToFocus = [2];
 
 export const hcht0 = {
   id,
   label,
   // graph_colors,
+  // indexToFocus,
+
   rawData: arr0,
   duration: 0,
   delay: 0,
