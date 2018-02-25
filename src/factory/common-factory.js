@@ -16,7 +16,10 @@ export default class CommonFactory {
       // let canvas = this._drawBI(this, svgElement, charts[0]);
       const canvas = this._drawChart(this, svgElement, charts[0], images);
       charts.forEach((cht, i) => {
-        if (i === 0) return;
+        if (i === 0) {
+          cht.duration = 0;
+          return;
+        }
 
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;

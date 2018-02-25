@@ -29,7 +29,9 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
+    // flag = "Transition";
+    // flag = "Recodring";
+
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
