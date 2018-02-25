@@ -14,7 +14,7 @@ export default function Header({
             <Text
                 fontSize={39}
                 fontFamily={"Spoqa Hans"}
-                fill={configs.colorPrimary}
+                fill={configs.theme.colorPrimary}
                 fontWeight={700}
             >
                 {configs.title}
@@ -23,7 +23,7 @@ export default function Header({
                 y={28}
                 fontFamily={"Spoqa Hans"}
                 fontWeight={400}
-                fill={configs.colorSecondary}
+                fill={configs.theme.colorSecondary}
                 >
                 {configs.subtitle}
             </Text>

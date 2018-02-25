@@ -20,6 +20,14 @@ const GRAPH_COLOR = [
     "blue",
     "red",
 ]
+const GRAPH_COLOR2 = [
+    "BLACK",
+    "WHITE",
+    "blue",
+    "red",
+    "blue",
+    "red",
+]
 
 const skeleton = {
     global_margin : {
@@ -37,4 +45,4 @@ const skeleton = {
     }
 }
 
-export { DARK, LIGHT, skeleton, GRAPH_COLOR }
+export { DARK, LIGHT, skeleton, GRAPH_COLOR, GRAPH_COLOR2 }

@@ -2,10 +2,6 @@ import * as d3 from "d3";
 import { setSkeleton } from "./common-parser";
 
 export default function parseGroupedBar(chart) {
-  // chart.shouldTransposed = true;
-  // if (chart.shouldTransposed) {
-  //   chart.rawData = transposeDsv(chart.rawData, ",");
-  // }
   const columns = chart.rawData[0];
   chart.data = chart.rawData.slice(1).map((arr, i) => {
     return columns.reduce((acc, col, j) => {
@@ -151,26 +147,26 @@ export default function parseGroupedBar(chart) {
   // };
 }
 
-function transposeDsv(dsv, delimeter = ",") {
-  const rows = dsv.split("\n");
-  let newStrs = [];
-  rows.forEach((row, i) => {
-    const columns = row.split(delimeter);
-    if (i === 0) {
-      for (let k = 0; k < columns.length; k++) {
-        newStrs.push("");
-      }
-    }
-    columns.forEach((col, j) => {
-      newStrs[j] += col;
-      if (i !== rows.length - 1) {
-        newStrs[j] += delimeter;
-      }
-    });
-  });
-  const newDsv = newStrs.join("\n");
-  return newDsv;
-}
+// function transposeDsv(dsv, delimeter = ",") {
+//   const rows = dsv.split("\n");
+//   let newStrs = [];
+//   rows.forEach((row, i) => {
+//     const columns = row.split(delimeter);
+//     if (i === 0) {
+//       for (let k = 0; k < columns.length; k++) {
+//         newStrs.push("");
+//       }
+//     }
+//     columns.forEach((col, j) => {
+//       newStrs[j] += col;
+//       if (i !== rows.length - 1) {
+//         newStrs[j] += delimeter;
+//       }
+//     });
+//   });
+//   const newDsv = newStrs.join("\n");
+//   return newDsv;
+// }
 
 // function setSkeleton(chart) {
 //   const factor_primary_fontsize = 0.08;
