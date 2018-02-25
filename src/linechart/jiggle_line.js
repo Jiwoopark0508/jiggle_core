@@ -36,6 +36,7 @@ function formatDate(date, idx) {
 
 export default class JiggleLine {
     constructor(charts, images, type) {
+        console.log(charts)
         this.transition = "";
         this.node = null;
         this.transPathLines = [];
@@ -205,6 +206,7 @@ export default class JiggleLine {
         );
     }
     _graph(chartConfig, processedData, labels) {
+        
         let lines = processedData.map((d, i) => {
             return React.cloneElement(this.lineType, {
                 key: i,

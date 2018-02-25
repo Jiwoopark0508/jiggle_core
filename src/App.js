@@ -76,8 +76,8 @@ class App extends Component {
     let flag;
     // flag = "horizontal";
     // flag = "group";
-    flag = "single";
-    // flag = "jiwoo"
+    // flag = "single";
+    flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {
