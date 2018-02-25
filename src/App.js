@@ -10,13 +10,13 @@ import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
   rawData: dummie.slice(0, 3),
-  duration: 750,
+  duration: 0,
   title: "최근 3년간 한국항공우주 주가 추이",
   subtitle: "(단위: 원)",
   reference: "*자료: 한국거래소",
   caption: "이것은 1캡처입니다",
   madeBy: "그래픽 : 유정수 디자이너",
-  delay: 3000,
+  delay: 0,
   width_svg: 1080,
   height_svg: 600,
   margins: {
@@ -25,11 +25,11 @@ const chart1 = {
     left: 60,
     right: 60
   },
-  ...LIGHT,
-  graph_colors: GRAPH_COLOR2
+  theme:{...LIGHT},
+  graph_colors: GRAPH_COLOR
 };
 const chart2 = {
-  rawData: dummie.slice(0, 30),
+  rawData: dummie.slice(0, 5),
   duration: 750,
   title: "주요 금융그룹 충당금 주요 금융그룹",
   subtitle: "이것은 1부제입니다",
@@ -45,7 +45,9 @@ const chart2 = {
     left: 60,
     right: 60
   },
-  ...LIGHT,
+  theme : {
+    ...LIGHT
+  },
   graph_colors: GRAPH_COLOR2
 };
 const chart3 = {
@@ -66,7 +68,7 @@ const chart3 = {
     right: 60
   },
   ...LIGHT,
-  graph_colors: GRAPH_COLOR
+  graph_colors: GRAPH_COLOR2
 };
 
 class App extends Component {

@@ -11,7 +11,6 @@ export default class SmallDataLineFactory {
   }
   renderChart() {
     const renderer = (svgElement, chart, images) => {
-      console.log(chart)
       let line = this._drawStaticChart(svgElement, chart, images)
       return line
     }
@@ -21,11 +20,12 @@ export default class SmallDataLineFactory {
   _drawStaticChart(svgElement, chart, images) {
     // this function draw transition between two chart configs
     d3.select(svgElement)
-        .attr("width", chart[0].width_svg)
-        .attr("height", chart[0].height_svg)
+        .attr("width", chart.width_svg)
+        .attr("height", chart.height_svg)
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart)
+    line_instance.drawGlyphLabel()
     ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line, svgElement)
     return jiggle_line

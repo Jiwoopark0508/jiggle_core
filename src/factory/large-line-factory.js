@@ -24,11 +24,12 @@ export default class LargeDataLineFactory {
         .attr("height", chart.height_svg)
     let line_instance = new JiggleLine(chart, images, LARGE);
     this.lineInstance = line_instance;
-    let jiggle_line_transition = line_instance.renderLine(chart)
+    let jiggle_line = line_instance.renderLine(chart)
+    line_instance.drawGlyphLabel()
     ReactDOM.unmountComponentAtNode(svgElement)
-    ReactDOM.render(jiggle_line_transition, svgElement)
+    ReactDOM.render(jiggle_line, svgElement)
 
-    return jiggle_line_transition
+    return jiggle_line
   }
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {

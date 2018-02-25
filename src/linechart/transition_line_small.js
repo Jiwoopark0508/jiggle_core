@@ -44,6 +44,13 @@ export default class SmallTransitionLinePath extends React.Component {
     }
 
     _glyphTransition(g, that, start, end, _delay) {
+        let prevGlyphs = that.glyphList.slice(0, start - 1)
+        console.log(prevGlyphs)
+        prevGlyphs.forEach((d, i) => {
+            d3.select(d)
+                .style("opacity", 1)
+                .attr("r", 3)
+        })
         let glyphs = that.glyphList.slice(start - 1, end)
         let single_delay = _delay / (end - start + 1)
         glyphs.forEach((d, i) => {
