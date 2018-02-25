@@ -103,7 +103,7 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
-          <Workspace charts={[cht0, cht1, cht2]} />
+          <Workspace charts={[cht0, cht1]} />
           <div id="gif" />
         </div>
       );

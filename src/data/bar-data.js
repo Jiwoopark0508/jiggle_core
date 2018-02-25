@@ -23,6 +23,9 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
+const tak = [["t", "v"], ["1", 2], ["3", 4], ["5", 6]];
+const tak2 = [["t", "v"], ["1", 2], ["3", 4], ["5", 6], ["7", 8]];
+
 const id = 1;
 // const graph_colors = [
 //   "#499fc9",
@@ -71,7 +74,8 @@ export const cht0 = {
   // colorToFocus,
   label,
   theme: DARK,
-  rawData: arr0,
+  rawData: tak,
+  // rawData: arr0,
   duration: 0,
   delay: 0,
   unit: "%",
@@ -88,7 +92,8 @@ export const cht1 = {
   // colorToFocus,
   label,
   theme: DARK,
-  rawData: arr1,
+  rawData: tak2,
+  // rawData: arr1,
   duration: 1000,
   delay: 500,
   unit: "%",

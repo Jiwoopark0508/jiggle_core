@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { axisLeft, axisBottom } from "../common/d3-axis";
 // import { createGIF } from "gifshot";
 
 export default class CommonFactory {
@@ -332,7 +333,7 @@ export default class CommonFactory {
   }
 
   _drawVerticalXAxis(g, chart) {
-    const xAxis = d3.axisBottom(chart.x0);
+    const xAxis = axisBottom(chart.x0);
     g
       .call(xAxis)
       .selectAll(".domain, line")
@@ -345,7 +346,7 @@ export default class CommonFactory {
 
   _drawHorizontalYAxis(g, chart) {
     g
-      .call(d3.axisLeft(chart.yScale))
+      .call(axisLeft(chart.yScale))
       .selectAll(".domain,line")
       .style("display", "none");
     g
@@ -357,8 +358,7 @@ export default class CommonFactory {
   _drawHorizontalXAxis(g, chart) {}
 
   _drawBackground(g, chart) {
-    const yAxis = d3
-      .axisLeft(chart.yScale)
+    const yAxis = axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
       .tickSize(-chart.width_g_body)
       .tickFormat(d => d);
