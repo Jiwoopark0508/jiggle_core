@@ -10,9 +10,9 @@ export default class SmallDataLineFactory {
     this.lineInstance = null;
   }
   renderChart() {
-    const renderer = async (svgElement, chart, images) => {
+    const renderer = (svgElement, chart, images) => {
       let line = this._drawStaticChart(svgElement, chart, images);
-      return line._self;
+      return line;
     };
     return renderer;
   }
@@ -25,9 +25,9 @@ export default class SmallDataLineFactory {
       .attr("height", chart.height_svg);
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
-    let jiggle_line = line_instance.renderLine(chart, node => {
-      this.domNode = node;
-    });
+    let jiggle_line = line_instance.renderLine(chart);
+    line_instance.drawGlyphLabel();
+    ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line, svgElement);
     return jiggle_line;
   }
@@ -48,6 +48,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
+    ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line_transition, svgElement);
 
     return jiggle_line_transition;
@@ -81,9 +82,7 @@ export default class SmallDataLineFactory {
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList);
       let component = g._self;
-      g = d3.select(g._self.domNode);
-
-      g.call(this._applyTransition, component, idx, true);
+      g = d3.select(g._self.gParent);
 
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g);

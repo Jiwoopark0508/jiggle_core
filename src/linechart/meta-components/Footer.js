@@ -13,7 +13,7 @@ export default function Footer({
             <Text
                 fontSize={16}
                 fontFamily={"Spoqa Hans"}
-                fill={configs.colorTernary}
+                fill={configs.theme.colorTernary}
                 fontWeight={700}
             >
                 출처 - {configs.reference}
@@ -23,7 +23,7 @@ export default function Footer({
                 fontSize={16}
                 fontFamily={"Spoqa Hans"}
                 fontWeight={700}
-                fill={configs.colorTernary}
+                fill={configs.theme.colorTernary}
                 >
                 만든 이 - {configs.madeBy}
             </Text>

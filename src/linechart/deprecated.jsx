@@ -30,6 +30,7 @@ export default class LineChartFactory {
     let line_transition_instance = new JiggleLineTransition();
     this.lineInstance = line_transition_instance;
     let jiggle_line_transition = line_transition_instance.renderTransition(chartConfigList)
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line_transition, document.getElementsByTagName('svg')[0])
 
     return jiggle_line_transition
@@ -161,7 +162,7 @@ export default class LineChartFactory {
   _drawStaticChart(svgElement, chartConfig) {
     let line_static_instance = new JiggleLineStatic();
     let jiggle_line = line_static_instance.renderChartStatic(chartConfig);
-
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line, document.getElementsByTagName('svg')[0])
   }
 

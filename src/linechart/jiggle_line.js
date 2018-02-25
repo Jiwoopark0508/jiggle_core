@@ -37,6 +37,13 @@ export default class JiggleLine {
         this.transPathLines = [];
         this.dataSeries = null;
         this.chartList = charts;
+        this.total_duration = _.reduce(
+            this.chartList,
+            (sum, cht) => {
+                return (sum += cht.duration + cht.delay);
+            },
+            0
+        );
         this.lineType = this.setLineType(type);
         this.images = images;
         this.annotationList = [null];
@@ -59,6 +66,18 @@ export default class JiggleLine {
             height_footer
         };
     }
+    drawGlyphLabel() {
+        process.nextTick(() => {
+            this.transPathLines.forEach(tline => {
+                tline.glyphList.forEach(g => {
+                    d3.select(g).style("opacity", "1");
+                });
+            });
+            this.annotationList.forEach(annotation => {
+                console.log("!");
+            });
+        });
+    }
     playWholeLineTransition(idx, partial, record) {
         if (record) {
             // Record Transition
@@ -79,9 +98,37 @@ export default class JiggleLine {
         }
     }
     progressBarTransition(idx, partial) {
+        console.log(this.chartList[idx]);
         if (!this.chartList[idx]) return;
+        const WIDTH = 1080;
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
+        let prevDuration = _.reduce(
+            this.chartList.slice(0, idx),
+            (sum, cht) => {
+                return (sum += cht.duration + cht.delay);
+            },
+            0
+        );
+        let nextDuration = _.reduce(
+            this.chartList.slice(0, idx + 1),
+            (sum, cht) => {
+                return (sum += cht.duration + cht.delay);
+            },
+            0
+        );
+        d3
+            .select(this.progressbar)
+            .attr("width", WIDTH * prevDuration / this.total_duration)
+            .transition()
+            .ease(d3.easeLinear)
+            .duration(duration + delay)
+            .attr("width", WIDTH * nextDuration / this.total_duration)
+            .on("end", () => {
+                if (!partial) {
+                    this.progressBarTransition(idx + 1, !PARTIAL);
+                }
+            });
     }
     labelTransition(idx, partial) {
         if (!this.chartList[idx]) return;
@@ -256,7 +303,7 @@ export default class JiggleLine {
                 }
             >
                 <Footer configs={chartConfig} />
-                <ProgressBar />
+                <ProgressBar innerRef={node => (this.progressbar = node)} />
             </Group>
         );
     }
@@ -268,12 +315,13 @@ export default class JiggleLine {
             chart = [chart];
             chartConfig = util.processChartConfig(chart);
         }
+        console.log(chartConfig);
         return (
-            <g
+            <Group
                 className="total"
-                y={chartConfig.global_margin.top}
-                x={chartConfig.global_margin.left}
-                ref={node => {
+                top={chartConfig.global_margin.top}
+                left={chartConfig.global_margin.left}
+                innerRef={node => {
                     this.gParent = node;
                 }}
             >
@@ -282,34 +330,7 @@ export default class JiggleLine {
                     y={-chartConfig.global_margin.top}
                     width={chartConfig.width_svg}
                     height={chartConfig.height_svg}
-                    fill={chartConfig.backgroundColor}
-                />
-                {this._header(chartConfig)}
-                {this._body(
-                    chartConfig,
-                    chartConfig.processedData,
-                    chartConfig.annotations
-                )}
-                {this._footer(chartConfig)}
-            </g>
-        );
-    }
-
-    renderTransitionLine(chartList) {
-        const chartConfig = util.processChartConfig(chartList);
-        return (
-            <Group
-                className="total"
-                top={chartConfig.global_margin.top}
-                left={chartConfig.global_margin.left}
-                innerRef={node => (this.domNode = node)}
-            >
-                <rect
-                    x={-chartConfig.global_margin.left}
-                    y={-chartConfig.global_margin.top}
-                    width={chartConfig.width_svg}
-                    height={chartConfig.height_svg}
-                    fill={chartConfig.backgroundColor}
+                    fill={chartConfig.theme.backgroundColor}
                 />
                 {this._header(chartConfig)}
                 {this._body(
@@ -321,4 +342,24 @@ export default class JiggleLine {
             </Group>
         );
     }
+
+    // renderTransitionLine(chartList) {
+    //     const chartConfig = util.processChartConfig(chartList)
+    //     return (
+    //         <Group
+    //             className="total"
+    //             top={chartConfig.global_margin.top}
+    //             left={chartConfig.global_margin.left}
+    //             innerRef={(node) => this.domNode = node}>
+    //             <rect
+    //                 x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top}
+    //                 width={chartConfig.width_svg}
+    //                 height={chartConfig.height_svg}
+    //                 fill={chartConfig.backgroundColor}/>
+    //             {this._header(chartConfig)}
+    //             {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
+    //             {this._footer(chartConfig)}
+    //         </Group>
+    //     )
+    // }
 }

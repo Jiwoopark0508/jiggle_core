@@ -30,15 +30,13 @@ export default class Workspace extends React.Component {
     let flag;
     // flag = "Static";
     // flag = "Transition";
-    flag = "Recording";
-
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    // flag = "jiwoo";
+    flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -127,8 +125,9 @@ export default class Workspace extends React.Component {
       );
     }
 
+
     if (flag === "jiwoo") {
-      const factory = new SmallDataLineFactory();
+      const factory = new LargeDataLineFactory();
       const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -138,22 +137,27 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
-      const renderer = factory.renderChart();
-      const chart = renderer(this.node, [...props.charts], kai);
-      console.log(chart);
-      chart.then(a => {
-        console.log(a.gParent);
-      });
+      // const renderer = factory.renderChart();
+      // renderer(this.node, [...props.charts][2], kai);
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
-      // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess, 
+        onFinished
+      );
     }
   }
 
   render() {
     return (
       <div>
-        <svg ref={node => (this.node = node)} />
+        <svg 
+          width = "1080"
+          height= "600"
+          // transform="translate(40, 60)"
+          ref={node => (this.node = node)} />
       </div>
     );
   }
