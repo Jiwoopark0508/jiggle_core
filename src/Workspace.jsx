@@ -130,11 +130,16 @@ export default class Workspace extends React.Component {
         imgElement.src = URL.createObjectURL(blob);
         gifDiv.appendChild(imgElement);
       };
-      const renderer = factory.renderChart();
-      const chart = renderer(this.node, [...props.charts], kai);
+      // const renderer = factory.renderChart();
+      // renderer(this.node, [...props.charts][0], kai);
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
-      // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess, 
+        onFinished
+      );
     }
   }
 
@@ -144,6 +149,7 @@ export default class Workspace extends React.Component {
         <svg 
           width = "1080"
           height= "600"
+          // transform="translate(40, 60)"
           ref={node => (this.node = node)} />
       </div>
     );
