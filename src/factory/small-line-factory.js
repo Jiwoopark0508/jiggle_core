@@ -11,6 +11,7 @@ export default class SmallDataLineFactory {
   }
   renderChart() {
     const renderer = (svgElement, chart, images) => {
+      console.log(chart)
       let line = this._drawStaticChart(svgElement, chart, images)
       return line._self
     }
@@ -25,6 +26,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart, (node) => {this.domNode = node})
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line, svgElement)
     return jiggle_line
 
@@ -45,6 +47,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList)
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line_transition, svgElement)
 
     return jiggle_line_transition

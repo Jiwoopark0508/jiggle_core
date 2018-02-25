@@ -25,6 +25,7 @@ export default class LargeDataLineFactory {
     let line_instance = new JiggleLine(chart, images, LARGE);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chart)
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line_transition, svgElement)
 
     return svgElement
@@ -45,6 +46,7 @@ export default class LargeDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, LARGE);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList)
+    ReactDOM.unmountComponentAtNode(svgElement)
     ReactDOM.render(jiggle_line_transition, svgElement)
 
     return jiggle_line_transition
