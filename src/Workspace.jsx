@@ -34,7 +34,7 @@ export default class Workspace extends React.Component {
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    // flag = "jiwoo";
+    flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -132,10 +132,6 @@ export default class Workspace extends React.Component {
       };
       const renderer = factory.renderChart();
       const chart = renderer(this.node, [...props.charts], kai);
-      console.log(chart);
-      chart.then(a => {
-        console.log(a.gParent);
-      });
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
       // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);

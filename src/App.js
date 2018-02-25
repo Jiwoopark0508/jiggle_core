@@ -167,19 +167,7 @@ class App extends Component {
     //   </div>
     // );
 
-    // Jiwoo's
-<<<<<<< HEAD
-    return (
-      <div>
-        <Workspace width="1024" height="768"
-            charts={[
-              chart1, chart2, chart4
-            ]
-            } />
-          <div id="gif" />
-      </div>
-    );
-=======
+ 
     if (flag === "jiwoo") {
       return (
         <div>
@@ -192,7 +180,6 @@ class App extends Component {
         </div>
       );
     }
->>>>>>> e13865a75929ea93694e9d5d6baed97dde143214
   }
 }
 
