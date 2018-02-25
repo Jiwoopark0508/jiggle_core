@@ -103,7 +103,6 @@ export default class JiggleLine {
         }
     }
     progressBarTransition(idx, partial) {
-        console.log(this.chartList[idx]);
         if (!this.chartList[idx]) return;
         const WIDTH = 1080;
         let delay = this.chartList[idx].delay;
