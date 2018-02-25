@@ -104,6 +104,7 @@ export function floor(num, digit = 1) {
 }
 
 export function refineXAxis(arr, numTick = 4) {
+  console.log(arr)
   let ret = [];
   let firstDate = arr[0];
   let lastDate = arr[arr.length - 1];
@@ -195,7 +196,7 @@ export function processChartConfig(chartList) {
       annotations,
       ...skeleton,
       processedData,
-      graph_colors : GRAPH_COLOR
+      graph_colors : chartConfigs.graph_colors
   }
   const chartConfig = Object.assign({}, chartConfigs, scales)
   return chartConfig

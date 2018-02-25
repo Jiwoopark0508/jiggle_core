@@ -168,6 +168,7 @@ export default class JiggleLine {
     }
     _graph(chartConfig, processedData, labels) {
         let lines = processedData.map((d, i) => {
+            console.log(chartConfig.graph_colors)
             return (
                 React.cloneElement(this.lineType,
                     {

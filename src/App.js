@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { GRAPH_COLOR } from "./common/constant";
+import { GRAPH_COLOR, GRAPH_COLOR2 } from "./common/constant";
 import Workspace from "./Workspace";
 import { cht0, cht1, cht2 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
@@ -39,7 +39,7 @@ const chart1 = {
     { row: 100, col: 1, comment: "분식회계 의혹 수사" }
   ],
   ...LIGHT,
-  graph_colors: GRAPH_COLOR
+  graph_colors: GRAPH_COLOR2
 };
 const chart2 = {
 
@@ -61,7 +61,7 @@ const chart2 = {
   },
   label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
-  graph_colors: GRAPH_COLOR
+  graph_colors: GRAPH_COLOR2
 };
 const chart3 = {
   rawData : dummie.slice(0, 250),
@@ -100,7 +100,7 @@ const chart4 = {
   },
   label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
-  graph_colors: GRAPH_COLOR
+  graph_colors: GRAPH_COLOR2
 };
 
 class App extends Component {
@@ -108,7 +108,7 @@ class App extends Component {
     let flag;
     // flag = "horizontal";
     // flag = "group";
-    flag = "single";
+    // flag = "single";
 
     // horizontal
     if (flag === "horizontal") {
@@ -170,16 +170,16 @@ class App extends Component {
     //   );
 
     // Jiwoo's
-    // return (
-    //   <div>
-    //     <Workspace width="1024" height="768"
-    //         charts={[
-    //           chart1, chart2, chart4
-    //         ]
-    //         } />
-    //       <div id="gif" />
-    //   </div>
-    // );
+    return (
+      <div>
+        <Workspace width="1024" height="768"
+            charts={[
+              chart1, chart2, chart4
+            ]
+            } />
+          <div id="gif" />
+      </div>
+    );
   }
 }
 

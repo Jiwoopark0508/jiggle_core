@@ -25,7 +25,7 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
+    // flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
@@ -124,11 +124,13 @@ export default class Workspace extends React.Component {
       gifDiv.appendChild(imgElement);
     };
     const renderer = factory.renderChart();
-    const chart = renderer(this.node, [...props.charts], kai)
-    console.log(chart)
-    chart.then((a) => {
-      console.log(a.gParent)
-    })
+    let charts = [...props.charts]
+    renderer(this.node, charts, kai)
+    charts[0].graph_colors = ["red", "blue"]
+    setTimeout(() => {
+      renderer(this.node, charts, kai)
+    }, 1000)
+
     // const renderer = factory.renderTransition()
     // renderer(this.node, [...props.charts], kai)
     // factory.recordTransition(this.node, [...props.charts], onProcess, onFinished, kai);  
@@ -138,7 +140,10 @@ export default class Workspace extends React.Component {
   render() {
     return (
       <div>
-        <svg ref={node => (this.node = node)} />
+        <svg 
+          width = "1080"
+          height= "600"
+          ref={node => (this.node = node)} />
       </div>
     );
   }

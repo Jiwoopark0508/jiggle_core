@@ -11,7 +11,7 @@ export default class LargeDataLineFactory {
   }
 
   renderChart() {
-    const renderer = async (svgElement, chart, images) => {
+    const renderer = (svgElement, chart, images) => {
       this._drawStaticChart(svgElement, chart, images)
     }
     return renderer;
