@@ -24,13 +24,13 @@ export default class Workspace extends React.Component {
     const props = this.props;
     // const imgs = null;
     // const imgs = mario;
-    // const imgs = kai;
-    const imgs = bonobono;
+    const imgs = kai;
+    // const imgs = bonobono;
 
     let flag;
-    flag = "Static";
+    // flag = "Static";
     // flag = "Transition";
-    // flag = "Recodring";
+    flag = "Recording";
 
     // flag = "Grouped Static";
 

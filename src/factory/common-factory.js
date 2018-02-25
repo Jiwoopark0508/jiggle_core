@@ -68,7 +68,10 @@ export default class CommonFactory {
         this._recordSingleTransition(gif, svgElement, cht0, cht1, images)
       );
     });
-    chain.then(() => gif.render());
+    chain.then(() => {
+      console.dir(gif);
+      gif.render();
+    });
   }
 
   _recordSingleTransition(gif, svgElement, cht0, cht1, images) {
@@ -128,8 +131,8 @@ export default class CommonFactory {
           url = URL.createObjectURL(blob);
         img.onload = function() {
           gif.addFrame(img, {
-            delay: totalDuration / frames,
-            copy: true
+            delay: totalDuration / frames
+            // copy: true
           });
           resolve1();
         };
@@ -453,8 +456,9 @@ export default class CommonFactory {
     svg.selectAll("*").remove();
     // svg.selectAll("*:not(#images)").remove();
     svg
-      .attr("width", chart.width_svg)
-      .attr("height", chart.height_svg)
+      // .attr("width", chart.width_svg)
+      // .attr("height", chart.height_svg)
+      .attr("viewBox", `0 0 ${chart.width_svg} ${chart.height_svg}`)
       .style("background-color", chart.backgroundColor)
       .style("user-select", "none")
       .style("font-family", chart.fontFamily);
