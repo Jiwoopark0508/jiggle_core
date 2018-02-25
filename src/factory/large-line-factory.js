@@ -56,7 +56,7 @@ export default class LargeDataLineFactory {
   recordTransition(svgElement, charts, onProcess, onFinished, images) {
     if (charts.length === 0) return;
     let gif = new window.GIF({
-      workers: 30,
+      workers: 1,
       quality: 10,
       repeat: 0
     })
@@ -68,7 +68,7 @@ export default class LargeDataLineFactory {
       onFinished(blob);
     })
     let chain = Promise.resolve()
-    charts[charts.length - 1].isLastfor = true
+    // charts[charts.length - 1].isLastfor = true
     charts.forEach((cht, i) => {
       if (i < 1) return;
       chain = chain.then(() => 
@@ -79,6 +79,7 @@ export default class LargeDataLineFactory {
   }
   
   _recordSingleTransition(gif, svgElement, chtList, idx, images) {
+    
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList, images)
       let component = g._self
@@ -91,11 +92,10 @@ export default class LargeDataLineFactory {
       
       let totalDuration = 0
       let cht = chtList[idx]
-      console.log(cht)
       totalDuration = cht.duration + cht.delay
 
       allElements.interrupt();
-      const frames = 30 * totalDuration / 1000;
+      const frames = 20 * totalDuration / 1000;
       
       let promises = [];
       d3.range(frames).forEach(function(f, i) {
@@ -104,18 +104,18 @@ export default class LargeDataLineFactory {
             addFrame((f) / frames * totalDuration, resolve1);
         }))
       })
-      console.log(cht)
-      if (cht.isLastFor) {
-        console.log("!")
-        const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
-        d3.range(lastSceneFrames).forEach(function(f, i) {
-          promises.push(
-            new Promise(function(resolve1, reject) {
-              addFrame(totalDuration, resolve1);
-            })
-          );
-        });
-      }
+      // console.log(cht)
+      // if (cht.isLastFor) {
+      //   console.log("!")
+      //   const lastSceneFrames = (cht.lastFor || 2000) / 1000 * 30;
+      //   d3.range(lastSceneFrames).forEach(function(f, i) {
+      //     promises.push(
+      //       new Promise(function(resolve1, reject) {
+      //         addFrame(totalDuration, resolve1);
+      //       })
+      //     );
+      //   });
+      // }
 
 
       Promise.all(promises).then(function(results) {

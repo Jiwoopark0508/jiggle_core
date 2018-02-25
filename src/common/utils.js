@@ -104,7 +104,6 @@ export function floor(num, digit = 1) {
 }
 
 export function refineXAxis(arr, numTick = 4) {
-  console.log(arr)
   let ret = [];
   let firstDate = arr[0];
   let lastDate = arr[arr.length - 1];
@@ -202,20 +201,20 @@ export function processChartConfig(chartList) {
     yTickValues,
     xTickValues,
     annotations,
-    // ...skeleton,
-    global_margin: {
-      top: 40,
-      left: 60,
-      right: 60,
-      bottom: 40
-    },
-    height_header: 115,
-    height_body: 320,
-    height_footer: 60,
-    graph_margin: {
-      left: 160,
-      right: 160
-    },
+    ...skeleton,
+    // global_margin: {
+    //   top: 40,
+    //   left: 60,
+    //   right: 60,
+    //   bottom: 40
+    // },
+    // height_header: 115,
+    // height_body: 320,
+    // height_footer: 60,
+    // graph_margin: {
+    //   left: 160,
+    //   right: 160
+    // },
     processedData,
     graph_colors: chartConfigs.graph_colors
   };

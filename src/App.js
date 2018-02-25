@@ -5,11 +5,11 @@ import Workspace from "./Workspace";
 import { cht0, cht1, cht2 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
-import { dummie } from "./data/line_dummy10";
+import { dummie } from "./data/line_dummy";
 import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
-  rawData: dummie.slice(0, 2),
+  rawData: dummie.slice(0, 3),
   duration: 750,
   title: "최근 3년간 한국항공우주 주가 추이",
   subtitle: "(단위: 원)",
@@ -25,24 +25,11 @@ const chart1 = {
     left: 60,
     right: 60
   },
-  label: [
-    {
-      row: 20,
-      col: 1,
-      comment: "감사원, 원가부풀리기 감사결과 발표"
-    },
-    {
-      row: 50,
-      col: 1,
-      comment: "서울중앙지검, 본사, 서울사무소 압수수색"
-    },
-    { row: 100, col: 1, comment: "분식회계 의혹 수사" }
-  ],
   ...LIGHT,
   graph_colors: GRAPH_COLOR2
 };
 const chart2 = {
-  rawData: dummie.slice(0, 100),
+  rawData: dummie.slice(0, 30),
   duration: 750,
   title: "주요 금융그룹 충당금 주요 금융그룹",
   subtitle: "이것은 1부제입니다",
@@ -58,12 +45,11 @@ const chart2 = {
     left: 60,
     right: 60
   },
-  label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
   graph_colors: GRAPH_COLOR2
 };
 const chart3 = {
-  rawData: dummie.slice(0, 250),
+  rawData: dummie,
   duration: 1000,
   title: "주요 금융그룹 충당금 주요 금융그룹",
   subtitle: "이것은 1부제입니다",
@@ -79,30 +65,8 @@ const chart3 = {
     left: 60,
     right: 60
   },
-  label: [{ row: 5, col: 1, comment: "asf" }],
   ...LIGHT,
   graph_colors: GRAPH_COLOR
-};
-const chart4 = {
-  rawData: dummie,
-  duration: 500,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 750,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
-  },
-  label: [{ row: 5, col: 1, comment: "asf" }],
-  ...LIGHT,
-  graph_colors: GRAPH_COLOR2
 };
 
 class App extends Component {
@@ -174,7 +138,7 @@ class App extends Component {
           <Workspace
             width="1024"
             height="768"
-            charts={[chart1, chart2, chart4]}
+            charts={[chart1, chart2, chart3]}
           />
           <div id="gif" />
         </div>

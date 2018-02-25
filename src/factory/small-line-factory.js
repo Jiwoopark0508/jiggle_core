@@ -13,7 +13,7 @@ export default class SmallDataLineFactory {
     const renderer = (svgElement, chart, images) => {
       console.log(chart)
       let line = this._drawStaticChart(svgElement, chart, images)
-      return line._self
+      return line
     }
     return renderer;
   }

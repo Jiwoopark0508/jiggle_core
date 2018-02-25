@@ -168,7 +168,6 @@ export default class JiggleLine {
     }
     _graph(chartConfig, processedData, labels) {
         let lines = processedData.map((d, i) => {
-            console.log(chartConfig.graph_colors)
             return (
                 React.cloneElement(this.lineType,
                     {
@@ -290,31 +289,12 @@ export default class JiggleLine {
             chartConfig = util.processChartConfig(chart)
         }
         return (
-            <g
-                className="total"
-                y={chartConfig.global_margin.top}
-                x={chartConfig.global_margin.left} 
-                ref={(node) => {this.gParent = node}}>
-                <rect
-                    x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
-                    width={chartConfig.width_svg}
-                    height={chartConfig.height_svg}
-                    fill={chartConfig.backgroundColor}/>        
-                {this._header(chartConfig)}
-                {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
-                {this._footer(chartConfig)}
-            </g>
-        )
-    }
-
-    renderTransitionLine(chartList) {
-        const chartConfig = util.processChartConfig(chartList)
-        return (
             <Group
                 className="total"
                 top={chartConfig.global_margin.top}
                 left={chartConfig.global_margin.left} 
-                innerRef={(node) => this.domNode = node}>
+                innerRef={(node) => {this.gParent = node}}
+            >
                 <rect
                     x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
                     width={chartConfig.width_svg}
@@ -326,4 +306,24 @@ export default class JiggleLine {
             </Group>
         )
     }
+
+    // renderTransitionLine(chartList) {
+    //     const chartConfig = util.processChartConfig(chartList)
+    //     return (
+    //         <Group
+    //             className="total"
+    //             top={chartConfig.global_margin.top}
+    //             left={chartConfig.global_margin.left} 
+    //             innerRef={(node) => this.domNode = node}>
+    //             <rect
+    //                 x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top} 
+    //                 width={chartConfig.width_svg}
+    //                 height={chartConfig.height_svg}
+    //                 fill={chartConfig.backgroundColor}/>        
+    //             {this._header(chartConfig)}
+    //             {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
+    //             {this._footer(chartConfig)}
+    //         </Group>
+    //     )
+    // }
 }
