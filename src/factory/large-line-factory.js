@@ -41,7 +41,6 @@ export default class LargeDataLineFactory {
   }
 
   _drawTransitionChart(svgElement, chartConfigList, images) {
-    console.log(chartConfigList)
     // this function draw transition between two chart configs
     d3.select(svgElement)
         .attr("width", chartConfigList[0].width_svg)

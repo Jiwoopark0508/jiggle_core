@@ -27,6 +27,7 @@ export default class SmallDataLineFactory {
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart);
     line_instance.drawGlyphLabel();
+    
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line, svgElement);
     return jiggle_line;
@@ -48,6 +49,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
+    console.log(jiggle_line_transition)
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line_transition, svgElement);
 

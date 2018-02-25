@@ -18,6 +18,7 @@ import { getChildG } from "./common/utils";
 export default class Workspace extends React.Component {
   constructor(props) {
     super(props);
+    this.click = this.click.bind(this)
   }
 
   componentDidMount() {
@@ -128,7 +129,7 @@ export default class Workspace extends React.Component {
     }
 
     if (flag === "jiwoo") {
-      const factory = new LargeDataLineFactory();
+      const factory = new SmallDataLineFactory();
       const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -158,6 +159,12 @@ export default class Workspace extends React.Component {
       // );
     }
   }
+  click() {
+    console.log("!")
+    const factory = new SmallDataLineFactory();
+    const renderer = factory.renderTransition()
+    renderer(document.getElementsByTagName("svg")[0], [...this.props.charts].slice(0, 2), kai) 
+  }
 
   render() {
     return (
@@ -168,6 +175,7 @@ export default class Workspace extends React.Component {
           // transform="translate(40, 60)"
           ref={node => (this.node = node)}
         />
+        <button onClick={this.click}>click</button>
       </div>
     );
   }
