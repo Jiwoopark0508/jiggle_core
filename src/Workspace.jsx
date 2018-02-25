@@ -29,14 +29,14 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    // flag = "Transition";
+    flag = "Transition";
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    flag = "jiwoo";
+    // flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -125,7 +125,6 @@ export default class Workspace extends React.Component {
       );
     }
 
-
     if (flag === "jiwoo") {
       const factory = new LargeDataLineFactory();
       const gifDiv = document.getElementById("gif");
@@ -144,7 +143,7 @@ export default class Workspace extends React.Component {
       factory.recordTransition(
         this.node,
         [...props.charts],
-        onProcess, 
+        onProcess,
         onFinished
       );
     }
@@ -153,11 +152,12 @@ export default class Workspace extends React.Component {
   render() {
     return (
       <div>
-        <svg 
-          width = "1080"
-          height= "600"
+        <svg
+          width="1080"
+          height="600"
           // transform="translate(40, 60)"
-          ref={node => (this.node = node)} />
+          ref={node => (this.node = node)}
+        />
       </div>
     );
   }

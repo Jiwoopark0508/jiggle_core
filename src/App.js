@@ -25,7 +25,7 @@ const chart1 = {
     left: 60,
     right: 60
   },
-  theme:{...LIGHT},
+  theme: { ...LIGHT },
   graph_colors: GRAPH_COLOR
 };
 const chart2 = {
@@ -45,7 +45,7 @@ const chart2 = {
     left: 60,
     right: 60
   },
-  theme : {
+  theme: {
     ...LIGHT
   },
   graph_colors: GRAPH_COLOR2
@@ -76,7 +76,8 @@ class App extends Component {
     let flag;
     // flag = "horizontal";
     // flag = "group";
-    flag = "jiwoo"
+    flag = "single";
+    // flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {
@@ -133,7 +134,6 @@ class App extends Component {
     //   </div>
     // );
 
- 
     if (flag === "jiwoo") {
       return (
         <div>
