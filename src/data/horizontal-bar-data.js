@@ -22,10 +22,20 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
-const id = 3;
+const id = 4;
+const graph_colors = ["#fff", "#000"];
+const label = [
+  {
+    row: 1,
+    col: 1,
+    comment: "hi"
+  }
+];
 
 export const hcht0 = {
   id,
+  label,
+  // graph_colors,
   rawData: arr0,
   duration: 0,
   delay: 0,
@@ -39,6 +49,8 @@ export const hcht0 = {
 
 export const hcht1 = {
   id,
+  label,
+  // graph_colors,
   rawData: arr1,
   duration: 1500,
   delay: 2000,

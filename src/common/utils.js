@@ -1,6 +1,6 @@
 import * as d3 from "d3";
-import { skeleton, GRAPH_COLOR } from '../common/constant'
-import { lineParser, access_gen } from '../parser/line-parser'
+import { skeleton, GRAPH_COLOR } from "./constant";
+import { lineParser, access_gen } from "../parser/line-parser";
 import moment from "moment";
 import _ from "lodash";
 
@@ -127,79 +127,100 @@ export function refineYAxis(arr, numTick = 4) {
 }
 
 function getFormat(arr) {
-  let firstElem = arr[0]
-  let lastElem = arr[arr.length - 1]
-  lastElem.diff(firstElem)
+  let firstElem = arr[0];
+  let lastElem = arr[arr.length - 1];
+  lastElem.diff(firstElem);
 }
 
-
 function getChartConfigs(chartList) {
-  return chartList[0]
+  return chartList[0];
 }
 
 export function processChartConfig(chartList) {
-  let parsedResult = lineParser(chartList)
-  let processedData = parsedResult.result
+  let parsedResult = lineParser(chartList);
+  let processedData = parsedResult.result;
 
-  let flatten_data = processedData.reduce((rec, d) => {
-      return rec.concat(d)
-  }, []).reduce((rec, d) => {
-      return rec.concat(d)
-  }, [])
-  let accessors = parsedResult.accessors
-  let header = parsedResult.header
-  let annotations = parsedResult.annotations
-  
-  const chartConfigs = getChartConfigs(chartList)
-  const margin = skeleton.global_margin
-  const width_g_total = chartConfigs.width_svg - margin.left - margin.right
-  const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom 
+  let flatten_data = processedData
+    .reduce((rec, d) => {
+      return rec.concat(d);
+    }, [])
+    .reduce((rec, d) => {
+      return rec.concat(d);
+    }, []);
+  let accessors = parsedResult.accessors;
+  let header = parsedResult.header;
+  let annotations = parsedResult.annotations;
 
-  const xMax = chartConfigs.width_svg - margin.left - margin.right - skeleton.graph_margin.left - skeleton.graph_margin.right
-  const yMax = skeleton.height_body
+  const chartConfigs = getChartConfigs(chartList);
+  const margin = skeleton.global_margin;
+  const width_g_total = chartConfigs.width_svg - margin.left - margin.right;
+  const height_g_total = chartConfigs.height_svg - margin.top - margin.bottom;
 
-  const x = accessors[0]
-  let flattenY = []
+  const xMax =
+    chartConfigs.width_svg -
+    margin.left -
+    margin.right -
+    skeleton.graph_margin.left -
+    skeleton.graph_margin.right;
+  const yMax = skeleton.height_body;
+
+  const x = accessors[0];
+  let flattenY = [];
   accessors.reduce((rec, d) => {
-      return rec.concat(d)
-  }, [])
+    return rec.concat(d);
+  }, []);
   accessors.forEach((f, i) => {
-      if (i < 1) return;
-      flattenY = flattenY.concat(d3.extent(flatten_data, f))
-  })
+    if (i < 1) return;
+    flattenY = flattenY.concat(d3.extent(flatten_data, f));
+  });
 
-  let xScaleDomain = d3.extent(flatten_data, x)
-  let yScaleDomain = d3.extent(refineYAxis(flattenY.slice()))
+  let xScaleDomain = d3.extent(flatten_data, x);
+  let yScaleDomain = d3.extent(refineYAxis(flattenY.slice()));
 
-  const xScale = d3.scaleTime()
-      .range([0, xMax])
-      .domain(xScaleDomain)
-      
-  const yScale = d3.scaleLinear()
-      .range([yMax, 0])
-      .domain(yScaleDomain)
-  
-  const yTickValues = refineYAxis(flattenY.slice())
-  const xTickValues = refineXAxis(xScaleDomain.slice())
-  
+  const xScale = d3
+    .scaleTime()
+    .range([0, xMax])
+    .domain(xScaleDomain);
+
+  const yScale = d3
+    .scaleLinear()
+    .range([yMax, 0])
+    .domain(yScaleDomain);
+
+  const yTickValues = refineYAxis(flattenY.slice());
+  const xTickValues = refineXAxis(xScaleDomain.slice());
+
   const scales = {
-      xScale,
-      yScale,
-      yMax,
-      xMax,
-      header,
-      accessors,
-      x,
-      chartList,
-      yTickValues,
-      xTickValues,
-      annotations,
-      ...skeleton,
-      processedData,
-      graph_colors : chartConfigs.graph_colors
-  }
-  const chartConfig = Object.assign({}, chartConfigs, scales)
-  return chartConfig
+    xScale,
+    yScale,
+    yMax,
+    xMax,
+    header,
+    accessors,
+    x,
+    chartList,
+    yTickValues,
+    xTickValues,
+    annotations,
+    // ...skeleton,
+    global_margin: {
+      top: 40,
+      left: 60,
+      right: 60,
+      bottom: 40
+    },
+    height_header: 115,
+    height_body: 320,
+    height_footer: 60,
+    graph_margin: {
+      left: 160,
+      right: 160
+    },
+    processedData,
+    graph_colors: chartConfigs.graph_colors
+  };
+  const chartConfig = Object.assign({}, chartConfigs, scales);
+  return chartConfig;
 }
 
 export function formatDate(date, format) {
@@ -207,4 +228,3 @@ export function formatDate(date, format) {
     .format(format)
     .split(" ");
 }
-

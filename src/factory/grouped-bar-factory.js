@@ -27,6 +27,7 @@ export default class GroupedBarFactory extends CommonFactory {
     gYAxis.call(that._drawVerticalYAxis, chart);
     gTitle.call(that._drawTitle, chart);
     gXAxis.call(that._drawXLine, chart);
+    gYAxis.call(that._drawYLine, chart);
     gSubtitle.call(that._drawSubtitle, chart);
     const graphRect = gGraph
       .selectAll("g.graphRect")
@@ -54,7 +55,6 @@ export default class GroupedBarFactory extends CommonFactory {
       })
       .attr("width", chart.x1.bandwidth())
       .attr("height", function(d) {
-        const hi = chart.height_g_body - chart.yScale(d.value);
         return chart.height_g_body - chart.yScale(d.value);
       })
       .attr("fill", function(d) {
@@ -67,9 +67,21 @@ export default class GroupedBarFactory extends CommonFactory {
       });
     graphRect
       .selectAll("text.graphText")
-      .data(function(d) {
+      .data(function(d, i) {
         return chart.keys.map(function(key) {
-          return { key: key, value: d[key] };
+          let result = {
+            key,
+            value: d[key]
+          };
+          if (chart.label) {
+            const col = chart.keys.indexOf(key);
+            chart.label.forEach(l => {
+              if (l.row === i + 1 && l.col === col + 1) {
+                result._label = l.comment;
+              }
+            });
+          }
+          return result;
         });
       })
       .enter()
@@ -82,7 +94,9 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("dx", chart.x1.bandwidth() / 2)
       .attr("dy", "-0.5em")
       .attr("text-anchor", "middle")
-      .text(d => d.value);
+      .text((d, i) => {
+        return d._label ? d._label : d.value;
+      });
 
     // g
     //   .append("g")
@@ -144,6 +158,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .append("text")
       .attr("dx", 18)
       .attr("dy", 12)
+      .attr("fill", chart.theme.colorPrimary)
       .style("font-weight", 700)
       .text(`단위: ${chart.unit}`);
 
@@ -171,6 +186,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("y", 9.5)
       .attr("dx", -5)
       .attr("dy", "0.32em")
+      .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return d;
       });
