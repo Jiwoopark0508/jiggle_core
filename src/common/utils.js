@@ -141,7 +141,7 @@ function getChartConfigs(chartList) {
 }
 
 export function processChartConfig(chartList) {
-  console.log(chartList[chartList.length - 1].rawData)
+
   let parsedResult = lineParser(chartList);
   let processedData = parsedResult.result;
   let flatten_data = processedData
@@ -203,7 +203,7 @@ export function processChartConfig(chartList) {
     .scaleLinear()
     .range([yMax, 0])
     .domain(yScaleDomain);
-  console.log(xTickValues.ret)
+
   const scales = {
     xScale,
     yScale,

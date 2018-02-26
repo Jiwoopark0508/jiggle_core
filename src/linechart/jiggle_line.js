@@ -205,7 +205,7 @@ export default class JiggleLine {
         );
     }
     _graph(chartConfig, processedData, labels) {
-        
+        console.log(chartConfig)
         let lines = processedData.map((d, i) => {
             return React.cloneElement(this.lineType, {
                 key: i,
@@ -231,7 +231,7 @@ export default class JiggleLine {
                     cy={chartConfig.yScale(d.y)}
                     dx={d.dx}
                     dy={d.dy}
-                    stroke={chartConfig.colorSecondary}
+                    stroke={chartConfig.theme.colorSecondary}
                     note={{ title: d.x, comment: d.comment }}
                 />
             );
@@ -320,7 +320,6 @@ export default class JiggleLine {
             chart = [chart];
             chartConfig = util.processChartConfig(chart);
         }
-        console.log(chartConfig);
         return (
             <Group
                 className="total"
@@ -347,24 +346,4 @@ export default class JiggleLine {
             </Group>
         );
     }
-
-    // renderTransitionLine(chartList) {
-    //     const chartConfig = util.processChartConfig(chartList)
-    //     return (
-    //         <Group
-    //             className="total"
-    //             top={chartConfig.global_margin.top}
-    //             left={chartConfig.global_margin.left}
-    //             innerRef={(node) => this.domNode = node}>
-    //             <rect
-    //                 x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top}
-    //                 width={chartConfig.width_svg}
-    //                 height={chartConfig.height_svg}
-    //                 fill={chartConfig.backgroundColor}/>
-    //             {this._header(chartConfig)}
-    //             {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
-    //             {this._footer(chartConfig)}
-    //         </Group>
-    //     )
-    // }
 }

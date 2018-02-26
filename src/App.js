@@ -26,6 +26,7 @@ const chart1 = {
     right: 60
   },
   theme: { ...DARK },
+  label : [{row:3, col:1, comment:"제발..."}], 
   graph_colors: GRAPH_COLOR
 };
 const chart2 = {
@@ -75,9 +76,9 @@ class App extends Component {
   render() {
     let flag;
     // flag = "horizontal";
-    flag = "group";
+    // flag = "group";
     // flag = "single";
-    // flag = "jiwoo"
+    flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {
@@ -140,7 +141,7 @@ class App extends Component {
           <Workspace
             width="1024"
             height="768"
-            charts={[chart1, chart3]}
+            charts={[chart1, chart2, chart3]}
           />
           <div id="gif" />
         </div>
