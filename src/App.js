@@ -5,7 +5,7 @@ import Workspace from "./Workspace";
 import { cht0, cht1, cht2, cht3 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
-import { dummie } from "./data/line_dummy9";
+import { dummie } from "./data/line_dummy2";
 import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
@@ -26,13 +26,13 @@ const chart1 = {
     right: 60
   },
   theme: { ...DARK },
-  label : [{row:3, col:1, comment:"제발..."},
-  {row:20, col:1, comment:"제발..."}], 
+  label : [{row:2, col:1, comment:"제발..."},
+  {row:3, col:1, comment:"제발..."}], 
   graph_colors: GRAPH_COLOR,
   unit : "원"
 };
 const chart2 = {
-  rawData: dummie.slice(0, 20),
+  rawData: dummie.slice(0, 4),
   duration: 750,
   title: "주요 금융그룹 충당금 주요 금융그룹",
   subtitle: "이것은 1부제입니다",

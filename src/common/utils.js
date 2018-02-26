@@ -183,9 +183,9 @@ export function processChartConfig(chartList) {
 
   let xTickValues = refineXAxis(xScaleDomain.slice());
   let yTickValues = refineYAxis(flattenY.slice());
-  
+  let xTickResult = []
   let xScale = d3.scaleTime().range([0, xMax]).domain(xScaleDomain) 
-
+  let isTime = true
   if (!xTickValues.valid) {
     xScaleDomain = _.map(
       chartList[chartList.length - 1].rawData.slice(1),
@@ -195,8 +195,9 @@ export function processChartConfig(chartList) {
     )
     let y = _.range(0, xMax + 1, xMax / (xScaleDomain.length - 1))
     let x = xScaleDomain
-    xTickValues = xScaleDomain
+    xTickValues.ret = xScaleDomain
     xScale = d3.scaleOrdinal().range(y).domain(x)
+    isTime = false
   }
 
   const yScale = d3
@@ -229,6 +230,7 @@ export function processChartConfig(chartList) {
       left: 160,
       right: 160
     },
+    isTime,
     processedData,
     graph_colors: chartConfigs.graph_colors
   };
