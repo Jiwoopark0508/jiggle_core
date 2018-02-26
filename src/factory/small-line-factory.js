@@ -21,7 +21,8 @@ export default class SmallDataLineFactory {
     // this function draw transition between two chart configs
     d3
       .select(svgElement)
-      .attr("viewbox", `0 0 ${chart.width_svg} ${chart.height_svg}`)
+      .attr("viewBox", `0 0 ${chart[0].width_svg} ${chart[0].height_svg}`)
+
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart);
@@ -32,7 +33,7 @@ export default class SmallDataLineFactory {
     return jiggle_line;
   }
   renderTransition() {
-    const renderer = async (svgElement, chartConfigList, images) => {
+    const renderer = (svgElement, chartConfigList, images) => {
       this._drawTransitionChart(svgElement, chartConfigList, images);
       this.lineInstance.playWholeLineTransition(undefined, undefined, false);
     };
@@ -43,12 +44,10 @@ export default class SmallDataLineFactory {
     // this function draw transition between two chart configs
     d3
       .select(svgElement)
-      .attr("viewbox", `0 0 ${chartConfigList[0].width_svg} ${chartConfigList[0].height_svg}`)
-      // .attr("height", chartConfigList[0].height_svg);
+      .attr("viewBox", `0 0 ${chartConfigList[0].width_svg} ${chartConfigList[0].height_svg}`)
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
-    console.log(jiggle_line_transition)
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line_transition, svgElement);
 

@@ -102,7 +102,7 @@ export default class JiggleLine {
         }
     }
     progressBarTransition(idx, partial) {
-        console.log(this.chartList[idx]);
+        console.log(this.chartList)
         if (!this.chartList[idx]) return;
         const WIDTH = 1080;
         let delay = this.chartList[idx].delay;
@@ -205,9 +205,9 @@ export default class JiggleLine {
                 top={skeleton.height_header}
                 left={skeleton.graph_margin.left}
             >
-                {axis}
                 {background}
                 {image}
+                {axis}
                 {graph}
             </Group>
         );
@@ -238,6 +238,7 @@ export default class JiggleLine {
         });
         let annotations = labels.map((d, i) => {
             if (!chartConfig.isTime) d.x = d.x._i
+            console.log(chartConfig)
             return (
                 <JiggleLabel
                     key={`annotation-${i}`}
@@ -264,7 +265,7 @@ export default class JiggleLine {
                 <StripeRows
                     scale={chartConfig.yScale}
                     width={chartConfig.xMax}
-                    fill={chartConfig.backgroundColor}
+                    fill={chartConfig.theme.backgroundColor}
                     tickValues={chartConfig.yTickValues}
                 />
             </Group>
@@ -277,7 +278,7 @@ export default class JiggleLine {
                 <AxisBottom
                     scale={chartConfig.xScale}
                     top={chartConfig.yMax}
-                    stroke={chartConfig.colorSecondary}
+                    stroke={chartConfig.theme.colorSecondary}
                     hideTicks={true}
                     numTicks={100}
                     tickLabelProps={(tickValue, index) => ({
