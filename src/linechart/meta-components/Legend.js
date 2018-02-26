@@ -18,7 +18,7 @@ export default function Legend({
                 fontWeight={700}
                 fill={configs.theme.colorPrimary}
             >
-                단위
+                단위 ({configs.unit})
             </Text>
             <Group>
                 {headers.map((d, i) => {

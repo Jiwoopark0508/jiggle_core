@@ -136,20 +136,35 @@ export default class JiggleLine {
     }
     labelTransition(idx, partial) {
         if (!this.chartList[idx]) return;
-        let elem = this.annotationList[idx];
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
-        d3
-            .select(elem)
-            .transition()
-            .duration(duration)
-            .delay(delay)
-            .attr("transform", "scale(1)")
-            .on("end", () => {
-                if (!partial) {
-                    this.labelTransition(idx + 1, !PARTIAL);
-                }
-            });
+        if (!partial) {
+            let elem = this.annotationList[idx];
+            d3
+                .select(elem)
+                .transition()
+                .duration(duration)
+                .delay(delay)
+                .attr("transform", "scale(1)")
+                .on("end", () => {
+                    if (!partial) {
+                        this.labelTransition(idx + 1, !PARTIAL);
+                    }
+                });
+        } else {
+            let elems = this.annotationList.slice(0, idx)
+            elems.forEach((d, i) => {
+                d3.select(d)
+                    .attr("transform", "scale(1)")
+            })
+            let elem = this.annotationList[idx]
+            d3
+                .select(elem)
+                .transition()
+                .duration(duration)
+                .delay(delay)
+                .attr("transform", "scale(1)")
+        }
     }
     getChartConfigs(chartList) {
         return chartList[0];
