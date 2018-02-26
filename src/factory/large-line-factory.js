@@ -103,6 +103,7 @@ export default class LargeDataLineFactory {
 
       d3.range(frames).forEach(function(f, i) {
         chain = chain.then(() => {
+          if (idx == 1 && i < 2) return;
           return new Promise(function(resolve1, reject) {
             addFrame((f) / frames * totalDuration, resolve1);
           })
