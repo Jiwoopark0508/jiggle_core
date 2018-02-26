@@ -33,7 +33,7 @@ export default class SmallDataLineFactory {
     return jiggle_line;
   }
   renderTransition() {
-    const renderer = async (svgElement, chartConfigList, images) => {
+    const renderer = (svgElement, chartConfigList, images) => {
       this._drawTransitionChart(svgElement, chartConfigList, images);
       this.lineInstance.playWholeLineTransition(undefined, undefined, false);
     };

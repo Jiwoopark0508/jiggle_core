@@ -19,7 +19,6 @@ export default class LargeDataLineFactory {
   
   _drawStaticChart(svgElement, chart, images) {
     // this function draw transition between two chart configs
-    console.log(chart)
     d3
       .select(svgElement)
       .attr("viewBox", `0 0 ${chart[0].width_svg} ${chart[0].height_svg}`)

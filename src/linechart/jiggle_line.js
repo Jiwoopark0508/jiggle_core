@@ -189,9 +189,9 @@ export default class JiggleLine {
                 top={skeleton.height_header}
                 left={skeleton.graph_margin.left}
             >
-                {axis}
                 {background}
                 {image}
+                {axis}
                 {graph}
             </Group>
         );
