@@ -2,14 +2,15 @@ export function setSkeleton(chart) {
   const factor_primary_fontsize = 0.07;
   const factor_secondary_fontsize = 0.045;
   const factor_tertiary_fontsize = 0.035;
-  const factor_space_between_lines = 1.5;
+  const factor_quaternary_fontsize = 0.029;
+  const factor_space_between_lines = 1.7;
   const factor_margin_body = 2;
 
   chart.width_svg = chart.width_svg || 750;
   chart.height_svg = chart.height_svg || 433;
   chart.margins = chart.margins || {
-    top: chart.height_svg * 0.04,
-    bottom: chart.height_svg * 0.04,
+    top: chart.height_svg * 0.07,
+    bottom: chart.height_svg * 0.07,
     left: chart.width_svg * 0.053,
     right: chart.width_svg * 0.053
   };
@@ -35,11 +36,12 @@ export function setSkeleton(chart) {
   chart.fontsize_madeBy =
     chart.fontsize_madeBy || chart.height_g_total * factor_tertiary_fontsize;
   chart.fontsize_yAxis =
-    chart.fontsize_yAxis || chart.height_g_total * factor_tertiary_fontsize;
+    chart.fontsize_yAxis || chart.height_g_total * factor_quaternary_fontsize;
   chart.fontsize_xAxis =
-    chart.fontsize_xAxis || chart.height_g_total * factor_tertiary_fontsize;
+    chart.fontsize_xAxis || chart.height_g_total * factor_quaternary_fontsize;
   chart.fontsize_graphText =
-    chart.fontsize_graphText || chart.height_g_total * factor_tertiary_fontsize;
+    chart.fontsize_graphText ||
+    chart.height_g_total * factor_secondary_fontsize;
 
   // chart.y_g_titleBox = chart.
   chart.y_g_title = chart.fontsize_title;
@@ -70,7 +72,8 @@ export function setSkeleton(chart) {
     colorSecondary: "#4B4949",
     colorTernary: "#7F7F7F",
     colorStripe1: "#e6e7e8",
-    colorStripe2: "#f3f4f5"
+    colorStripe2: "#f3f4f5",
+    colorAxis: "#6d6d6d"
   };
   chart.backgroundColor = chart.backgroundColor || chart.theme.backgroundColor;
   chart.fontFamily = "Spoqa Hans";
@@ -88,12 +91,13 @@ export function setSkeleton(chart) {
     chart.fontcolor_reference || chart.theme.colorTernary;
   chart.fontcolor_madeBy = chart.fontcolor_madeBy || chart.theme.colorTernary;
   chart.fontcolor_tickText =
-    chart.fontcolor_tickText || chart.theme.colorTernary;
+    chart.fontcolor_tickText || chart.theme.colorSecondary;
 
   // chart.colorStripe1 = chart.colorStripe1 || "#F0F0F0";
   // chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
   chart.colorStripe1 = chart.colorStripe1 || chart.theme.colorStripe1;
   chart.colorStripe2 = chart.colorStripe2 || chart.theme.colorStripe2;
+  chart.colorAxis = chart.colorAxis || chart.theme.colorAxis;
   chart.colorBI = chart.colorBI || "#3182bd";
   // chart.color = chart.color || "#ADADAD";
   // chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
