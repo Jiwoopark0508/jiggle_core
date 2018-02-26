@@ -126,16 +126,19 @@ const DARK = {
   colorTernary: "#ffffff",
   backgroundColor: "#2c2d2e",
   colorStripe1: "#333435",
-  colorStripe2: "#2c2d2e"
+  colorStripe2: "#2c2d2e",
+  colorAxis: "#6d6d6d"
 };
-// const LIGHT = {
-//   colorPrimary: "#000000",
-//   colorSecondary: "#4B4949",
-//   colorTernary: "#7f7f7f",
-//   backgroundColor: "#f3f4f5",
-//   colorStripe1: "#e6e7e8",
-//   colorStripe2: "#f3f4f5"
-// };
+const LIGHT = {
+  colorPrimary: "#000000",
+  colorSecondary: "#4B4949",
+  colorTernary: "#7f7f7f",
+  backgroundColor: "#f3f4f5",
+  colorStripe1: "#e6e7e8",
+  colorStripe2: "#f3f4f5",
+  colorAxis: "#6d6d6d"
+};
+const theme = LIGHT;
 
 const label = [
   {
@@ -146,14 +149,14 @@ const label = [
   {
     row: 2,
     col: 2,
-    comment: "fucx"
+    comment: "hi2"
   }
 ];
 
 export const gcht0 = {
   id,
   label,
-  theme: DARK,
+  theme,
   // graph_colors,
   rawData: arr0,
   title: "주요 금융그룹 충당금",
@@ -166,7 +169,7 @@ export const gcht0 = {
 export const gcht1 = {
   id,
   label,
-  theme: DARK,
+  theme,
   // graph_colors,
   rawData: arr1,
   title: "주요 금융그룹 충당금",

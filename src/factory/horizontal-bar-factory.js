@@ -43,6 +43,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .append("text")
       .attr("class", "graphText")
       .attr("font-size", chart.fontsize_graphText + "px")
+      .attr("font-weight", 700)
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.x0(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
@@ -155,6 +156,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .delay(chart[chart.delayType])
       // .delay(chart.accumedDelay)
       .attr("font-size", chart.fontsize_graphText + "px")
+      .attr("font-weight", 700)
       .attr("fill", chart.fontcolor_graphText)
       .attr("x", d => chart.x0(d[chart.xLabel]))
       .attr("y", d => chart.yScale(d[chart.yLabel]))
@@ -183,6 +185,7 @@ export default class HorizontalBarFactory extends CommonFactory {
     legend
       .append("text")
       .attr("font-size", chart.fontsize_unit)
+      .attr("font-weight", 700)
       // .attr("y", 9.5)
       // .attr("dx", -5)
       // .attr("dy", "0.32em")

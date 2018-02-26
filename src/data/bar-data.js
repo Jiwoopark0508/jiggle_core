@@ -68,21 +68,23 @@ const DARK = {
   colorStripe1: "#333435",
   colorStripe2: "#2c2d2e"
 };
-// const LIGHT = {
-//   colorPrimary: "#000000",
-//   colorSecondary: "#4B4949",
-//   colorTernary: "#7f7f7f",
-//   backgroundColor: "#f3f4f5",
-//   colorStripe1: "#e6e7e8",
-//   colorStripe2: "#f3f4f5"
-// };
+const LIGHT = {
+  colorPrimary: "#000000",
+  colorSecondary: "#4B4949",
+  colorTernary: "#7f7f7f",
+  backgroundColor: "#f3f4f5",
+  colorStripe1: "#e6e7e8",
+  colorStripe2: "#f3f4f5"
+};
+const theme = LIGHT;
+
 export const cht0 = {
   id,
   // graph_colors,
   // indexToFocus: [2],
   // colorToFocus,
   label,
-  theme: DARK,
+  theme,
   rawData: arr0,
   // rawData: arr0,
   // duration: 0,
@@ -100,7 +102,7 @@ export const cht1 = {
   // graph_colors,
   // colorToFocus,
   label,
-  theme: DARK,
+  theme,
   rawData: arr1,
   // rawData: arr1,
   duration: 1000,
@@ -116,7 +118,7 @@ export const cht1 = {
 export const cht2 = {
   id,
   label,
-  theme: DARK,
+  theme,
   rawData: arr2,
   duration: 1000,
   delay: 500,
@@ -131,7 +133,7 @@ export const cht2 = {
 export const cht3 = {
   id,
   label,
-  theme: DARK,
+  theme,
   rawData: arr3,
   duration: 1000,
   delay: 500,

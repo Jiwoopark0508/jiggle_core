@@ -22,7 +22,7 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
-const id = 4;
+const id = 3;
 // const graph_colors = ["#fff", "#000"];
 const label = [
   {

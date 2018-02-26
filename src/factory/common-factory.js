@@ -14,6 +14,7 @@ export default class CommonFactory {
     const renderer = (svgElement, charts, images) => {
       // let canvas = this._drawBI(this, svgElement, charts[0]);
       const canvas = this._drawChart(this, svgElement, charts[0], images);
+      // charts.forEach()
       charts.forEach((cht, i) => {
         if (i === 0) {
           cht.duration = 0;
@@ -22,7 +23,6 @@ export default class CommonFactory {
 
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
-        console.log(this._applyTransition);
         this._applyTransition(this, canvas, cht);
       });
     };
@@ -157,7 +157,7 @@ export default class CommonFactory {
     path
       .attr("d", line(data))
       // .attr("stroke", chart.colorBI)
-      .attr("stroke", chart.theme.colorSecondary)
+      .attr("stroke", chart.theme.colorAxis)
       .attr("stroke-width", "1");
     // .attr("fill", chart.theme.colorSecondary);
     const totalLength = path.node().getTotalLength();
@@ -190,7 +190,7 @@ export default class CommonFactory {
     path
       .attr("d", line(data))
       // .attr("stroke", chart.colorBI)
-      .attr("stroke", chart.theme.colorSecondary)
+      .attr("stroke", chart.theme.colorAxis)
       .attr("stroke-width", "1");
     // .attr("fill", "none");
     const totalLength = path.node().getTotalLength();
@@ -361,11 +361,7 @@ export default class CommonFactory {
     let gLegend = gHeader
       .append("g")
       .attr("class", "legendBox")
-      .attr(
-        "transform",
-        `translate(${chart.x_g_legend}, ${chart.y_g_title +
-          chart.y_g_subtitle})`
-      )
+      .attr("transform", `translate(${chart.x_g_legend}, ${chart.y_g_title})`)
       // .attr("transform", `translate(${chart.width_g_total}, 0)`)
       .style("text-anchor", "end");
 
