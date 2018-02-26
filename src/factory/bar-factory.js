@@ -202,7 +202,7 @@ export default class BarFactory extends CommonFactory {
     if (!chart.unit) return;
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("text-anchor", "end")
+      // .attr("text-anchor", "end")
       // .selectAll("g")
       // .data(chart.keys)
       // .enter()
@@ -217,12 +217,12 @@ export default class BarFactory extends CommonFactory {
     //   .attr("fill", chart.z);
     legend
       .append("text")
-      .attr("font-size", 15)
-      // .attr("x", chart.width_g_body - 24)
-      .attr("y", 9.5)
-      .attr("dx", -5)
-      .attr("dy", "0.32em")
+      .attr("font-size", chart.fontsize_unit)
+      // .attr("y", 9.5)
+      // .attr("dx", -5)
+      // .attr("dy", "0.32em")
       .attr("fill", chart.theme.colorPrimary)
+      // .style("text-anchor", "end")
       .text(function(d) {
         return `단위: ${chart.unit}`;
         // return d;

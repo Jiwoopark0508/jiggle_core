@@ -2,6 +2,17 @@
 import CommonFactory from "./common-factory";
 
 export default class GroupedBarFactory extends CommonFactory {
+  // renderTransition() {
+  //   const renderer = (svgElement, charts, images) => {
+  //     // let canvas = this._drawBI(this, svgElement, charts[0]);
+  //     const canvas = this._drawChart(this, svgElement, charts[0], images);
+  //       cht.accumedDelay =
+  //         cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
+  //       this._applyTransition(this, canvas, cht);
+  //     });
+  //   };
+  //   return renderer;
+  // }
   _drawChart(that, svgElement, chart, images) {
     let {
       svg,
@@ -29,20 +40,32 @@ export default class GroupedBarFactory extends CommonFactory {
     gXAxis.call(that._drawXLine, chart);
     gYAxis.call(that._drawYLine, chart);
     gSubtitle.call(that._drawSubtitle, chart);
-    const graphRect = gGraph
-      .selectAll("g.graphRect")
+    const graphG = gGraph
+      .selectAll("g.graphG")
       .data(chart.data)
       .enter()
       .append("g")
-      .attr("class", "graphRect")
+      .attr("class", "graphG")
       .attr("transform", function(d) {
         return `translate(${chart.x0(d[chart.xLabel])},0)`;
       });
-    graphRect
-      .selectAll("rect")
-      .data(function(d) {
+    graphG
+      .selectAll("rect.graphRect")
+      .data(function(d, i) {
         return chart.keys.map(function(key) {
-          return { key: key, value: d[key] };
+          let result = {
+            key,
+            value: d[key]
+          };
+          if (chart.label) {
+            const col = chart.keys.indexOf(key);
+            chart.label.forEach(l => {
+              if (l.row === i + 1 && l.col === col + 1) {
+                result._label = l.comment;
+              }
+            });
+          }
+          return result;
         });
       })
       .enter()
@@ -65,7 +88,7 @@ export default class GroupedBarFactory extends CommonFactory {
         return color;
         // return chart.z(d.key);
       });
-    graphRect
+    graphG
       .selectAll("text.graphText")
       .data(function(d, i) {
         return chart.keys.map(function(key) {
@@ -146,48 +169,57 @@ export default class GroupedBarFactory extends CommonFactory {
     };
   }
 
-  _drawLegend(g, chart) {
-    // let unit = g
-    //   .append("text")
-    //   .attr("");
+  _applyTransition(that, canvas, chart) {
+    console.log("called");
+    const graphRect = canvas.gGraph
+      .selectAll("g.graphRect")
+      .transition()
+      .duration(chart.duration)
+      .delay(0)
+      .attr("opacity", function(d, i) {
+        d._label === undefined ? 0.3 : 1;
+      });
+  }
 
-    // g.append("text").text(chart.unit);
+  _drawLegend(g, chart) {
     if (chart.unit !== undefined) {
       g
-        .attr("text-anchor", "end")
         .append("text")
-        .style("font-size", 13)
-        .attr("dx", 18)
-        .attr("dy", 12)
+        .style("font-size", chart.fontsize_unit)
+        // .attr("dx", 18)
+        // .attr("dy", 12)
         .attr("fill", chart.theme.colorPrimary)
         .style("font-weight", 700)
         .text(`단위: ${chart.unit}`);
     }
 
+    const sizeRect = 18;
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("text-anchor", "end")
+      // .attr("text-anchor", "end")
       .selectAll("g")
       .data(chart.keys)
       // .data(chart.keys.slice().reverse())
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return "translate(0," + (i + 1) * 20 + ")";
+        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + 2)})`;
+        // return "translate(0," + (i + 1) * (sizeRect + 2) + ")";
       });
     legend
       .append("rect")
       // .attr("x", chart.width_g_body - 19)
-      .attr("width", 19)
-      .attr("height", 19)
+      .attr("y", -sizeRect + 4)
+      .attr("width", sizeRect)
+      .attr("height", sizeRect)
       .attr("fill", chart.z);
     legend
       .append("text")
-      .style("font-size", 13)
+      .style("font-size", chart.fontsize_unit * 0.8)
       // .attr("x", chart.width_g_body - 24)
-      .attr("y", 9.5)
+      // .attr("y", 9.5)
       .attr("dx", -5)
-      .attr("dy", "0.32em")
+      // .attr("dy", "0.32em")
       .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return d;
