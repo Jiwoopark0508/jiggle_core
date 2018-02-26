@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { GRAPH_COLOR, GRAPH_COLOR2 } from "./common/constant";
 import Workspace from "./Workspace";
-import { cht0, cht1, cht2 } from "./data/bar-data";
+import { cht0, cht1, cht2, cht3 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
 import { dummie } from "./data/line_dummy13";
@@ -75,9 +75,9 @@ class App extends Component {
   render() {
     let flag;
     // flag = "horizontal";
-    // flag = "group";
+    flag = "group";
     // flag = "single";
-    flag = "jiwoo"
+    // flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {
@@ -103,7 +103,7 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
-          <Workspace charts={[cht0, cht1]} />
+          <Workspace charts={[cht0, cht1, cht2, cht3]} />
           <div id="gif" />
         </div>
       );
@@ -140,7 +140,7 @@ class App extends Component {
           <Workspace
             width="1024"
             height="768"
-            charts={[chart1, chart2, chart3]}
+            charts={[chart1, chart3]}
           />
           <div id="gif" />
         </div>

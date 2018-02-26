@@ -30,15 +30,15 @@ export default class Workspace extends React.Component {
     let flag;
     // flag = "Static";
     // flag = "Transition";
-    // flag = "Recodring";
+    // flag = "Recording";
 
-    // flag = "Grouped Static";
+    flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    flag = "jiwoo";
+    // flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -140,14 +140,16 @@ export default class Workspace extends React.Component {
       };
       // const renderer = factory.renderChart();
       // renderer(this.node, [...props.charts][2], kai);
-      const renderer = factory.renderTransition()
-      renderer(this.node, [...props.charts], kai)
-      // factory.recordTransition(
-      //   this.node,
-      //   [...props.charts],
-      //   onProcess, 
-      //   onFinished
-      // );
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess, 
+        onFinished,
+        kai
+      );
+
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
       // factory.recordTransition(
@@ -158,13 +160,19 @@ export default class Workspace extends React.Component {
       // );
     }
   }
+  // click() {
+  //   console.log("!")
+  //   const factory = new SmallDataLineFactory();
+  //   const renderer = factory.renderTransition()
+  //   renderer(document.getElementsByTagName("svg")[0], [...this.props.charts].slice(0, 2), kai) 
+  // }
 
   render() {
     return (
       <div>
         <svg
-          width="1080"
-          height="600"
+          width={600}
+          height={600 * 9 / 16}
           // transform="translate(40, 60)"
           ref={node => (this.node = node)}
         />

@@ -23,6 +23,15 @@ const arr2 = [
   ["Q5", ".50"]
 ];
 
+const arr3 = [
+  ["letter", "frequency"],
+  ["Q1", ".11"],
+  ["Q2", ".22"],
+  ["Q3", ".28"],
+  ["Q5", ".50"],
+  ["Q6", ".40"]
+];
+
 const tak = [["t", "v"], ["1", 2], ["3", 4], ["5", 6]];
 const tak2 = [["t", "v"], ["1", 2], ["3", 4], ["5", 6], ["7", 8]];
 
@@ -70,11 +79,11 @@ const DARK = {
 export const cht0 = {
   id,
   // graph_colors,
-  indexToFocus: [2],
+  // indexToFocus: [2],
   // colorToFocus,
   label,
   theme: DARK,
-  rawData: tak,
+  rawData: arr0,
   // rawData: arr0,
   // duration: 0,
   // delay: 0,
@@ -92,10 +101,10 @@ export const cht1 = {
   // colorToFocus,
   label,
   theme: DARK,
-  rawData: tak2,
+  rawData: arr1,
   // rawData: arr1,
-  // duration: 1000,
-  // delay: 500,
+  duration: 1000,
+  delay: 500,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
@@ -109,6 +118,21 @@ export const cht2 = {
   label,
   theme: DARK,
   rawData: arr2,
+  duration: 1000,
+  delay: 500,
+  unit: "%",
+  title: "주요 금융그룹 충당금",
+  subtitle: "부제는 여기에 위치합니다",
+  reference: "통계청",
+  madeBy: "강선미 기자",
+  numOfYAxisTicks: 5
+};
+
+export const cht3 = {
+  id,
+  label,
+  theme: DARK,
+  rawData: arr3,
   duration: 1000,
   delay: 500,
   unit: "%",
