@@ -129,7 +129,6 @@ export default function Axis({
           tickLabelFontSize,
           tickLabelPropsObj.fontSize || 0
         );
-
         return (
           <Group
             key={`vx-tick-${val}-${index}`}

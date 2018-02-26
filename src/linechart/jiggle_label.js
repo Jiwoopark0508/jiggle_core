@@ -53,7 +53,7 @@ export default function JiggleLabel({
           dx={dx}
           dy={dy}
           color={stroke}
-          note={{"title":moment(note.title).format("YYYY년MM월DD일"), "label":note.comment}}
+          note={{"title":note.comment}}
         />
       </Group>
   );

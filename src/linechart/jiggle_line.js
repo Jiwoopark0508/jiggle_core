@@ -220,7 +220,6 @@ export default class JiggleLine {
         );
     }
     _graph(chartConfig, processedData, labels) {
-        console.log(chartConfig)
         let lines = processedData.map((d, i) => {
             return React.cloneElement(this.lineType, {
                 key: i,
@@ -238,6 +237,7 @@ export default class JiggleLine {
             });
         });
         let annotations = labels.map((d, i) => {
+            if (!chartConfig.isTime) d.x = d.x._i
             return (
                 <JiggleLabel
                     key={`annotation-${i}`}
@@ -247,7 +247,7 @@ export default class JiggleLine {
                     dx={d.dx}
                     dy={d.dy}
                     stroke={chartConfig.theme.colorSecondary}
-                    note={{ title: d.x, comment: d.comment }}
+                    note={{comment: d.comment }}
                 />
             );
         });
@@ -271,6 +271,7 @@ export default class JiggleLine {
         );
     }
     _axis(chartConfig) {
+        console.log(chartConfig)
         return (
             <Group className={"axis"}>
                 <AxisBottom
