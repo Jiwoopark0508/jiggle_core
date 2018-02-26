@@ -5,11 +5,11 @@ import Workspace from "./Workspace";
 import { cht0, cht1, cht2, cht3 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
-import { dummie } from "./data/line_dummy2";
+import { dummie } from "./data/line_dummy";
 import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
-  rawData: dummie.slice(0, 3),
+  rawData: dummie.slice(0, 2),
   duration: 0,
   title: "최근 3년간 한국항공우주 주가 추이",
   subtitle: "(단위: 원)",
@@ -26,10 +26,12 @@ const chart1 = {
     right: 60
   },
   theme: { ...DARK },
-  label : [{row:2, col:1, comment:"제발..."},
-  {row:3, col:1, comment:"제발..."}], 
+  label: [
+    { row: 2, col: 1, comment: "제발..." },
+    { row: 3, col: 1, comment: "제발..." }
+  ],
   graph_colors: GRAPH_COLOR,
-  unit : "원"
+  unit: "원"
 };
 const chart2 = {
   rawData: dummie.slice(0, 4),
@@ -52,7 +54,7 @@ const chart2 = {
     ...LIGHT
   },
   graph_colors: GRAPH_COLOR2,
-  unit : "원"
+  unit: "원"
 };
 const chart3 = {
   rawData: dummie,
@@ -71,19 +73,18 @@ const chart3 = {
     left: 60,
     right: 60
   },
-  theme : {...LIGHT},
+  theme: { ...LIGHT },
   graph_colors: GRAPH_COLOR2,
-  unit : "원"
+  unit: "원"
 };
 
 class App extends Component {
   render() {
     let flag;
-    // flag = "horizontal";
+    flag = "horizontal";
     // flag = "group";
     // flag = "single";
-    flag = "jiwoo"
-
+    // flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {
@@ -109,7 +110,7 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
-          <Workspace charts={[cht0, cht1, cht2, cht3]} />
+          <Workspace charts={[cht0, cht1]} />
           <div id="gif" />
         </div>
       );
