@@ -102,6 +102,7 @@ export default class JiggleLine {
         }
     }
     progressBarTransition(idx, partial) {
+        console.log(this.chartList)
         if (!this.chartList[idx]) return;
         const WIDTH = 1080;
         let delay = this.chartList[idx].delay;
@@ -135,20 +136,35 @@ export default class JiggleLine {
     }
     labelTransition(idx, partial) {
         if (!this.chartList[idx]) return;
-        let elem = this.annotationList[idx];
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
-        d3
-            .select(elem)
-            .transition()
-            .duration(duration)
-            .delay(delay)
-            .attr("transform", "scale(1)")
-            .on("end", () => {
-                if (!partial) {
-                    this.labelTransition(idx + 1, !PARTIAL);
-                }
-            });
+        if (!partial) {
+            let elem = this.annotationList[idx];
+            d3
+                .select(elem)
+                .transition()
+                .duration(duration)
+                .delay(delay)
+                .attr("transform", "scale(1)")
+                .on("end", () => {
+                    if (!partial) {
+                        this.labelTransition(idx + 1, !PARTIAL);
+                    }
+                });
+        } else {
+            let elems = this.annotationList.slice(0, idx)
+            elems.forEach((d, i) => {
+                d3.select(d)
+                    .attr("transform", "scale(1)")
+            })
+            let elem = this.annotationList[idx]
+            d3
+                .select(elem)
+                .transition()
+                .duration(duration)
+                .delay(delay)
+                .attr("transform", "scale(1)")
+        }
     }
     getChartConfigs(chartList) {
         return chartList[0];
@@ -204,7 +220,7 @@ export default class JiggleLine {
         );
     }
     _graph(chartConfig, processedData, labels) {
-        
+        console.log(chartConfig)
         let lines = processedData.map((d, i) => {
             return React.cloneElement(this.lineType, {
                 key: i,
@@ -319,7 +335,6 @@ export default class JiggleLine {
             chart = [chart];
             chartConfig = util.processChartConfig(chart);
         }
-        console.log(chartConfig);
         return (
             <Group
                 className="total"
@@ -346,24 +361,4 @@ export default class JiggleLine {
             </Group>
         );
     }
-
-    // renderTransitionLine(chartList) {
-    //     const chartConfig = util.processChartConfig(chartList)
-    //     return (
-    //         <Group
-    //             className="total"
-    //             top={chartConfig.global_margin.top}
-    //             left={chartConfig.global_margin.left}
-    //             innerRef={(node) => this.domNode = node}>
-    //             <rect
-    //                 x={-chartConfig.global_margin.left} y = {-chartConfig.global_margin.top}
-    //                 width={chartConfig.width_svg}
-    //                 height={chartConfig.height_svg}
-    //                 fill={chartConfig.backgroundColor}/>
-    //             {this._header(chartConfig)}
-    //             {this._body(chartConfig, chartConfig.processedData, chartConfig.annotations)}
-    //             {this._footer(chartConfig)}
-    //         </Group>
-    //     )
-    // }
 }

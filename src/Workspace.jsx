@@ -33,13 +33,12 @@ export default class Workspace extends React.Component {
     // flag = "Recording";
 
     // flag = "Grouped Static";
-    // flag = "Grouped Transition";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
     flag = "Horizontal Recording";
 
-    // flag = "jiwoo";
+    flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -158,11 +157,14 @@ export default class Workspace extends React.Component {
 
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
+      // const renderer = factory.renderTransition()
+      // renderer(this.node, [...props.charts], kai)
       // factory.recordTransition(
       //   this.node,
       //   [...props.charts],
-      //   onProcess,
-      //   onFinished
+      //   onProcess, 
+      //   onFinished,
+      //   kai
       // );
     }
   }
