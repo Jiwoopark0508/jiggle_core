@@ -230,7 +230,7 @@ export default class JiggleLine {
                     cy={chartConfig.yScale(d.y)}
                     dx={d.dx}
                     dy={d.dy}
-                    stroke={chartConfig.colorSecondary}
+                    stroke={chartConfig.theme.colorSecondary}
                     note={{ title: d.x, comment: d.comment }}
                 />
             );
@@ -248,7 +248,7 @@ export default class JiggleLine {
                 <StripeRows
                     scale={chartConfig.yScale}
                     width={chartConfig.xMax}
-                    fill={chartConfig.backgroundColor}
+                    fill={chartConfig.theme.backgroundColor}
                     tickValues={chartConfig.yTickValues}
                 />
             </Group>
@@ -260,7 +260,7 @@ export default class JiggleLine {
                 <AxisBottom
                     scale={chartConfig.xScale}
                     top={chartConfig.yMax}
-                    stroke={chartConfig.colorSecondary}
+                    stroke={chartConfig.theme.colorSecondary}
                     hideTicks={true}
                     numTicks={100}
                     tickLabelProps={(tickValue, index) => ({

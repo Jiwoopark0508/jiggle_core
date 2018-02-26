@@ -148,13 +148,13 @@ export default class Workspace extends React.Component {
       // renderer(this.node, [...props.charts][2], kai);
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)
-      factory.recordTransition(
-        this.node,
-        [...props.charts],
-        onProcess, 
-        onFinished,
-        kai
-      );
+      // factory.recordTransition(
+      //   this.node,
+      //   [...props.charts],
+      //   onProcess, 
+      //   onFinished,
+      //   kai
+      // );
 
       // const renderer = factory.renderTransition()
       // renderer(this.node, [...props.charts], kai)

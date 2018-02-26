@@ -19,10 +19,10 @@ export default class SmallDataLineFactory {
 
   _drawStaticChart(svgElement, chart, images) {
     // this function draw transition between two chart configs
+    console.log(chart)
     d3
       .select(svgElement)
-      .attr("width", chart.width_svg)
-      .attr("height", chart.height_svg);
+      .attr("viewBox", `0 0 ${chart[0].width_svg} ${chart[0].height_svg}`)
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart);
@@ -44,8 +44,7 @@ export default class SmallDataLineFactory {
     // this function draw transition between two chart configs
     d3
       .select(svgElement)
-      .attr("width", chartConfigList[0].width_svg)
-      .attr("height", chartConfigList[0].height_svg);
+      .attr("viewBox", `0 0 ${chartConfigList[0].width_svg} ${chartConfigList[0].height_svg}`)
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
