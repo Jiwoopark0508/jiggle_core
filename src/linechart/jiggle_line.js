@@ -238,6 +238,7 @@ export default class JiggleLine {
         });
         let annotations = labels.map((d, i) => {
             if (!chartConfig.isTime) d.x = d.x._i
+            console.log(chartConfig)
             return (
                 <JiggleLabel
                     key={`annotation-${i}`}
