@@ -26,6 +26,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chart, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line = line_instance.renderLine(chart);
+
     // line_instance.drawGlyphLabel();
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line, svgElement);
@@ -48,6 +49,7 @@ export default class SmallDataLineFactory {
     let line_instance = new JiggleLine(chartConfigList, images, SMALL);
     this.lineInstance = line_instance;
     let jiggle_line_transition = line_instance.renderLine(chartConfigList);
+    console.log(jiggle_line_transition)
     ReactDOM.unmountComponentAtNode(svgElement);
     ReactDOM.render(jiggle_line_transition, svgElement);
 
@@ -72,21 +74,22 @@ export default class SmallDataLineFactory {
     charts.forEach((cht, i) => {
       if (i < 1) return;
       chain = chain.then(() =>
-        this._recordSingleTransition(gif, svgElement, charts, i)
+        this._recordSingleTransition(gif, svgElement, charts, i, images)
       );
     });
     chain.then(() => gif.render());
   }
 
-  _recordSingleTransition(gif, svgElement, chtList, idx) {
+  _recordSingleTransition(gif, svgElement, chtList, idx, images) {
     return new Promise((resolve0, reject) => {
-      let g = this._drawTransitionChart(svgElement, chtList);
+      let g = this._drawTransitionChart(svgElement, chtList, images);
       let component = g._self;
       g = d3.select(g._self.gParent);
-
+      
+      this._applyTransition(g, component, idx, true)
+      
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g);
-      console.log(tweeners);
 
       let totalDuration = 0;
       let cht = chtList[idx];
@@ -94,19 +97,18 @@ export default class SmallDataLineFactory {
 
       allElements.interrupt();
       const frames = 20 * totalDuration / 1000;
-      let promises = [];
+      let chain = Promise.resolve();
       d3.range(frames).forEach(function(f, i) {
-        promises.push(
-          new Promise(function(resolve1, reject) {
+        chain = chain.then(() => {
+          return new Promise(function(resolve1, reject) {
             addFrame((f + 1) / frames * totalDuration, resolve1);
           })
-        );
+        })
       });
-      Promise.all(promises).then(function(results) {
-        d3.select(svgElement).selectAll("*");
-
+      chain.then(() => {
         resolve0();
-      });
+      })
+      
       function jumpToTime(t) {
         tweeners.forEach(function(tween) {
           tween(t);

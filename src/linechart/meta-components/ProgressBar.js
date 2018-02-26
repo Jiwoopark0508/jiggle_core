@@ -14,7 +14,7 @@ export default function({
                 x={-60}
                 y={40}
                 height={20}
-                width={30}
+                width={0}
                 fill={"#6af6af"}
             >
             </rect>

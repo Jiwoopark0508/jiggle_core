@@ -36,7 +36,6 @@ function formatDate(date, idx) {
 
 export default class JiggleLine {
     constructor(charts, images, type) {
-        console.log(charts)
         this.transition = "";
         this.node = null;
         this.transPathLines = [];
