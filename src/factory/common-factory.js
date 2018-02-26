@@ -22,6 +22,7 @@ export default class CommonFactory {
 
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
+        console.log(this._applyTransition);
         this._applyTransition(this, canvas, cht);
       });
     };
@@ -353,11 +354,18 @@ export default class CommonFactory {
       .attr("class", "footer")
       .attr("transform", `translate(0, ${chart.y_g_footer})`);
 
-    let gTitleBox = gHeader.append("g").attr("class", "titleBox");
+    let gTitleBox = gHeader
+      .append("g")
+      .attr("class", "titleBox")
+      .attr("transform", `translate(0,${chart.y_g_title})`);
     let gLegend = gHeader
       .append("g")
       .attr("class", "legendBox")
-      .attr("transform", `translate(${chart.x_g_legend}, 0)`)
+      .attr(
+        "transform",
+        `translate(${chart.x_g_legend}, ${chart.y_g_title +
+          chart.y_g_subtitle})`
+      )
       // .attr("transform", `translate(${chart.width_g_total}, 0)`)
       .style("text-anchor", "end");
 

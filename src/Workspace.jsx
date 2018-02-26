@@ -36,7 +36,7 @@ export default class Workspace extends React.Component {
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
-    // flag = "Horizontal Recording";
+    flag = "Horizontal Recording";
 
     flag = "jiwoo";
 
@@ -82,6 +82,11 @@ export default class Workspace extends React.Component {
       const gTotal = renderer(this.node, props.charts[0], imgs);
       // const gList = getChildG(gTotal);
       // console.log(gList);
+    }
+    if (flag === "Grouped Transition") {
+      props.charts.forEach(chart => parseGroupedBar(chart));
+      const renderer = groupBar.renderTransition();
+      const gTotal = renderer(this.node, props.charts, imgs);
     }
 
     // single bar
@@ -159,11 +164,13 @@ export default class Workspace extends React.Component {
   // }
 
   render() {
+    // const customWidth = 1000;
+    const customWidth = 750;
     return (
       <div>
         <svg
-          width={600}
-          height={600 * 9 / 16}
+          width={customWidth}
+          height={customWidth * 9 / 16}
           // transform="translate(40, 60)"
           ref={node => (this.node = node)}
         />

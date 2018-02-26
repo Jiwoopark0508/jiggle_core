@@ -95,6 +95,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       .transition()
       .duration(chart.duration)
       .delay(chart[chart.delayType])
+      .ease(chart.easing)
       .call(that._drawHorizontalYAxis, chart);
     // Update selection
     let rect = canvas.gGraph
@@ -177,14 +178,14 @@ export default class HorizontalBarFactory extends CommonFactory {
     if (!chart.unit) return;
     let legend = g
       // .attr("font-family", "sans-serif")
-      .attr("text-anchor", "end")
+      // .attr("text-anchor", "end")
       .append("g");
     legend
       .append("text")
-      .attr("font-size", 15)
-      .attr("y", 9.5)
-      .attr("dx", -5)
-      .attr("dy", "0.32em")
+      .attr("font-size", chart.fontsize_unit)
+      // .attr("y", 9.5)
+      // .attr("dx", -5)
+      // .attr("dy", "0.32em")
       .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;

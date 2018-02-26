@@ -84,6 +84,7 @@ class App extends Component {
     // flag = "single";
     flag = "jiwoo"
 
+
     // horizontal
     if (flag === "horizontal") {
       return (
