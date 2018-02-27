@@ -331,7 +331,7 @@ export default class CommonFactory {
       .attr("x", -8)
       .attr("y", chart.height_svg - 5)
       .attr("width", 0)
-      .attr("height", 5)
+      .attr("height", 10)
       .attr("fill", chart.colorBI);
   }
 
@@ -354,7 +354,7 @@ export default class CommonFactory {
     svg
       // .attr("width", chart.width_svg)
       // .attr("height", chart.height_svg)
-      .attr("viewBox", `0 0 1080 607.5`)
+      .attr("viewBox", `0 0 ${chart.width_svg} ${chart.height_svg}`)
       .style("background-color", chart.backgroundColor)
       .style("user-select", "none")
       .style("font-family", chart.fontFamily);
