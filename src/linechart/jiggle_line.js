@@ -107,6 +107,7 @@ export default class JiggleLine {
         } else {
             // Preview Transition
             process.nextTick(() => {
+                this.eraseGlyphLabel()
                 this.transPathLines.forEach((l, i) => {
                     l.playTransition(idx, partial);
                 });
@@ -151,7 +152,6 @@ export default class JiggleLine {
         if (!this.chartList[idx]) return;
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
-        console.log(delay, duration)
         if (!partial) {
             let elem = this.annotationList[idx];
             d3

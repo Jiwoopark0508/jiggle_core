@@ -30,7 +30,9 @@ export default class SmallTransitionLinePath extends React.Component {
             return d.length;
         });
     }
-
+    componentWillUpdate() {
+        this.glyphList = []
+    }
     componentDidUpdate() {
         this.pathList.forEach((p, i) => {
             if(!p) return;
@@ -40,6 +42,10 @@ export default class SmallTransitionLinePath extends React.Component {
             }
         });
         this.lengthList.sort((a, b) => {return (a - b)})
+        this.glyphCountList = _.map(this.props.dataList, (d, i) => {
+            return d.length;
+        });
+        console.log(this.glyphCountList)
     }
 
     componentDidMount() {
@@ -60,6 +66,7 @@ export default class SmallTransitionLinePath extends React.Component {
         let startsAt = this.lengthList[idx - 1];
         let endsAt = this.lengthList[idx];
         if (!endsAt) return;
+        console.log(that.glyphCountList)
         let glyph_start = that.glyphCountList[idx - 1];
         let glyph_end = that.glyphCountList[idx];
         let duration = that.durationList[idx] || 1000
@@ -86,6 +93,7 @@ export default class SmallTransitionLinePath extends React.Component {
             });
     }
     _glyphTransition(g, that, start, end, _delay) {
+        console.log(that.glyphList, start, end)
         let prevGlyphs = that.glyphList.slice(0, start - 1);
         prevGlyphs.forEach((d, i) => {
             d3
@@ -124,7 +132,9 @@ export default class SmallTransitionLinePath extends React.Component {
                     glyph={(d, i) => {
                         let dot = (
                             <JiggleGlyph
-                                innerRef={node => this.glyphList.push(node)}
+                                innerRef={node => {
+                                    if (node) {this.glyphList.push(node)
+                                }}}
                                 className={"glyph-dots"}
                                 key={`line-dot-${i}`}
                                 cx={props.xScale(props.x(d))}
