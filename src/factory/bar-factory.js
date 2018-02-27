@@ -104,14 +104,14 @@ export default class BarFactory extends CommonFactory {
       .transition()
       .duration(chart.duration / 2)
       // .delay(chart[chart.delayType])
-      // .ease(chart.easing)
+      .ease(d3.easeLinear)
       .delay(chart.accumedDelay)
       .call(that._drawVerticalYAxis, chart);
     canvas.gXAxis
       .transition()
       .duration(chart.duration / 2)
       // .delay(chart[chart.delayType])
-      // .ease(chart.easing)
+      .ease(d3.easeLinear)
       .delay(chart.accumedDelay)
       .call(that._drawVerticalXAxis, chart);
     canvas.gBackground
