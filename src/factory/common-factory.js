@@ -81,8 +81,9 @@ export default class CommonFactory {
       const allElements = g.selectAll("*:not(.progress)");
       const tweeners = this._getAllTweeners(g);
 
-      const svg = d3.select("svgElement");
-      const progress = svg.selectAll("rect.progress");
+      const svg = d3.select(svgElement);
+      const progress = svg.select(".progress");
+      console.log(progress);
       const global_tweeners = this._getAllTweeners(progress);
       const totalDuration = cht1.accumedDelay + cht1.duration;
       allElements.interrupt();
@@ -339,7 +340,7 @@ export default class CommonFactory {
     charts[0].duration = charts[0].delay = 0;
     let totalProgress = 0;
 
-    charts.forEach((cht, i) => {
+    charts.slice(1).forEach((cht, i) => {
       cht.isRecording = true;
       totalProgress += cht.delay + cht.duration;
     });
