@@ -127,6 +127,8 @@ export function setSkeleton(chart) {
   chart.delay = chart.delay === undefined ? 1000 : chart.delay;
   chart.accumedDelay =
     chart.accumedDelay === undefined ? 0 : chart.accumedDelay;
+  chart.accumedDelay2 =
+    chart.accumedDelay2 === undefined ? 0 : chart.accumedDelay2;
   chart.lastFor = chart.lastFor === undefined ? 2000 : chart.lastFor;
 
   chart.customizedEaseBackOut = d3.easeBackOut.overshoot(1.3);
