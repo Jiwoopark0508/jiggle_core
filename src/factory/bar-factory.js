@@ -23,7 +23,7 @@ export default class BarFactory extends CommonFactory {
       gReference,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
-    svg.call(that._drawProgress, chart);
+    // svg.call(that._drawProgress, chart);
     gYAxis.call(that._drawVerticalYAxis, chart);
     gYAxis.call(that._drawYLine, chart);
     gBackground.call(that._drawBackground, chart);
@@ -99,7 +99,7 @@ export default class BarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
-    canvas.svg.call(that._applyProgress, chart);
+    // canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
       .duration(chart.duration / 2)

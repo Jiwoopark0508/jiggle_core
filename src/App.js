@@ -30,25 +30,25 @@ const chart1 = {
     { row: 196, col: 1, comment: "감사원, 원가부풀리기 감사결과 발표" },
     { row: 587, col: 1, comment: "서울중앙지검, 본사 서울사무소, 압수수색" },
     { row: 680, col: 1, comment: "분식회계 의혹 수사" }
-    ],
+  ],
   graph_colors: GRAPH_COLOR,
   unit: "원"
 };
 const chart2 = {
   rawData: dummie.slice(0, 196),
   duration: 1000,
-  delay: 1000,
+  delay: 1000
 };
 const chart3 = {
   rawData: dummie.slice(0, 587),
   duration: 1000,
-  delay: 1000,
+  delay: 1000
 };
 
 const chart4 = {
   rawData: dummie,
   duration: 1000,
-  delay: 1000,
+  delay: 1000
 };
 
 class App extends Component {
@@ -56,8 +56,8 @@ class App extends Component {
     let flag;
     // flag = "horizontal";
     // flag = "group";
-    // flag = "single";
-    flag = "jiwoo"
+    flag = "single";
+    // flag = "jiwoo"
 
     // horizontal
     if (flag === "horizontal") {

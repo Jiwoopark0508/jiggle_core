@@ -22,7 +22,6 @@ export default class HorizontalBarFactory extends CommonFactory {
       gReference,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
-    svg.call(that._drawProgress, chart);
     gYAxis.call(that._drawHorizontalYAxis, chart);
     gTitle.call(that._drawTitle, chart);
     gSubtitle.call(that._drawSubtitle, chart);
@@ -92,7 +91,6 @@ export default class HorizontalBarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
-    canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
       .duration(chart.duration)
@@ -111,7 +109,6 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("width", d => chart.x0(d[chart.xLabel]))
       .attr("height", chart.yScale.bandwidth());
-    console.log(chart.accumedDelay);
     rect
       .exit() // Exit selection
       .transition()
