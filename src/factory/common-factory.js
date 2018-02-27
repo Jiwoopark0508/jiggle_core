@@ -48,6 +48,9 @@ export default class CommonFactory {
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
       if (i === 0) return;
+      cht.totalProgress = charts.length - 1;
+      cht.currProgress = i;
+
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
       if (i === charts.length - 1) cht1.isLastChart = true;
@@ -72,6 +75,7 @@ export default class CommonFactory {
       }
       const g = canvas.gTotal;
       cht1.accumedDelay = cht1.delay;
+
       this._applyTransition(this, canvas, cht1);
 
       const allElements = g.selectAll("*");

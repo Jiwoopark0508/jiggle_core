@@ -29,14 +29,14 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    flag = "Transition";
+    // flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
-    // flag = "Horizontal Recording";
+    flag = "Horizontal Recording";
 
     // flag = "jiwoo";
 
@@ -150,7 +150,7 @@ export default class Workspace extends React.Component {
       // factory.recordTransition(
       //   this.node,
       //   [...props.charts],
-      //   onProcess, 
+      //   onProcess,
       //   onFinished,
       //   kai
       // );
