@@ -35,7 +35,7 @@ export default class Workspace extends React.Component {
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
-    flag = "Horizontal Transition";
+    // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
     flag = "jiwoo";
@@ -133,7 +133,7 @@ export default class Workspace extends React.Component {
     }
 
     if (flag === "jiwoo") {
-      const factory = new LargeDataLineFactory();
+      const factory = new SmallDataLineFactory();
       const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -150,20 +150,20 @@ export default class Workspace extends React.Component {
       // factory.recordTransition(
       //   this.node,
       //   [...props.charts],
-      //   onProcess, 
-      //   onFinished,
-      //   kai
-      // );
-
-      const renderer = factory.renderTransition();
-      renderer(this.node, [...props.charts], kai);
-      // factory.recordTransition(
-      //   this.node,
-      //   [...props.charts],
       //   onProcess,
       //   onFinished,
       //   kai
       // );
+
+      // const renderer = factory.renderTransition();
+      // renderer(this.node, [...props.charts], kai);
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess,
+        onFinished,
+        kai
+      );
     }
   }
   // click() {
@@ -175,7 +175,7 @@ export default class Workspace extends React.Component {
 
   render() {
     // const customWidth = 1000;
-    const customWidth = 750;
+    const customWidth = 560;
     return (
       <div>
         <svg

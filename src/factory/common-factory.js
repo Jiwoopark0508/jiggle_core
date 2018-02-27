@@ -12,15 +12,18 @@ export default class CommonFactory {
 
   renderTransition() {
     const renderer = (svgElement, charts, images) => {
-      // let canvas = this._drawBI(this, svgElement, charts[0]);
+      if (!charts || charts.length <= 1)
+        throw new Error("More than 1 chart is required to draw transition.");
       const canvas = this._drawChart(this, svgElement, charts[0], images);
-      // charts.forEach()
+      charts[0].duration = charts[0].delay = 0;
+
       charts.forEach((cht, i) => {
         if (i === 0) {
-          cht.duration = 0;
           return;
         }
 
+        cht.totalProgress = charts.length - 1;
+        cht.currProgress = i;
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
         this._applyTransition(this, canvas, cht);
@@ -44,15 +47,10 @@ export default class CommonFactory {
     });
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
-      // let cht0, cht1;
-      // if (i === 0) {
-      //   cht0 = "BI";
-      //   cht1 = charts[i];
-      // } else {
-      //   cht0 = charts[i - 1];
-      //   cht1 = charts[i];
-      // }
       if (i === 0) return;
+      cht.totalProgress = charts.length - 1;
+      cht.currProgress = i;
+
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
       if (i === charts.length - 1) cht1.isLastChart = true;
@@ -77,6 +75,7 @@ export default class CommonFactory {
       }
       const g = canvas.gTotal;
       cht1.accumedDelay = cht1.delay;
+
       this._applyTransition(this, canvas, cht1);
 
       const allElements = g.selectAll("*");
@@ -327,6 +326,29 @@ export default class CommonFactory {
       //     chart.indexToFocus.includes(i) ? chart.opacity : chart.opacityToHide
       // );
     }
+  }
+
+  _drawProgress(svg, chart) {
+    svg
+      .append("rect")
+      .attr("class", "progress")
+      .attr("x", -8)
+      .attr("y", chart.height_svg - 5)
+      .attr("width", 0)
+      .attr("height", 10)
+      .attr("fill", chart.colorBI);
+  }
+
+  _applyProgress(svg, chart) {
+    const progressEnd =
+      (chart.width_svg + 17) * chart.currProgress / chart.totalProgress;
+    svg
+      .select("rect.progress")
+      .transition()
+      .duration(chart.duration + chart.delay)
+      .delay(chart.accumedDelay - chart.delay)
+      .ease(d3.easeLinear)
+      .attr("width", progressEnd);
   }
 
   _drawSkeleton(svgElement, chart) {

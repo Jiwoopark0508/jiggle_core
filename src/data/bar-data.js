@@ -79,16 +79,16 @@ const LIGHT = {
 const theme = LIGHT;
 
 export const cht0 = {
-  id,
   // graph_colors,
   // indexToFocus: [2],
   // colorToFocus,
   label,
   theme,
-  rawData: arr0,
-  // rawData: arr0,
   // duration: 0,
   // delay: 0,
+
+  id,
+  rawData: arr0,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
@@ -98,13 +98,13 @@ export const cht0 = {
 };
 
 export const cht1 = {
-  id,
   // graph_colors,
   // colorToFocus,
   label,
   theme,
+
+  id,
   rawData: arr1,
-  // rawData: arr1,
   duration: 1000,
   delay: 500,
   unit: "%",
@@ -116,12 +116,13 @@ export const cht1 = {
 };
 
 export const cht2 = {
-  id,
   label,
   theme,
+
+  id,
   rawData: arr2,
   duration: 1000,
-  delay: 500,
+  delay: 1000,
   unit: "%",
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",

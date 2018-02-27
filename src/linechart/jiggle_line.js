@@ -151,13 +151,17 @@ export default class JiggleLine {
         if (!this.chartList[idx]) return;
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
+        console.log(delay, duration)
         if (!partial) {
             let elem = this.annotationList[idx];
             d3
                 .select(elem)
                 .transition()
-                .duration(duration)
-                .delay(delay)
+                .duration(duration + delay - 500)
+                .delay(0)
+                .attr("transform", "scale(1.5)")
+                .transition()
+                .duration(1000)
                 .attr("transform", "scale(1)")
                 .on("end", () => {
                     if (!partial) {
