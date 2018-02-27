@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import * as d3 from "d3";
 import JiggleLine from '../linechart/jiggle_line';
+import * as utils from '../common/utils'
 
 const LARGE = "LARGE"
 
@@ -31,8 +32,10 @@ export default class LargeDataLineFactory {
 
     return jiggle_line
   }
+
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {
+      chartConfigList = utils._addFirstLastBuffer(chartConfigList)
       this._drawTransitionChart(svgElement, chartConfigList, images)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }
@@ -55,6 +58,8 @@ export default class LargeDataLineFactory {
   
   
   recordTransition(svgElement, charts, onProcess, onFinished, images) {
+    charts = utils._addFirstLastBuffer(charts)
+    console.log(charts)
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,

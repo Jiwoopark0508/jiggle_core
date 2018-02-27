@@ -143,12 +143,11 @@ export default class JiggleLine {
             d3
                 .select(elem)
                 .transition()
-                .duration(duration - 500)
-                .delay(delay - 500)
+                .duration(duration + delay - 500)
+                .delay(0)
                 .attr("transform", "scale(1.5)")
                 .transition()
-                .duration(900)
-                .delay(100)
+                .duration(1000)
                 .attr("transform", "scale(1)")
                 .on("end", () => {
                     if (!partial) {

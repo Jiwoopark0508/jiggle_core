@@ -242,3 +242,20 @@ export function formatDate(date, format) {
     .format(format)
     .split(" ");
 }
+
+export function _addFirstLastBuffer(chartList) {
+  chartList[0].delay = 0
+  chartList[0].duration = 0
+  let firstBuffer = Object.assign({}, chartList[0])
+  let lastBuffer = Object.assign({}, chartList[chartList.length - 1])
+  if(firstBuffer.rawData.length > 2){
+    firstBuffer.duration = 0
+    firstBuffer.delay = 0
+    firstBuffer.rawData = lastBuffer.rawData.slice(0, 2)
+    chartList.splice(0, 0, firstBuffer)
+  }
+  lastBuffer.duration = 1000
+  lastBuffer.delay = 1000
+  chartList.splice(chartList.length - 1, 0, lastBuffer)
+  return chartList
+}

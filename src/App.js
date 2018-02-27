@@ -10,13 +10,13 @@ import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
   rawData: dummie.slice(0, 2),
-  duration: 0,
+  duration: 1000,
   title: "최근 3년간 한국항공우주 주가 추이",
   subtitle: "(단위: 원)",
   reference: "*자료: 한국거래소",
   caption: "이것은 1캡처입니다",
   madeBy: "그래픽 : 유정수 디자이너",
-  delay: 0,
+  delay: 1000,
   width_svg: 1080,
   height_svg: 600,
   margins: {
@@ -36,95 +36,19 @@ const chart1 = {
 };
 const chart2 = {
   rawData: dummie.slice(0, 196),
-  duration: 2000,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 2000,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
-  },
-  theme: {
-    ...LIGHT
-  },
-  label: [
-    { row: 196, col: 1, comment: "감사원, 원가부풀리기 감사결과 발표" },
-    { row: 587, col: 1, comment: "서울중앙지검, 본사 서울사무소, 압수수색" },
-    { row: 680, col: 1, comment: "분식회계 의혹 수사" }
-  ],
-  graph_colors: GRAPH_COLOR2,
-  unit: "원"
+  duration: 1000,
+  delay: 1000,
 };
 const chart3 = {
   rawData: dummie.slice(0, 587),
-  duration: 2000,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 2000,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
-  },
-  theme: { ...LIGHT },
-  graph_colors: GRAPH_COLOR2,
-  unit: "원"
+  duration: 1000,
+  delay: 1000,
 };
 
 const chart4 = {
   rawData: dummie,
-  duration: 2000,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 2000,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
-  },
-  theme: { ...LIGHT },
-  graph_colors: GRAPH_COLOR2,
-  unit: "원"
-};
-const chart5 = {
-  rawData: dummie,
-  duration: 2000,
-  title: "주요 금융그룹 충당금 주요 금융그룹",
-  subtitle: "이것은 1부제입니다",
-  reference: "이것은 1레퍼런스입니다",
-  caption: "이것은 1캡처입니다",
-  madeBy: "강선미 기자",
-  delay: 2000,
-  width_svg: 1080,
-  height_svg: 600,
-  margins: {
-    top: 40,
-    bottom: 40,
-    left: 60,
-    right: 60
-  },
-  theme: { ...LIGHT },
-  graph_colors: GRAPH_COLOR2,
-  unit: "원"
+  duration: 1000,
+  delay: 1000,
 };
 
 class App extends Component {
