@@ -45,7 +45,6 @@ export default function parseBar(chart) {
     chart.indexToFocus = [chart.data.length - 1];
   }
 
-  chart.easing = d3[chart.easingType];
   chart.delayInOrder = (d, i) => {
     const term = 200;
     let eachDelay = 0;

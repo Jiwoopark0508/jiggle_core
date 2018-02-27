@@ -81,9 +81,9 @@ const chart3 = {
 class App extends Component {
   render() {
     let flag;
-    flag = "horizontal";
+    // flag = "horizontal";
     // flag = "group";
-    // flag = "single";
+    flag = "single";
     // flag = "jiwoo"
 
     // horizontal
@@ -110,7 +110,7 @@ class App extends Component {
     if (flag === "single") {
       return (
         <div>
-          <Workspace charts={[cht0, cht1]} />
+          <Workspace charts={[cht0, cht1, cht2]} />
           <div id="gif" />
         </div>
       );

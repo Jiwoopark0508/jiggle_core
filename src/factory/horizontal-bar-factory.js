@@ -1,4 +1,3 @@
-// import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 
 export default class HorizontalBarFactory extends CommonFactory {
@@ -22,6 +21,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       gReference,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
+    svg.call(that._drawProgress, chart);
     gYAxis.call(that._drawHorizontalYAxis, chart);
     gTitle.call(that._drawTitle, chart);
     gSubtitle.call(that._drawSubtitle, chart);
@@ -61,7 +61,6 @@ export default class HorizontalBarFactory extends CommonFactory {
         }
         return label;
       });
-    // .text(d => +d[chart.xLabel]);
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
     gMadeBy.call(that._drawMadeBy, chart);
@@ -92,6 +91,7 @@ export default class HorizontalBarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
+    canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
       .duration(chart.duration)
@@ -178,17 +178,11 @@ export default class HorizontalBarFactory extends CommonFactory {
   }
   _drawLegend(g, chart) {
     if (!chart.unit) return;
-    let legend = g
-      // .attr("font-family", "sans-serif")
-      // .attr("text-anchor", "end")
-      .append("g");
+    let legend = g.append("g");
     legend
       .append("text")
       .attr("font-size", chart.fontsize_unit)
       .attr("font-weight", 700)
-      // .attr("y", 9.5)
-      // .attr("dx", -5)
-      // .attr("dy", "0.32em")
       .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;

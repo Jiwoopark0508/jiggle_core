@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 export function setSkeleton(chart) {
   const factor_primary_fontsize = 0.07;
   const factor_secondary_fontsize = 0.045;
@@ -7,7 +9,7 @@ export function setSkeleton(chart) {
   const factor_margin_body = 2;
 
   chart.width_svg = chart.width_svg || 750;
-  chart.height_svg = chart.height_svg || 433;
+  chart.height_svg = chart.height_svg || 421.875;
   chart.margins = chart.margins || {
     top: chart.height_svg * 0.07,
     bottom: chart.height_svg * 0.07,
@@ -36,9 +38,9 @@ export function setSkeleton(chart) {
   chart.fontsize_madeBy =
     chart.fontsize_madeBy || chart.height_g_total * factor_tertiary_fontsize;
   chart.fontsize_yAxis =
-    chart.fontsize_yAxis || chart.height_g_total * factor_quaternary_fontsize;
+    chart.fontsize_yAxis || chart.height_g_total * factor_tertiary_fontsize;
   chart.fontsize_xAxis =
-    chart.fontsize_xAxis || chart.height_g_total * factor_quaternary_fontsize;
+    chart.fontsize_xAxis || chart.height_g_total * factor_tertiary_fontsize;
   chart.fontsize_graphText =
     chart.fontsize_graphText ||
     chart.height_g_total * factor_secondary_fontsize;
@@ -66,7 +68,7 @@ export function setSkeleton(chart) {
   chart.y_g_referenceBox = chart.fontsize_reference * 3.5;
   chart.y_g_madeBy = chart.fontsize_madeBy * factor_space_between_lines;
 
-  chart.theme = chart.theme || {
+  chart.tempTheme = {
     backgroundColor: "#F9F9F9",
     colorPrimary: "#000000",
     colorSecondary: "#4B4949",
@@ -75,6 +77,12 @@ export function setSkeleton(chart) {
     colorStripe2: "#f3f4f5",
     colorAxis: "#6d6d6d"
   };
+  chart.theme = chart.theme || chart.tempTheme;
+  Object.keys(chart.tempTheme).forEach(t => {
+    if (chart.theme[t] === undefined) {
+      chart.theme[t] = chart.tempTheme[t];
+    }
+  });
   chart.backgroundColor = chart.backgroundColor || chart.theme.backgroundColor;
   chart.fontFamily = "Spoqa Hans";
 
@@ -97,8 +105,7 @@ export function setSkeleton(chart) {
   // chart.colorStripe2 = chart.colorStripe2 || "#ffffff";
   chart.colorStripe1 = chart.colorStripe1 || chart.theme.colorStripe1;
   chart.colorStripe2 = chart.colorStripe2 || chart.theme.colorStripe2;
-  chart.colorAxis = chart.colorAxis || chart.theme.colorAxis;
-  chart.colorBI = chart.colorBI || "#3182bd";
+  chart.colorBI = chart.colorBI || "#ff4b00";
   // chart.color = chart.color || "#ADADAD";
   // chart.colorToFocus = chart.colorToFocus || "#4AC6AE";
 
@@ -110,7 +117,6 @@ export function setSkeleton(chart) {
   chart.numOfXAxisTicks = chart.numOfXAxisTicks || 5;
   chart.numOfYAxisTicks = chart.numOfYAxisTicks || 5;
 
-  chart.easingType = chart.easingType || "easeBackOut";
   // chart.delayType = chart.delayType || "delayInOrder";
   chart.delayType = chart.delayType || "accumedDelay";
   chart.paddingBtwRects = chart.paddingBtwRects || 0.4;
@@ -122,4 +128,10 @@ export function setSkeleton(chart) {
   chart.accumedDelay =
     chart.accumedDelay === undefined ? 0 : chart.accumedDelay;
   chart.lastFor = chart.lastFor === undefined ? 2000 : chart.lastFor;
+
+  chart.customizedEaseBackOut = d3.easeBackOut.overshoot(1.3);
+  chart.easingType = chart.easingType || "customizedEaseBackOut";
+  chart.easing = chart[chart.easingType]
+    ? chart[chart.easingType]
+    : d3[chart.easingType] ? d3[chart.easingType] : d3.easeBackOut;
 }

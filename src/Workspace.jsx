@@ -29,16 +29,16 @@ export default class Workspace extends React.Component {
 
     let flag;
     // flag = "Static";
-    // flag = "Transition";
+    flag = "Transition";
     // flag = "Recording";
 
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
-    flag = "Horizontal Transition";
+    // flag = "Horizontal Transition";
     // flag = "Horizontal Recording";
 
-    flag = "jiwoo";
+    // flag = "jiwoo";
 
     // horizontal single bar
     const horizontalBar = new HorizontalBarFactory();
@@ -165,7 +165,7 @@ export default class Workspace extends React.Component {
 
   render() {
     // const customWidth = 1000;
-    const customWidth = 750;
+    const customWidth = 560;
     return (
       <div>
         <svg
