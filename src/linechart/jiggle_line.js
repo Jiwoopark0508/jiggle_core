@@ -149,11 +149,13 @@ export default class JiggleLine {
             });
     }
     labelTransition(idx, partial) {
+        console.log(this.annotationList[idx])
         if (!this.chartList[idx]) return;
         let delay = this.chartList[idx].delay;
         let duration = this.chartList[idx].duration;
         if (!partial) {
             let elem = this.annotationList[idx];
+            if (!elem) return;
             d3
                 .select(elem)
                 .transition()

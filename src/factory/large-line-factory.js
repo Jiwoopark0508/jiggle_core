@@ -60,7 +60,6 @@ export default class LargeDataLineFactory {
   
   recordTransition(svgElement, charts, onProcess, onFinished, images) {
     charts = utils._addFirstLastBuffer(charts)
-    console.log(charts)
     if (charts.length === 0) return;
     let gif = new window.GIF({
       workers: 1,

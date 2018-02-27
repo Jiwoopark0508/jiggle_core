@@ -20,7 +20,7 @@ function label_generator(labels, data) {
     let obj = {};
     let ret = [];
     labels = _.sortBy(labels, function(o) {
-        return o.row;
+        if(o.comment) return o.row;
     });
     labels.forEach(function(d) {
         obj = {
