@@ -5,11 +5,11 @@ import Workspace from "./Workspace";
 import { cht0, cht1, cht2, cht3 } from "./data/bar-data";
 import { gcht0, gcht1 } from "./data/grouped-bar-data";
 import { hcht0, hcht1 } from "./data/horizontal-bar-data";
-import { dummie } from "./data/line_dummy2";
+import { dummie } from "./data/line_dummy";
 import { DARK, LIGHT } from "./common/constant";
 
 const chart1 = {
-  rawData: dummie.slice(0, 3),
+  rawData: dummie.slice(0, 2),
   duration: 0,
   title: "최근 3년간 한국항공우주 주가 추이",
   subtitle: "(단위: 원)",
