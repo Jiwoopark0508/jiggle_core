@@ -56,7 +56,8 @@ export const hcht1 = {
   // graph_colors,
   rawData: arr1,
   duration: 1500,
-  delay: 2000,
+  delay: 1000,
+  lastFor: 2000,
 
   unit: "%",
   title: "주요 금융그룹 충당금",

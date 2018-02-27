@@ -1,4 +1,4 @@
-// import * as d3 from "d3";
+import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 // import { getImageUrlFromBase64 } from "../common/utils";
 
@@ -23,6 +23,7 @@ export default class BarFactory extends CommonFactory {
       gReference,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
+    svg.call(that._drawProgress, chart);
     gYAxis.call(that._drawVerticalYAxis, chart);
     gYAxis.call(that._drawYLine, chart);
     gBackground.call(that._drawBackground, chart);
@@ -98,19 +99,20 @@ export default class BarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
+    canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      .ease(chart.easing)
-      // .delay(chart.accumedDelay)
+      .duration(chart.duration / 2)
+      // .delay(chart[chart.delayType])
+      .ease(d3.easeLinear)
+      .delay(chart.accumedDelay)
       .call(that._drawVerticalYAxis, chart);
     canvas.gXAxis
       .transition()
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      .ease(chart.easing)
-      // .delay(chart.accumedDelay)
+      .duration(chart.duration / 2)
+      // .delay(chart[chart.delayType])
+      .ease(d3.easeLinear)
+      .delay(chart.accumedDelay)
       .call(that._drawVerticalXAxis, chart);
     canvas.gBackground
       .transition()
@@ -120,9 +122,18 @@ export default class BarFactory extends CommonFactory {
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
-      .data(chart.data, chart.dataKey)
-      // .attr("fill", chart.color);
-      .attr("fill", d => chart.z(d[chart.xLabel]));
+      .data(chart.data, chart.dataKey);
+    // .attr("fill", d => chart.z(d[chart.xLabel]));
+    rect
+      .transition()
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay)
+      .ease(d3.easeLinear)
+      .attr("x", d => chart.x0(d[chart.xLabel]))
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
+      .attr("fill", d => chart.z(d[chart.xLabel]))
+      .attr("width", chart.x0.bandwidth())
+      .attr("height", d => chart.height_g_body - chart.yScale(d[chart.yLabel]));
     rect
       .exit() // Exit selection
       .transition()
@@ -139,12 +150,12 @@ export default class BarFactory extends CommonFactory {
       .attr("x", d => chart.x0(d[chart.xLabel]))
       .attr("y", d => chart.height_g_body)
       .attr("fill", chart.colorToFocus)
-      .merge(rect) // Enter + Update selection
+      // .merge(rect) // Enter + Update selection
       .transition()
       .ease(chart.easing)
-      .duration(chart.duration)
-      // .delay(chart.accumedDelay)
-      .delay(chart[chart.delayType])
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay + chart.duration / 2)
+      // .delay(chart[chart.delayType])
       // .attr("fill", chart.color)
       // .call(this._applyFocus, chart) // apply focus
       .attr("x", d => chart.x0(d[chart.xLabel]))
@@ -155,6 +166,16 @@ export default class BarFactory extends CommonFactory {
     let text = canvas.gGraph
       .selectAll("text.graphText")
       .data(chart.data, chart.dataKey);
+
+    text
+      .transition()
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay)
+      .ease(d3.easeLinear)
+      .attr("x", d => chart.x0(d[chart.xLabel]))
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
+      .attr("dx", chart.x0.bandwidth() / 2)
+      .attr("dy", "-0.5em");
     text
       .exit()
       .transition()
@@ -172,12 +193,12 @@ export default class BarFactory extends CommonFactory {
       .attr("y", chart.height_g_body)
       .attr("opacity", 0)
       // .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .merge(text)
+      // .merge(text)
       .transition()
       .ease(chart.easing)
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      // .delay(chart.accumedDelay)
+      .duration(chart.duration / 2)
+      // .delay(chart[chart.delayType])
+      .delay(chart.accumedDelay + chart.duration / 2)
       .attr("font-size", chart.fontsize_graphText + "px")
       .attr("font-weight", 700)
       .attr("fill", chart.fontcolor_graphText)

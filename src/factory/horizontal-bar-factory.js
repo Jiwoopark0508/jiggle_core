@@ -1,4 +1,4 @@
-// import * as d3 from "d3";
+import * as d3 from "d3";
 import CommonFactory from "./common-factory";
 
 export default class HorizontalBarFactory extends CommonFactory {
@@ -22,6 +22,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       gReference,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
+    svg.call(that._drawProgress, chart);
     gYAxis.call(that._drawHorizontalYAxis, chart);
     gTitle.call(that._drawTitle, chart);
     gSubtitle.call(that._drawSubtitle, chart);
@@ -61,7 +62,6 @@ export default class HorizontalBarFactory extends CommonFactory {
         }
         return label;
       });
-    // .text(d => +d[chart.xLabel]);
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
     gMadeBy.call(that._drawMadeBy, chart);
@@ -92,6 +92,7 @@ export default class HorizontalBarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
+    canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
       .duration(chart.duration)
@@ -101,8 +102,16 @@ export default class HorizontalBarFactory extends CommonFactory {
     // Update selection
     let rect = canvas.gGraph
       .selectAll("rect.graphRect")
-      .data(chart.data, chart.dataKey)
-      .attr("fill", d => chart.z(d[chart.xLabel]));
+      .data(chart.data, chart.dataKey);
+    rect
+      .transition()
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay)
+      .ease(d3.easeLinear)
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
+      .attr("width", d => chart.x0(d[chart.xLabel]))
+      .attr("height", chart.yScale.bandwidth());
+    console.log(chart.accumedDelay);
     rect
       .exit() // Exit selection
       .transition()
@@ -118,11 +127,11 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("class", "graphRect")
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("fill", chart.colorToFocus)
-      .merge(rect) // Enter + Update selection
+      // .merge(rect) // Enter + Update selection
       .transition()
       .ease(chart.easing)
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay + chart.duration / 2)
       // .attr("fill", chart.color)
       // .call(this._applyFocus, chart) // apply focus
       .attr("y", d => chart.yScale(d[chart.yLabel]))
@@ -132,6 +141,15 @@ export default class HorizontalBarFactory extends CommonFactory {
     let text = canvas.gGraph
       .selectAll("text.graphText")
       .data(chart.data, chart.dataKey);
+    text
+      .transition()
+      .duration(chart.duration / 2)
+      .delay(chart.accumedDelay)
+      .ease(d3.easeLinear)
+      .attr("x", d => chart.x0(d[chart.xLabel]))
+      .attr("y", d => chart.yScale(d[chart.yLabel]))
+      .attr("dx", "0.4em")
+      .attr("dy", chart.yScale.bandwidth() / 2);
     text
       .exit()
       .transition()
@@ -149,12 +167,12 @@ export default class HorizontalBarFactory extends CommonFactory {
       .attr("y", d => chart.yScale(d[chart.yLabel]))
       .attr("opacity", 0)
       // .attr("y", d => chart.yScale(d[chart.yLabel]))
-      .merge(text)
+      // .merge(text)
       .transition()
       .ease(chart.easing)
-      .duration(chart.duration)
-      .delay(chart[chart.delayType])
-      // .delay(chart.accumedDelay)
+      .duration(chart.duration / 2)
+      // .delay(chart[chart.delayType])
+      .delay(chart.accumedDelay + chart.duration / 2)
       .attr("font-size", chart.fontsize_graphText + "px")
       .attr("font-weight", 700)
       .attr("fill", chart.fontcolor_graphText)
@@ -178,17 +196,11 @@ export default class HorizontalBarFactory extends CommonFactory {
   }
   _drawLegend(g, chart) {
     if (!chart.unit) return;
-    let legend = g
-      // .attr("font-family", "sans-serif")
-      // .attr("text-anchor", "end")
-      .append("g");
+    let legend = g.append("g");
     legend
       .append("text")
       .attr("font-size", chart.fontsize_unit)
       .attr("font-weight", 700)
-      // .attr("y", 9.5)
-      // .attr("dx", -5)
-      // .attr("dy", "0.32em")
       .attr("fill", chart.theme.colorPrimary)
       .text(function(d) {
         return `단위: ${chart.unit}`;
