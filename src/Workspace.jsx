@@ -133,7 +133,7 @@ export default class Workspace extends React.Component {
     }
 
     if (flag === "jiwoo") {
-      const factory = new LargeDataLineFactory();
+      const factory = new SmallDataLineFactory();
       const gifDiv = document.getElementById("gif");
       const onProcess = function(progress) {
         gifDiv.textContent = progress * 100 + "% 됐다";
@@ -155,15 +155,15 @@ export default class Workspace extends React.Component {
       //   kai
       // );
 
-      const renderer = factory.renderTransition();
-      renderer(this.node, [...props.charts], kai);
-      // factory.recordTransition(
-      //   this.node,
-      //   [...props.charts],
-      //   onProcess,
-      //   onFinished,
-      //   kai
-      // );
+      // const renderer = factory.renderTransition();
+      // renderer(this.node, [...props.charts], kai);
+      factory.recordTransition(
+        this.node,
+        [...props.charts],
+        onProcess,
+        onFinished,
+        kai
+      );
     }
   }
   // click() {

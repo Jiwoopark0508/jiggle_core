@@ -12,8 +12,8 @@ const kai = [
   // },
   {
     href,
-    x: 50,
-    y: 50,
+    x: 750,
+    y: 150,
     width: "100px",
     height: "100px"
   }

@@ -12,8 +12,8 @@ export default function({
             <rect
                 ref={innerRef}
                 x={-60}
-                y={40}
-                height={20}
+                y={55}
+                height={15}
                 width={0}
                 fill={"#6af6af"}
             >
