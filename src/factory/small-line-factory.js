@@ -90,10 +90,12 @@ export default class SmallDataLineFactory {
   _recordSingleTransition(gif, svgElement, chtList, idx, images) {
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList, images);
-      let component = g._self;
+      let component = this.lineInstance;
+      console.log(this.lineInstance)
+      console.log(component)
       g = d3.select(g._self.gParent);
       
-      this._applyTransition(g, component, idx, true)
+      this._applyTransition(component, idx, true)
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g);
@@ -140,7 +142,7 @@ export default class SmallDataLineFactory {
     });
   }
 
-  _applyTransition(g, component, idx, record) {
+  _applyTransition(component, idx, record) {
     component.playWholeLineTransition(idx, true, record);
   }
 
@@ -159,7 +161,6 @@ export default class SmallDataLineFactory {
         });
       if (pending.length === 0) return;
       pending.forEach(function(tran, i) {
-        console.log(tran);
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
         tran.tween.forEach(function(tween) {

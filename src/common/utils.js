@@ -252,7 +252,7 @@ export function _addFirstLastBuffer(chartList) {
     firstBuffer.duration = 0
     firstBuffer.delay = 0
     firstBuffer.rawData = lastBuffer.rawData.slice(0, 2)
-    firstBuffer.label.splice(0, 0, null)
+    // firstBuffer.label.splice(0, 0, {row:1, col:1, comment: null})
     chartList.splice(0, 0, firstBuffer)
   }
   lastBuffer.duration = 1000
