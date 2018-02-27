@@ -88,10 +88,10 @@ export default class LargeDataLineFactory {
     
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList, images)
-      let component = g._self
-      g = d3.select(g._self.gParent)
+      let component = this.lineInstance;
+      g = d3.select(svgElement.firstChild);
       
-      this._applyTransition(g, component, idx, true)
+      this._applyTransition(component, idx, true)
       
       const allElements = g.selectAll("*");
       const tweeners = this._getAllTweeners(g)
@@ -154,7 +154,7 @@ export default class LargeDataLineFactory {
     })
   }
 
-  _applyTransition(g, component, idx, record) {
+  _applyTransition(component, idx, record) {
     component.playWholeLineTransition(idx, true, record)
   }
 

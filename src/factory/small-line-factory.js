@@ -91,9 +91,7 @@ export default class SmallDataLineFactory {
     return new Promise((resolve0, reject) => {
       let g = this._drawTransitionChart(svgElement, chtList, images);
       let component = this.lineInstance;
-      console.log(this.lineInstance)
-      console.log(component)
-      g = d3.select(g._self.gParent);
+      g = d3.select(svgElement.firstChild);
       
       this._applyTransition(component, idx, true)
       
