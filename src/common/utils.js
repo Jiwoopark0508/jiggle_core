@@ -204,7 +204,6 @@ export function processChartConfig(chartList) {
     .scaleLinear()
     .range([yMax, 0])
     .domain(yScaleDomain);
-
   const scales = {
     xScale,
     yScale,
