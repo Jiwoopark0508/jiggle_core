@@ -14,16 +14,15 @@ export default class CommonFactory {
     const renderer = (svgElement, charts, images) => {
       if (!charts || charts.length <= 1)
         throw new Error("More than 1 chart is required to draw transition.");
+
+      this._drawProgress(svgElement, charts);
       const canvas = this._drawChart(this, svgElement, charts[0], images);
-      charts[0].duration = charts[0].delay = 0;
 
       charts.forEach((cht, i) => {
         if (i === 0) {
           return;
         }
 
-        cht.totalProgress = charts.length - 1;
-        cht.currProgress = i;
         cht.accumedDelay =
           cht.delay + charts[i - 1].duration + charts[i - 1].accumedDelay;
         this._applyTransition(this, canvas, cht);
@@ -45,11 +44,12 @@ export default class CommonFactory {
     gif.on("finished", function(blob) {
       onFinished(blob);
     });
+
+    this._drawProgress(svgElement, charts);
+
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
       if (i === 0) return;
-      cht.totalProgress = charts.length - 1;
-      cht.currProgress = i;
 
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
@@ -59,7 +59,6 @@ export default class CommonFactory {
       );
     });
     chain.then(() => {
-      // console.dir(gif);
       gif.render();
     });
   }
@@ -328,32 +327,38 @@ export default class CommonFactory {
     }
   }
 
-  _drawProgress(svg, chart) {
+  _drawProgress(svgElement, charts) {
+    charts[0].duration = charts[0].delay = 0;
+    let totalProgress = 0;
+
+    charts.forEach((cht, i) => {
+      cht.isRecording = true;
+      totalProgress += cht.delay + cht.duration;
+    });
+    const svg = d3.select(svgElement);
     svg
       .append("rect")
       .attr("class", "progress")
       .attr("x", -8)
-      .attr("y", chart.height_svg - 5)
+      .attr("y", charts[0].height_svg - 10)
       .attr("width", 0)
       .attr("height", 10)
-      .attr("fill", chart.colorBI);
-  }
-
-  _applyProgress(svg, chart) {
-    const progressEnd =
-      (chart.width_svg + 17) * chart.currProgress / chart.totalProgress;
-    svg
-      .select("rect.progress")
+      .attr("fill", charts[0].colorBI)
       .transition()
-      .duration(chart.duration + chart.delay)
-      .delay(chart.accumedDelay - chart.delay)
+      .duration(totalProgress - 500)
+      .delay(500)
       .ease(d3.easeLinear)
-      .attr("width", progressEnd);
+      .attr("width", charts[0].width_svg + 17);
   }
 
   _drawSkeleton(svgElement, chart) {
     let svg = d3.select(svgElement);
-    svg.selectAll("*").remove();
+
+    if (!chart.isRecording) {
+      svg.selectAll("*").remove();
+    } else {
+      svg.selectAll("*:not(.progress)").remove();
+    }
     // svg.selectAll("*:not(#images)").remove();
     svg
       // .attr("width", chart.width_svg)

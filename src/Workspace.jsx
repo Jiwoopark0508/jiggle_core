@@ -35,8 +35,8 @@ export default class Workspace extends React.Component {
     // flag = "Grouped Static";
 
     // flag = "Horizontal Static";
-    // flag = "Horizontal Transition";
-    flag = "Horizontal Recording";
+    flag = "Horizontal Transition";
+    // flag = "Horizontal Recording";
 
     // flag = "jiwoo";
 
@@ -174,8 +174,8 @@ export default class Workspace extends React.Component {
   // }
 
   render() {
-    // const customWidth = 1000;
-    const customWidth = 560;
+    const customWidth = 700;
+    // const customWidth = 560;
     return (
       <div>
         <svg
