@@ -73,12 +73,26 @@ export default class JiggleLine {
     drawGlyphLabel() {
         process.nextTick(() => {
             this.transPathLines.forEach(tline => {
+                if(!tline.glyphList) return;
                 tline.glyphList.forEach(g => {
                     d3.select(g).style("opacity", "1");
                 });
             });
             this.annotationList.forEach(annotation => {
-                console.log("!");
+                d3.select(annotation).attr("transform", "scale(1)")
+            });
+        });
+    }
+    eraseGlyphLabel() {
+        process.nextTick(() => {
+            this.transPathLines.forEach(tline => {
+                if(!tline.glyphList) return;
+                tline.glyphList.forEach(g => {
+                    d3.select(g).style("opacity", "0");
+                });
+            });
+            this.annotationList.forEach(annotation => {
+                d3.select(annotation).attr("transform", "scale(0)")
             });
         });
     }

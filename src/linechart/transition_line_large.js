@@ -30,7 +30,16 @@ export default class LargeTransitionLinePath extends React.Component {
             return d.length;
         });
     }
-
+    componentDidUpdate() {
+        this.pathList.forEach((p, i) => {
+            if(!p) return;
+            let length = p.getTotalLength();
+            if(this.lengthList.indexOf(length) === -1) {
+                this.lengthList.push(p.getTotalLength());
+            }
+        });
+        this.lengthList.sort((a, b) => {return (a - b)})
+    }
     componentDidMount() {
         this.pathList.forEach((p, i) => {
             this.lengthList.push(p.getTotalLength());
@@ -50,12 +59,16 @@ export default class LargeTransitionLinePath extends React.Component {
         let startsAt = this.lengthList[idx - 1];
         let endsAt = this.lengthList[idx];
         if (!endsAt) return;
+        let glyph_start = that.glyphCountList[idx - 1];
+        let glyph_end = that.glyphCountList[idx];
+        let duration = that.durationList[idx] || 1000
+        let delay = that.durationList[idx] || 1000
         g
             .attr("stroke-dashoffset", this.totalLength - startsAt)
             .transition()
             .ease(d3.easeQuad)
-            .duration(that.durationList[idx])
-            .delay(that.delayList[idx])
+            .duration(duration)
+            .delay(delay)
             .attr("stroke-dashoffset", this.totalLength - endsAt)
             .on("end", function() {
                 if (!partial) {
