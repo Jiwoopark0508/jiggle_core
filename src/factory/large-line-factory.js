@@ -33,6 +33,7 @@ export default class LargeDataLineFactory {
   }
   renderTransition() {
     const renderer = (svgElement, chartConfigList, images) => {
+      console.log(chartConfigList)
       this._drawTransitionChart(svgElement, chartConfigList, images)
       this.lineInstance.playWholeLineTransition(undefined, undefined, false)
     }

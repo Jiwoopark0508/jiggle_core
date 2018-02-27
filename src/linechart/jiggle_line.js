@@ -73,12 +73,26 @@ export default class JiggleLine {
     drawGlyphLabel() {
         process.nextTick(() => {
             this.transPathLines.forEach(tline => {
+                if(!tline.glyphList) return;
                 tline.glyphList.forEach(g => {
                     d3.select(g).style("opacity", "1");
                 });
             });
             this.annotationList.forEach(annotation => {
-                console.log("!");
+                d3.select(annotation).attr("transform", "scale(1)")
+            });
+        });
+    }
+    eraseGlyphLabel() {
+        process.nextTick(() => {
+            this.transPathLines.forEach(tline => {
+                if(!tline.glyphList) return;
+                tline.glyphList.forEach(g => {
+                    d3.select(g).style("opacity", "0");
+                });
+            });
+            this.annotationList.forEach(annotation => {
+                d3.select(annotation).attr("transform", "scale(0)")
             });
         });
     }
@@ -102,7 +116,6 @@ export default class JiggleLine {
         }
     }
     progressBarTransition(idx, partial) {
-        console.log(this.chartList)
         if (!this.chartList[idx]) return;
         const WIDTH = 1080;
         let delay = this.chartList[idx].delay;
@@ -238,7 +251,6 @@ export default class JiggleLine {
         });
         let annotations = labels.map((d, i) => {
             if (!chartConfig.isTime) d.x = d.x._i
-            console.log(chartConfig)
             return (
                 <JiggleLabel
                     key={`annotation-${i}`}
@@ -272,7 +284,6 @@ export default class JiggleLine {
         );
     }
     _axis(chartConfig) {
-        console.log(chartConfig)
         return (
             <Group className={"axis"}>
                 <AxisBottom

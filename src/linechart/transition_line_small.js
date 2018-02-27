@@ -13,7 +13,6 @@ import * as d3 from "d3";
 export default class SmallTransitionLinePath extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.pathList = [];
         this.lengthList = [];
         this.glyphList = [];
@@ -32,13 +31,24 @@ export default class SmallTransitionLinePath extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        this.pathList.forEach((p, i) => {
+            if(!p) return;
+            let length = p.getTotalLength();
+            if(this.lengthList.indexOf(length) === -1) {
+                this.lengthList.push(p.getTotalLength());
+            }
+        });
+        this.lengthList.sort((a, b) => {return (a - b)})
+    }
+
     componentDidMount() {
         this.pathList.forEach((p, i) => {
             this.lengthList.push(p.getTotalLength());
         });
-
         this.totalLength = this.lengthList[this.lengthList.length - 1];
         d3.select(this.transPath).attr("stroke-dasharray", this.totalLength);
+        
     }
 
     playTransition(idx, partial) {
@@ -46,10 +56,37 @@ export default class SmallTransitionLinePath extends React.Component {
         let g = d3.select(this.transPath);
         this._playLineTransition(g, this, idx, partial);
     }
-
+    _playLineTransition(g, that, idx, partial) {
+        let startsAt = this.lengthList[idx - 1];
+        let endsAt = this.lengthList[idx];
+        if (!endsAt) return;
+        let glyph_start = that.glyphCountList[idx - 1];
+        let glyph_end = that.glyphCountList[idx];
+        let duration = that.durationList[idx] || 1000
+        let delay = that.durationList[idx] || 1000
+        g.call(
+            that._glyphTransition,
+            that,
+            glyph_start,
+            glyph_end,
+            delay
+        );
+        
+        g
+            .attr("stroke-dashoffset", this.totalLength - startsAt)
+            .transition()
+            .ease(d3.easeQuad)
+            .duration(duration)
+            .delay(delay)
+            .attr("stroke-dashoffset", this.totalLength - endsAt)
+            .on("end", function() {
+                if (!partial) {
+                    g.call(that._playLineTransition, that, idx + 1);
+                }
+            });
+    }
     _glyphTransition(g, that, start, end, _delay) {
         let prevGlyphs = that.glyphList.slice(0, start - 1);
-        console.log(prevGlyphs);
         prevGlyphs.forEach((d, i) => {
             d3
                 .select(d)
@@ -69,32 +106,7 @@ export default class SmallTransitionLinePath extends React.Component {
         });
     }
 
-    _playLineTransition(g, that, idx, partial) {
-        let startsAt = this.lengthList[idx - 1];
-        let endsAt = this.lengthList[idx];
-        if (!endsAt) return;
-        let glyph_start = that.glyphCountList[idx - 1];
-        let glyph_end = that.glyphCountList[idx];
-        g.call(
-            that._glyphTransition,
-            that,
-            glyph_start,
-            glyph_end,
-            that.delayList[idx]
-        );
-        g
-            .attr("stroke-dashoffset", this.totalLength - startsAt)
-            .transition()
-            .ease(d3.easeQuad)
-            .duration(that.durationList[idx])
-            .delay(that.delayList[idx])
-            .attr("stroke-dashoffset", this.totalLength - endsAt)
-            .on("end", function() {
-                if (!partial) {
-                    g.call(that._playLineTransition, that, idx + 1);
-                }
-            });
-    }
+    
 
     render() {
         const props = this.props;
