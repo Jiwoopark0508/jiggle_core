@@ -54,7 +54,7 @@ export default class CommonFactory {
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
       cht1.accumedDelay2 = cht1.delay + cht0.duration + cht0.accumedDelay2;
-      if (i === charts.length - 1) cht1.isLastChart = true;
+        if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
         this._recordSingleTransition(gif, svgElement, cht0, cht1, images)
       );
@@ -76,8 +76,7 @@ export default class CommonFactory {
       const tweeners = this._getAllTweeners(g);
 
       const svg = d3.select(svgElement);
-      const progress = svg.select(".progress");
-      console.log(progress);
+      const progress = svg.select("g.progress");
       const global_tweeners = this._getAllTweeners(progress);
       const totalDuration = cht1.accumedDelay + cht1.duration;
       allElements.interrupt();
@@ -108,6 +107,7 @@ export default class CommonFactory {
       });
 
       function jumpToTime(t) {
+        console.log(cht1.accumedDelay2 + t);
         tweeners.forEach(function(tween) {
           tween(t);
         });
@@ -334,7 +334,6 @@ export default class CommonFactory {
     charts[0].duration = charts[0].delay = 0;
     let totalProgress = 0;
 
-
     charts.forEach((cht, i) => {
       if (i === 0) return;
       cht.isRecording = true;
@@ -342,11 +341,15 @@ export default class CommonFactory {
     });
     const svg = d3.select(svgElement);
     svg.selectAll("*").remove();
-    svg
+    const gProgress = svg
+      .append("g")
+      .attr("class", "progress")
+      .attr("transform", `translate(0, ${charts[0].height_svg - 10})`);
+    gProgress
       .append("rect")
       .attr("class", "progress")
       .attr("x", -8)
-      .attr("y", charts[0].height_svg - 10)
+      // .attr("y", charts[0].height_svg - 10)
       .attr("width", 0)
       .attr("height", 10)
       .attr("fill", charts[0].colorBI)
@@ -472,6 +475,7 @@ export default class CommonFactory {
           return tr.value;
         });
       if (pending.length === 0) return;
+      console.log(pending);
       pending.forEach(function(tran, i) {
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
