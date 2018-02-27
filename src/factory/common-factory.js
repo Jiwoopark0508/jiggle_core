@@ -15,8 +15,8 @@ export default class CommonFactory {
       if (!charts || charts.length <= 1)
         throw new Error("More than 1 chart is required to draw transition.");
 
-      const canvas = this._drawChart(this, svgElement, charts[0], images);
       this._drawProgress(svgElement, charts);
+      const canvas = this._drawChart(this, svgElement, charts[0], images);
 
       charts.forEach((cht, i) => {
         if (i === 0) {
@@ -66,13 +66,7 @@ export default class CommonFactory {
 
   _recordSingleTransition(gif, svgElement, cht0, cht1, images) {
     return new Promise((resolve0, reject) => {
-      let canvas;
-      if (cht0 === "BI") {
-        canvas = this._drawBI(this, svgElement, cht1);
-      } else {
-        canvas = this._drawChart(this, svgElement, cht0, images);
-        // g = canvas.gTotal;
-      }
+      const canvas = this._drawChart(this, svgElement, cht0, images);
       const g = canvas.gTotal;
       cht1.accumedDelay = cht1.delay;
 
@@ -340,11 +334,14 @@ export default class CommonFactory {
     charts[0].duration = charts[0].delay = 0;
     let totalProgress = 0;
 
-    charts.slice(1).forEach((cht, i) => {
+
+    charts.forEach((cht, i) => {
+      if (i === 0) return;
       cht.isRecording = true;
       totalProgress += cht.delay + cht.duration;
     });
     const svg = d3.select(svgElement);
+    svg.selectAll("*").remove();
     svg
       .append("rect")
       .attr("class", "progress")
@@ -363,11 +360,16 @@ export default class CommonFactory {
   _drawSkeleton(svgElement, chart) {
     let svg = d3.select(svgElement);
 
-    if (!chart.isRecording) {
-      svg.selectAll("*").remove();
-    } else {
-      svg.selectAll("*:not(.progress)").remove();
-    }
+    svg.selectAll("*:not(.progress)").remove();
+
+    // console.log(chart.isRecording);
+    // if (chart.isRecording) {
+    //   console.log("Removed but progress bar");
+    //   svg.selectAll("*:not(.progress)").remove();
+    // } else {
+    //   console.log("Removed all");
+    //   svg.selectAll("*").remove();
+    // }
     // svg.selectAll("*:not(#images)").remove();
     svg
       // .attr("width", chart.width_svg)
