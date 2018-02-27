@@ -15,8 +15,8 @@ export default class CommonFactory {
       if (!charts || charts.length <= 1)
         throw new Error("More than 1 chart is required to draw transition.");
 
-      this._drawProgress(svgElement, charts);
       const canvas = this._drawChart(this, svgElement, charts[0], images);
+      this._drawProgress(svgElement, charts);
 
       charts.forEach((cht, i) => {
         if (i === 0) {
