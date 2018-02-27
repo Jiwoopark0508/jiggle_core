@@ -46,17 +46,23 @@ export default class CommonFactory {
     });
 
     this._drawProgress(svgElement, charts);
+    const svg = d3.select(svgElement);
+    const progress = svg.select("g.progress");
+    const allProgress = svg.selectAll(".progress");
+    const progressTweener = this._getAllTweeners(progress);
+    allProgress.interrupt();
 
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
-      if (i === 0) return;
-
+      if (i === 0) {
+        return;
+      }
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
-      cht1.accumedDelay2 = cht1.delay + cht0.duration + cht0.accumedDelay2;
-        if (i === charts.length - 1) cht1.isLastChart = true;
+      cht1.accumedDelay2 = cht1.delay + cht1.duration + cht0.accumedDelay2;
+      if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
-        this._recordSingleTransition(gif, svgElement, cht0, cht1, images)
+        this._recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener)
       );
     });
     chain.then(() => {
@@ -64,7 +70,7 @@ export default class CommonFactory {
     });
   }
 
-  _recordSingleTransition(gif, svgElement, cht0, cht1, images) {
+  _recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener) {
     return new Promise((resolve0, reject) => {
       const canvas = this._drawChart(this, svgElement, cht0, images);
       const g = canvas.gTotal;
@@ -74,11 +80,8 @@ export default class CommonFactory {
 
       const allElements = g.selectAll("*:not(.progress)");
       const tweeners = this._getAllTweeners(g);
-
-      const svg = d3.select(svgElement);
-      const progress = svg.select("g.progress");
-      const global_tweeners = this._getAllTweeners(progress);
       const totalDuration = cht1.accumedDelay + cht1.duration;
+
       allElements.interrupt();
       const frames = 30 * totalDuration / 1000;
 
@@ -107,12 +110,11 @@ export default class CommonFactory {
       });
 
       function jumpToTime(t) {
-        console.log(cht1.accumedDelay2 + t);
         tweeners.forEach(function(tween) {
           tween(t);
         });
-        global_tweeners.forEach(function(tween) {
-          tween(cht1.accumedDelay2 + t);
+        progressTweener.forEach(function(tween) {
+          tween(cht0.accumedDelay2 + t);
         });
       }
 
@@ -475,7 +477,6 @@ export default class CommonFactory {
           return tr.value;
         });
       if (pending.length === 0) return;
-      console.log(pending);
       pending.forEach(function(tran, i) {
         if (tran.tween.length === 0) return;
         var ease = tran.ease || (d => d);
