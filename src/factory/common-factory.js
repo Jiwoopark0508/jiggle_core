@@ -15,8 +15,8 @@ export default class CommonFactory {
       if (!charts || charts.length <= 1)
         throw new Error("More than 1 chart is required to draw transition.");
 
-      const canvas = this._drawChart(this, svgElement, charts[0], images);
       this._drawProgress(svgElement, charts);
+      const canvas = this._drawChart(this, svgElement, charts[0], images);
 
       charts.forEach((cht, i) => {
         if (i === 0) {
@@ -46,16 +46,23 @@ export default class CommonFactory {
     });
 
     this._drawProgress(svgElement, charts);
+    const svg = d3.select(svgElement);
+    const progress = svg.select("g.progress");
+    const allProgress = svg.selectAll(".progress");
+    const progressTweener = this._getAllTweeners(progress);
+    allProgress.interrupt();
 
     let chain = Promise.resolve();
     charts.forEach((cht, i) => {
-      if (i === 0) return;
-
+      if (i === 0) {
+        return;
+      }
       const cht0 = charts[i - 1];
       const cht1 = charts[i];
+      cht1.accumedDelay2 = cht1.delay + cht1.duration + cht0.accumedDelay2;
       if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
-        this._recordSingleTransition(gif, svgElement, cht0, cht1, images)
+        this._recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener)
       );
     });
     chain.then(() => {
@@ -63,23 +70,18 @@ export default class CommonFactory {
     });
   }
 
-  _recordSingleTransition(gif, svgElement, cht0, cht1, images) {
+  _recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener) {
     return new Promise((resolve0, reject) => {
-      let canvas;
-      if (cht0 === "BI") {
-        canvas = this._drawBI(this, svgElement, cht1);
-      } else {
-        canvas = this._drawChart(this, svgElement, cht0, images);
-        // g = canvas.gTotal;
-      }
+      const canvas = this._drawChart(this, svgElement, cht0, images);
       const g = canvas.gTotal;
       cht1.accumedDelay = cht1.delay;
 
       this._applyTransition(this, canvas, cht1);
 
-      const allElements = g.selectAll("*");
+      const allElements = g.selectAll("*:not(.progress)");
       const tweeners = this._getAllTweeners(g);
       const totalDuration = cht1.accumedDelay + cht1.duration;
+
       allElements.interrupt();
       const frames = 30 * totalDuration / 1000;
 
@@ -110,6 +112,9 @@ export default class CommonFactory {
       function jumpToTime(t) {
         tweeners.forEach(function(tween) {
           tween(t);
+        });
+        progressTweener.forEach(function(tween) {
+          tween(cht0.accumedDelay2 + t);
         });
       }
 
@@ -332,15 +337,21 @@ export default class CommonFactory {
     let totalProgress = 0;
 
     charts.forEach((cht, i) => {
+      if (i === 0) return;
       cht.isRecording = true;
       totalProgress += cht.delay + cht.duration;
     });
     const svg = d3.select(svgElement);
-    svg
+    svg.selectAll("*").remove();
+    const gProgress = svg
+      .append("g")
+      .attr("class", "progress")
+      .attr("transform", `translate(0, ${charts[0].height_svg - 10})`);
+    gProgress
       .append("rect")
       .attr("class", "progress")
       .attr("x", -8)
-      .attr("y", charts[0].height_svg - 10)
+      // .attr("y", charts[0].height_svg - 10)
       .attr("width", 0)
       .attr("height", 10)
       .attr("fill", charts[0].colorBI)
@@ -354,11 +365,16 @@ export default class CommonFactory {
   _drawSkeleton(svgElement, chart) {
     let svg = d3.select(svgElement);
 
-    if (!chart.isRecording) {
-      svg.selectAll("*").remove();
-    } else {
-      svg.selectAll("*:not(.progress)").remove();
-    }
+    svg.selectAll("*:not(.progress)").remove();
+
+    // console.log(chart.isRecording);
+    // if (chart.isRecording) {
+    //   console.log("Removed but progress bar");
+    //   svg.selectAll("*:not(.progress)").remove();
+    // } else {
+    //   console.log("Removed all");
+    //   svg.selectAll("*").remove();
+    // }
     // svg.selectAll("*:not(#images)").remove();
     svg
       // .attr("width", chart.width_svg)
