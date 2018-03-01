@@ -13,7 +13,7 @@ export default class GroupedBarFactory extends CommonFactory {
   //   };
   //   return renderer;
   // }
-  _drawChart(that, svgElement, chart, images) {
+  _drawChart(that, svgElement, chart, images, isTransition = false) {
     let {
       svg,
       gTotal,
@@ -73,21 +73,19 @@ export default class GroupedBarFactory extends CommonFactory {
       .attr("x", function(d) {
         return chart.x1(d.key);
       })
-      .attr("y", function(d) {
-        return chart.yScale(d.value);
-      })
+      .attr("y", d => chart.height_g_body)
       .attr("width", chart.x1.bandwidth())
-      .attr("height", function(d) {
-        return chart.height_g_body - chart.yScale(d.value);
-      })
       .attr("fill", function(d) {
-        // console.log(d.key);
         const color = chart.z(d.key);
-        // console.log(color);
-        // console.log(chart.z.domain());
         return color;
-        // return chart.z(d.key);
-      });
+      })
+      .call(that._staticOrTransition, chart, isTransition);
+    // .attr("y", function(d) {
+    //   return chart.yScale(d.value);
+    // })
+    // .attr("height", function(d) {
+    //   return chart.height_g_body - chart.yScale(d.value);
+    // });
     graphG
       .selectAll("text.graphText")
       .data(function(d, i) {
@@ -203,7 +201,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + 5) + 7})`;
+        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + 7) + 9})`;
         // return "translate(0," + (i + 1) * (sizeRect + 2) + ")";
       });
     legend

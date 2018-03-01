@@ -54,8 +54,8 @@ const chart4 = {
 class App extends Component {
   render() {
     let flag;
-    flag = "horizontal";
-    // flag = "group";
+    // flag = "horizontal";
+    flag = "group";
     // flag = "single";
     // flag = "jiwoo"
 

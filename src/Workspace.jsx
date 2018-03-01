@@ -32,11 +32,12 @@ export default class Workspace extends React.Component {
     // flag = "Transition";
     // flag = "Recording";
 
-    // flag = "Grouped Static";
+    flag = "Grouped Static";
+    // flag = "Grouped Transition";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
-    flag = "Horizontal Recording";
+    // flag = "Horizontal Recording";
 
     // flag = "jiwoo";
 
@@ -85,8 +86,13 @@ export default class Workspace extends React.Component {
     }
     if (flag === "Grouped Transition") {
       props.charts.forEach(chart => parseGroupedBar(chart));
-      const renderer = groupBar.renderTransition();
-      const gTotal = renderer(this.node, props.charts, imgs);
+      const renderer = groupBar.renderChart();
+      const gTotal = renderer(
+        this.node,
+        props.charts[0],
+        imgs,
+        true
+      );
     }
 
     // single bar

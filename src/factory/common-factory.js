@@ -3,8 +3,14 @@ import { axisLeft, axisBottom } from "../common/d3-axis";
 
 export default class CommonFactory {
   renderChart() {
-    const renderer = (svgElement, chart, images) => {
-      const canvas = this._drawChart(this, svgElement, chart, images);
+    const renderer = (svgElement, chart, images, isTransition) => {
+      const canvas = this._drawChart(
+        this,
+        svgElement,
+        chart,
+        images,
+        isTransition
+      );
       return canvas.gTotal;
     };
     return renderer;
@@ -62,7 +68,14 @@ export default class CommonFactory {
       cht1.accumedDelay2 = cht1.delay + cht1.duration + cht0.accumedDelay2;
       if (i === charts.length - 1) cht1.isLastChart = true;
       chain = chain.then(() =>
-        this._recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener)
+        this._recordSingleTransition(
+          gif,
+          svgElement,
+          cht0,
+          cht1,
+          images,
+          progressTweener
+        )
       );
     });
     chain.then(() => {
@@ -70,7 +83,14 @@ export default class CommonFactory {
     });
   }
 
-  _recordSingleTransition(gif, svgElement, cht0, cht1, images, progressTweener) {
+  _recordSingleTransition(
+    gif,
+    svgElement,
+    cht0,
+    cht1,
+    images,
+    progressTweener
+  ) {
     return new Promise((resolve0, reject) => {
       const canvas = this._drawChart(this, svgElement, cht0, images);
       const g = canvas.gTotal;
@@ -89,7 +109,7 @@ export default class CommonFactory {
       d3.range(frames).forEach((f, i) => {
         chain = chain.then(() => {
           return new Promise(function(resolve1, reject) {
-            addFrame(f / frames * totalDuration, resolve1);
+            addFrame((f + 1) / frames * totalDuration, resolve1);
           });
         });
       });
@@ -203,8 +223,7 @@ export default class CommonFactory {
   }
 
   _drawVerticalYAxis(g, chart) {
-    const yAxis = d3
-      .axisLeft(chart.yScale)
+    const yAxis = axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
       // .ticks(chart.numOfYAxisTicks, "s")
       .tickSize(-chart.width_g_body);
@@ -220,7 +239,7 @@ export default class CommonFactory {
   }
 
   _drawVerticalXAxis(g, chart) {
-    const xAxis = axisBottom(chart.x0);
+    const xAxis = d3.axisBottom(chart.x0);
     g
       .call(xAxis)
       .selectAll(".domain, line")
@@ -232,8 +251,9 @@ export default class CommonFactory {
   }
 
   _drawHorizontalYAxis(g, chart) {
+    // console.log(chart.yScale.domain());
     g
-      .call(axisLeft(chart.yScale))
+      .call(d3.axisLeft(chart.yScale))
       .selectAll(".domain,line")
       .style("display", "none");
     g
@@ -267,6 +287,7 @@ export default class CommonFactory {
   }
 
   _drawTitle(g, chart) {
+    // select selection if g is transition
     let s = g.selection ? g.selection() : g;
     s
       .append("text")
@@ -350,8 +371,6 @@ export default class CommonFactory {
     gProgress
       .append("rect")
       .attr("class", "progress")
-      .attr("x", -8)
-      // .attr("y", charts[0].height_svg - 10)
       .attr("width", 0)
       .attr("height", 10)
       .attr("fill", charts[0].colorBI)
@@ -359,7 +378,7 @@ export default class CommonFactory {
       .duration(totalProgress - 500)
       .delay(500)
       .ease(d3.easeLinear)
-      .attr("width", charts[0].width_svg + 17);
+      .attr("width", charts[0].width_svg + 20);
   }
 
   _drawSkeleton(svgElement, chart) {
@@ -496,5 +515,21 @@ export default class CommonFactory {
       });
     });
     return tweeners;
+  }
+
+  _staticOrTransition(g, chart, isTransition) {
+    if (isTransition) {
+      g = g
+        .transition()
+        .duration(chart.duration)
+        .delay((d, i) => i * 800);
+    }
+    g
+      .attr("y", function(d) {
+        return chart.yScale(d.value);
+      })
+      .attr("height", function(d) {
+        return chart.height_g_body - chart.yScale(d.value);
+      });
   }
 }
