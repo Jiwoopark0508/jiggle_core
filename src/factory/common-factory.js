@@ -372,6 +372,9 @@ export default class CommonFactory {
     });
     const svg = d3.select(svgElement);
     svg.selectAll("*").remove();
+    const scaleOpacity = d3.scaleQuantize()
+      .domain([0, 1])
+      .range([0.33, 0.66, 1])
     const gProgress = svg
       .append("g")
       .attr("class", "progress")
@@ -386,6 +389,11 @@ export default class CommonFactory {
       .duration(totalProgress - 500)
       .delay(500)
       .ease(d3.easeLinear)
+      .attrTween("opacity", function(d, i){
+        return function(t) {
+          return scaleOpacity(t);
+        }
+      })
       .attr("width", charts[0].width_svg + 20);
   }
 
