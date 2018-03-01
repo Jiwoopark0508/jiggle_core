@@ -3,7 +3,7 @@ import { axisLeft, axisBottom } from "../common/d3-axis";
 
 export default class CommonFactory {
   renderChart() {
-    const renderer = (svgElement, chart, images, isTransition) => {
+    const renderer = (svgElement, chart, images, isTransition, onFinished) => {
       const canvas = this._drawChart(
         this,
         svgElement,
@@ -11,6 +11,13 @@ export default class CommonFactory {
         images,
         isTransition
       );
+
+      if (typeof onFinished === 'function') {
+        const serialized = new XMLSerializer().serializeToString(svgElement);
+        // const serialized = new XMLSerializer().serializeToString(canvas.svg.node());
+        const blob = new Blob([serialized], { type: "image/svg+xml"});
+        onFinished(blob);
+      }
       return canvas.gTotal;
     };
     return renderer;
@@ -223,7 +230,8 @@ export default class CommonFactory {
   }
 
   _drawVerticalYAxis(g, chart) {
-    const yAxis = d3.axisLeft(chart.yScale)
+    const yAxis = d3
+      .axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
       // .ticks(chart.numOfYAxisTicks, "s")
       .tickSize(-chart.width_g_body);

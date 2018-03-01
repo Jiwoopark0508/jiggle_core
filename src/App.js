@@ -55,8 +55,8 @@ class App extends Component {
   render() {
     let flag;
     // flag = "horizontal";
-    flag = "group";
-    // flag = "single";
+    // flag = "group";
+    flag = "single";
     // flag = "jiwoo"
 
     // horizontal
