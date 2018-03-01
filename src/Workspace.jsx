@@ -28,7 +28,7 @@ export default class Workspace extends React.Component {
     const imgs = bonobono;
 
     let flag;
-    flag = "Static";
+    // flag = "Static";
     // flag = "Transition";
     // flag = "Recording";
 
@@ -37,7 +37,7 @@ export default class Workspace extends React.Component {
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
-    // flag = "Horizontal Recording";
+    flag = "Horizontal Recording";
 
     // flag = "jiwoo";
 

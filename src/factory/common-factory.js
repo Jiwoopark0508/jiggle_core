@@ -375,12 +375,12 @@ export default class CommonFactory {
     const gProgress = svg
       .append("g")
       .attr("class", "progress")
-      .attr("transform", `translate(0, ${charts[0].height_svg - 10})`);
+      .attr("transform", `translate(0, ${charts[0].height_svg - 7})`);
     gProgress
       .append("rect")
       .attr("class", "progress")
       .attr("width", 0)
-      .attr("height", 10)
+      .attr("height", 7)
       .attr("fill", charts[0].colorBI)
       .transition()
       .duration(totalProgress - 500)
