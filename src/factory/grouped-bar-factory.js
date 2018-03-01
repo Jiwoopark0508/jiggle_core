@@ -191,7 +191,7 @@ export default class GroupedBarFactory extends CommonFactory {
         .text(`단위: ${chart.unit}`);
     }
 
-    const sizeRect = 12;
+    const sizeRect = chart.fontsize_unit * 0.7;
     let legend = g
       // .attr("font-family", "sans-serif")
       // .attr("text-anchor", "end")
@@ -201,7 +201,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + 7) + 9})`;
+        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + chart.fontsize_unit * 0.5) + chart.fontsize_unit * 0.4})`;
         // return "translate(0," + (i + 1) * (sizeRect + 2) + ")";
       });
     legend

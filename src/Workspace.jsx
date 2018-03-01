@@ -180,8 +180,8 @@ export default class Workspace extends React.Component {
   // }
 
   render() {
-    const customWidth = 700;
-    // const customWidth = 560;
+    // const customWidth = 700;
+    const customWidth = 1000;
     return (
       <div>
         <svg

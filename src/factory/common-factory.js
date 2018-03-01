@@ -223,7 +223,7 @@ export default class CommonFactory {
   }
 
   _drawVerticalYAxis(g, chart) {
-    const yAxis = axisLeft(chart.yScale)
+    const yAxis = d3.axisLeft(chart.yScale)
       .ticks(chart.numOfYAxisTicks)
       // .ticks(chart.numOfYAxisTicks, "s")
       .tickSize(-chart.width_g_body);
