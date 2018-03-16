@@ -12,10 +12,10 @@ export default class CommonFactory {
         isTransition
       );
 
-      if (typeof onFinished === 'function') {
+      if (typeof onFinished === "function") {
         const serialized = new XMLSerializer().serializeToString(svgElement);
         // const serialized = new XMLSerializer().serializeToString(canvas.svg.node());
-        const blob = new Blob([serialized], { type: "image/svg+xml"});
+        const blob = new Blob([serialized], { type: "image/svg+xml" });
         onFinished(blob);
       }
       return canvas.gTotal;
@@ -372,9 +372,11 @@ export default class CommonFactory {
     });
     const svg = d3.select(svgElement);
     svg.selectAll("*").remove();
-    const scaleOpacity = d3.scaleQuantize()
+    const scaleOpacity = d3
+      .scaleQuantize()
       .domain([0, 1])
-      .range([0.33, 0.66, 1])
+      // .range([1, 0.66, 0.33, 0]);
+      .range([0.33, 0.66, 1]);
     const gProgress = svg
       .append("g")
       .attr("class", "progress")
@@ -389,10 +391,10 @@ export default class CommonFactory {
       .duration(totalProgress - 500)
       .delay(500)
       .ease(d3.easeLinear)
-      .attrTween("opacity", function(d, i){
+      .attrTween("opacity", function(d, i) {
         return function(t) {
           return scaleOpacity(t);
-        }
+        };
       })
       .attr("width", charts[0].width_svg + 20);
   }
