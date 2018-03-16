@@ -33,6 +33,7 @@ export default class Workspace extends React.Component {
     // flag = "Recording";
 
     // flag = "Grouped Static";
+    // flag = "Grouped Transition";
 
     // flag = "Horizontal Static";
     // flag = "Horizontal Transition";
@@ -85,8 +86,8 @@ export default class Workspace extends React.Component {
     }
     if (flag === "Grouped Transition") {
       props.charts.forEach(chart => parseGroupedBar(chart));
-      const renderer = groupBar.renderTransition();
-      const gTotal = renderer(this.node, props.charts, imgs);
+      const renderer = groupBar.renderChart();
+      const gTotal = renderer(this.node, props.charts[0], imgs, true);
     }
 
     // single bar
@@ -94,8 +95,22 @@ export default class Workspace extends React.Component {
 
     if (flag === "Static") {
       props.charts.forEach(chart => parseBar(chart));
+      const onFinished = function(blob) {
+        const gifDiv = document.getElementById("gif");
+        const imgElement = document.createElement("img");
+        imgElement.onload = function() {
+          gifDiv.appendChild(imgElement);
+        };
+        imgElement.src = URL.createObjectURL(blob);
+      };
       const renderer = bar.renderChart();
-      const gTotal = renderer(this.node, props.charts[0], imgs);
+      const gTotal = renderer(
+        this.node,
+        props.charts[0],
+        imgs,
+        false,
+        onFinished
+      );
       // const gList = getChildG(gTotal);
       // console.log(gList);
     }
@@ -174,8 +189,9 @@ export default class Workspace extends React.Component {
   // }
 
   render() {
-    const customWidth = 700;
-    // const customWidth = 560;
+    // const customWidth = 700;
+    // const customWidth = 1000;
+    const customWidth = 560;
     return (
       <div>
         <svg

@@ -72,11 +72,18 @@ const arr0 = [
 ];
 
 const arr1 = [
-  ["", "삼성", "SK"],
+  ["", "삼호건설", "호반건설"],
   ["2014년", "28.4", "10.0"],
   ["2015년", "30.8", "11.8"],
   ["2016년", "36.1", "10.2"],
   ["2017년", "38.3", "10.7"]
+];
+
+const arr2 = [
+  ["", "자본총액", "매출액", "당기순이익"],
+  ["부영건설", 76340, 23880, 940],
+  ["호반건설", 36910, 54540, 9430],
+  ["중흥건설", 26730, 54380, 7100]
 ];
 
 // const csv0 = `"State","Under 5 Years","5 to 13 Years","14 to 17 Years","18 to 24 Years","25 to 44 Years","45 to 64 Years","65 Years and Over"
@@ -171,7 +178,7 @@ export const gcht1 = {
   label,
   theme,
   // graph_colors,
-  rawData: arr1,
+  rawData: arr2,
   title: "주요 금융그룹 충당금",
   subtitle: "부제는 여기에 위치합니다",
   reference: "통계청",

@@ -28,7 +28,7 @@ export default function parseGroupedBar(chart) {
     .scaleBand()
     .domain(chart.keys)
     .rangeRound([0, chart.x0.bandwidth()])
-    .padding(0.05);
+    .padding(0.2);
   chart.yScale = d3
     .scaleLinear()
     .domain([
