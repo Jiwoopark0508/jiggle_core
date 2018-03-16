@@ -1,7 +1,7 @@
 # Google X MoneyToday
 
 # What?
-![logo](https://imgur.com/tDybXwY)Jiggle은 데이터 스토리텔링을 도와줍니다.
+![logo](https://i.imgur.com/tDybXwY.png)Jiggle은 데이터 스토리텔링을 도와줍니다.
 이제껏 기사에 쓰이는 도표는 겉치레에 지나지 않았죠.
 딱딱한 그래프에 플롯과 주인공을 만들어 보세요.
 Jiggle이 여러분의 이야기를 그려 드립니다.
