@@ -107,7 +107,7 @@ export default class CommonFactory {
 
       const allElements = g.selectAll("*:not(.progress)");
       const tweeners = this._getAllTweeners(g);
-      const totalDuration = cht1.accumedDelay + cht1.duration;
+      let totalDuration = cht1.accumedDelay + cht1.duration;
 
       allElements.interrupt();
       const frames = 30 * totalDuration / 1000;
@@ -122,6 +122,7 @@ export default class CommonFactory {
       });
 
       if (cht1.isLastChart) {
+        totalDuration += 200;
         const lastSceneFrames = (cht1.lastFor || 2000) / 1000 * 30;
         d3.range(lastSceneFrames).forEach((f, i) => {
           chain = chain.then(() => {
@@ -321,7 +322,7 @@ export default class CommonFactory {
       .attr("class", "referenceText")
       .attr("font-size", chart.fontsize_reference + "px")
       .attr("fill", chart.fontcolor_reference)
-      .text(`자료 출처: ${chart.reference}`);
+      .text(`출처: ${chart.reference}`);
   }
 
   _drawMadeBy(g, chart) {
@@ -332,6 +333,24 @@ export default class CommonFactory {
       .attr("font-size", chart.fontsize_madeBy + "px")
       .attr("fill", chart.fontcolor_madeBy)
       .text(`만든이: ${chart.madeBy}`);
+  }
+
+  _drawLogo(g, chart) {
+    const text = g
+      .append("text")
+      .attr("class", "logoText")
+      .attr("font-size", chart.fontsize_reference + "px");
+    text
+      .append("tspan")
+      .attr("fill", chart.fontcolor_reference)
+      // .style("font-family", "Spoqa Hans")
+      .style("font-weight", 200)
+      .text("powered by ");
+    text
+      .append("tspan")
+      .attr("fill", chart.colorBI)
+      .style("font-weight", 500)
+      .text("jiggle");
   }
 
   _drawImage(g, image, chart) {
@@ -474,6 +493,11 @@ export default class CommonFactory {
       .attr("transform", `translate(0, ${chart.y_g_subtitle})`);
 
     let gReference = gReferenceBox.append("g").attr("class", "reference");
+    let gLogo = gReferenceBox
+      .append("g")
+      .attr("class", "logo")
+      .attr("transform", `translate(${chart.x_g_legend}, 0)`)
+      .style("text-anchor", "end");
     let gMadeBy = gReferenceBox
       .append("g")
       .attr("class", "madeBy")
@@ -496,6 +520,7 @@ export default class CommonFactory {
       gTitle,
       gSubtitle,
       gReference,
+      gLogo,
       gMadeBy
     };
   }

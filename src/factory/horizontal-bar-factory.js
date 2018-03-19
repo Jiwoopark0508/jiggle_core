@@ -20,6 +20,7 @@ export default class HorizontalBarFactory extends CommonFactory {
       gTitle,
       gSubtitle,
       gReference,
+      gLogo,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     gYAxis.call(that._drawHorizontalYAxis, chart);
@@ -63,7 +64,8 @@ export default class HorizontalBarFactory extends CommonFactory {
       });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
-    gMadeBy.call(that._drawMadeBy, chart);
+    gLogo.call(that._drawLogo, chart);
+    // gMadeBy.call(that._drawMadeBy, chart);
     if (images) {
       images.forEach(image => {
         that._drawImage(gImage, image, chart);

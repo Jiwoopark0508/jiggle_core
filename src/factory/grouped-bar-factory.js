@@ -31,6 +31,7 @@ export default class GroupedBarFactory extends CommonFactory {
       gTitle,
       gSubtitle,
       gReference,
+      gLogo,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     gXAxis.call(that._drawVerticalXAxis, chart);
@@ -140,7 +141,9 @@ export default class GroupedBarFactory extends CommonFactory {
     //   .text(chart.yLabel);
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
-    gMadeBy.call(that._drawMadeBy, chart);
+    gLogo.call(that._drawLogo, chart);
+    // gMadeBy.call(that._drawMadeBy, chart);
+
     if (images) {
       images.forEach(image => {
         that._drawImage(gImage, image, chart);
@@ -168,7 +171,6 @@ export default class GroupedBarFactory extends CommonFactory {
   }
 
   _applyTransition(that, canvas, chart) {
-    console.log("called");
     const graphRect = canvas.gGraph
       .selectAll("g.graphRect")
       .transition()
@@ -201,7 +203,7 @@ export default class GroupedBarFactory extends CommonFactory {
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + chart.fontsize_unit * 0.5) + chart.fontsize_unit * 0.4})`;
+        return `translate(${-sizeRect}, ${(i + 1) * (sizeRect + chart.fontsize_unit * 0.5) + chart.fontsize_unit * 0.2})`;
         // return "translate(0," + (i + 1) * (sizeRect + 2) + ")";
       });
     legend

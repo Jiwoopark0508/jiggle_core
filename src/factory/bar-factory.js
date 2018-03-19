@@ -21,6 +21,7 @@ export default class BarFactory extends CommonFactory {
       gTitle,
       gSubtitle,
       gReference,
+      gLogo,
       gMadeBy
     } = that._drawSkeleton(svgElement, chart);
     // svg.call(that._drawProgress, chart);
@@ -71,7 +72,8 @@ export default class BarFactory extends CommonFactory {
       });
     gLegend.call(that._drawLegend, chart);
     gReference.call(that._drawReference, chart);
-    gMadeBy.call(that._drawMadeBy, chart);
+    gLogo.call(that._drawLogo, chart);
+    // gMadeBy.call(that._drawMadeBy, chart);
     if (images) {
       images.forEach(image => {
         that._drawImage(gImage, image, chart);
@@ -102,16 +104,16 @@ export default class BarFactory extends CommonFactory {
     // canvas.svg.call(that._applyProgress, chart);
     canvas.gYAxis
       .transition()
-      .duration(chart.duration / 2)
+      .duration(chart.duration)
       // .delay(chart[chart.delayType])
-      .ease(d3.easeLinear)
+      // .ease(d3.easeLinear)
       .delay(chart.accumedDelay)
       .call(that._drawVerticalYAxis, chart);
     canvas.gXAxis
       .transition()
-      .duration(chart.duration / 2)
+      .duration(chart.duration)
       // .delay(chart[chart.delayType])
-      .ease(d3.easeLinear)
+      // .ease(d3.easeLinear)
       .delay(chart.accumedDelay)
       .call(that._drawVerticalXAxis, chart);
     canvas.gBackground
